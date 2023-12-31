@@ -1,40 +1,2300 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
 
-		<title>reveal.js</title>
+    <title>reveal.js</title>
 
-		<link rel="stylesheet" href="dist/reset.css">
-		<link rel="stylesheet" href="dist/reveal.css">
-		<link rel="stylesheet" href="dist/theme/black.css">
+    <link rel="stylesheet" href="dist/reset.css" />
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/nord.css" />
 
-		<!-- Theme used for syntax highlighted code -->
-		<link rel="stylesheet" href="plugin/highlight/monokai.css">
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
-			</div>
-		</div>
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="plugin/highlight/stackoverflow-dark.css" />
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>The Evolution of Functional Programming in C++</section>
+        <section data-auto-animate>
+          <h2>About Me</h2>
+          <p>Functional and systems programmer focused on Haskell and C/C++</p>
+        </section>
+        <section data-auto-animate>
+          <h2>About Me</h2>
+          <p>Functional and systems programmer focused on Haskell, C and C++</p>
+        </section>
+        <section>
+          <h2>Socials</h2>
+          <p>
+            <a href="https://www.linkedin.com/in/abel-sen/">
+              <?xml version="1.0" encoding="UTF-8"?><svg
+                width="24px"
+                height="24px"
+                stroke-width="1.5"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                color="#000000"
+              >
+                <path
+                  d="M21 8V16C21 18.7614 18.7614 21 16 21H8C5.23858 21 3 18.7614 3 16V8C3 5.23858 5.23858 3 8 3H16C18.7614 3 21 5.23858 21 8Z"
+                  stroke="#000000"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+                <path
+                  d="M7 17V13.5V10"
+                  stroke="#000000"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+                <path
+                  d="M11 17V13.75M11 10V13.75M11 13.75C11 10 17 10 17 13.75V17"
+                  stroke="#000000"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+                <path
+                  d="M7 7.01L7.01 6.99889"
+                  stroke="#000000"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+              <span>abel-sen</span>
+            </a>
+          </p>
+          <p>
+            <a href="https://github.com/neuroevolutus">
+              <?xml version="1.0" encoding="UTF-8"?><svg
+                width="24px"
+                height="24px"
+                stroke-width="1.5"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                color="#000000"
+              >
+                <path
+                  d="M16 22.0268V19.1568C16.0375 18.68 15.9731 18.2006 15.811 17.7506C15.6489 17.3006 15.3929 16.8902 15.06 16.5468C18.2 16.1968 21.5 15.0068 21.5 9.54679C21.4997 8.15062 20.9627 6.80799 20 5.79679C20.4558 4.5753 20.4236 3.22514 19.91 2.02679C19.91 2.02679 18.73 1.67679 16 3.50679C13.708 2.88561 11.292 2.88561 8.99999 3.50679C6.26999 1.67679 5.08999 2.02679 5.08999 2.02679C4.57636 3.22514 4.54413 4.5753 4.99999 5.79679C4.03011 6.81549 3.49251 8.17026 3.49999 9.57679C3.49999 14.9968 6.79998 16.1868 9.93998 16.5768C9.61098 16.9168 9.35725 17.3222 9.19529 17.7667C9.03334 18.2112 8.96679 18.6849 8.99999 19.1568V22.0268"
+                  stroke="#000000"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+                <path
+                  d="M9 20.0267C6 20.9999 3.5 20.0267 2 17.0267"
+                  stroke="#000000"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+              <span>neuroevolutus</span>
+            </a>
+          </p>
+          <p>
+            <a href="https://gitlab.com/neuroevolutus">
+              <?xml version="1.0" encoding="UTF-8"?><svg
+                width="24px"
+                height="24px"
+                stroke-width="1.5"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                color="#000000"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M17.0573 2.54429C17.1158 2.36426 17.3684 2.35862 17.4348 2.53587L20.5488 10.8457L21.9467 14.5766C21.9782 14.6607 21.9497 14.7555 21.8771 14.8084L12.1177 21.9143C12.0476 21.9654 11.9524 21.9654 11.8823 21.9143L2.1229 14.8084C2.05027 14.7555 2.02182 14.6607 2.05334 14.5766L3.45095 10.8462L3.61783 10.3963L6.56249 2.53587C6.62889 2.35863 6.88149 2.36422 6.93999 2.54422L9.40952 10.1431C9.4363 10.2255 9.51309 10.2813 9.59973 10.2813H14.4002C14.4868 10.2813 14.5637 10.2255 14.5904 10.143L17.0573 2.54429Z"
+                  stroke="#000000"
+                  stroke-width="1.5"
+                ></path>
+              </svg>
+              <span>neuroevolutus</span>
+            </a>
+          </p>
+          <p>
+            <a href="https://stackoverflow.com/users/8972496/neuroevolutus">
+              <?xml version="1.0" encoding="UTF-8"?><svg
+                width="24px"
+                height="24px"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                color="#000000"
+              >
+                <path
+                  d="M19 15V21H5V15"
+                  stroke="#000000"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+                <path
+                  d="M16 17L8 17"
+                  stroke="#000000"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+                <path
+                  d="M15.9126 14.6633L8.0874 13"
+                  stroke="#000000"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+                <path
+                  d="M16.7127 12.3809L9.46228 9"
+                  stroke="#000000"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+                <path
+                  d="M18.1728 10.6423L12.0444 5.5"
+                  stroke="#000000"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+                <path
+                  d="M20.0338 8.80409L15.1085 2.5"
+                  stroke="#000000"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+              <span>neuroevolutus</span>
+            </a>
+          </p>
+          <p>
+            <a href="https://twitter.com/neuroevolutus">
+              <?xml version="1.0" encoding="UTF-8"?><svg
+                width="24px"
+                height="24px"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                color="#000000"
+              >
+                <path
+                  d="M16.8198 20.7684L3.75317 3.96836C3.44664 3.57425 3.72749 3 4.22678 3H6.70655C6.8917 3 7.06649 3.08548 7.18016 3.23164L20.2468 20.0316C20.5534 20.4258 20.2725 21 19.7732 21H17.2935C17.1083 21 16.9335 20.9145 16.8198 20.7684Z"
+                  stroke="#000000"
+                  stroke-width="1.5"
+                ></path>
+                <path
+                  d="M20 3L4 21"
+                  stroke="#000000"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                ></path>
+              </svg>
+              <span>neuroevolutus</span>
+            </a>
+          </p>
+        </section>
+        <section>
+          <h2>Agenda</h2>
+          <ul>
+            <li>C++ Origins and Ethos</li>
+            <li>
+              The evolution of FP in C++ from C++98 through C++23
+              <ul>
+                <li>Understanding the benefits of each FP feature</li>
+                <li>Comparisons with Haskell and its functional features</li>
+              </ul>
+            </li>
+            <li>FP in C++26 and beyond</li>
+          </ul>
+        </section>
+        <section>
+          <section>
+            <h2>What is C++?</h2>
+          </section>
+          <section>
+            <ul>
+              <li>
+                Inspired by the powerful type-checking and abstractions provided
+                by Simula
+                <ul>
+                  <li>
+                    Dr. Bjarne Stroustroup used Simula for his Ph.D. thesis to
+                    implement a simulator for distributed systems
+                  </li>
+                </ul>
+              </li>
+              <li>
+                Influenced by the difficulty of rewriting the simulator in BCPL
+              </li>
+            </ul>
+          </section>
+          <section>
+            <ul>
+              <li>Dr. Stroustroup went on to work at Bell Labs</li>
+              <li>
+                Found himself writing a distributed system again
+                <ul>
+                  <li>
+                    Could no longer repeat the Herculean effort of writing a
+                    complex system in BCPL
+                  </li>
+                </ul>
+              </li>
+              <li>C with Classes was born</li>
+            </ul>
+          </section>
+          <section>
+            <ul>
+              <li>
+                A systems language built to solve
+                <em>real-world</em> programming problems
+              </li>
+              <li>
+                Offers lightweight to zero-cost abstractions that to effectively
+                model
+                <em>concepts</em> from any problem domain
+              </li>
+              <li>
+                Can <em>scale</em> to handle the complexity of the problems you
+                face
+              </li>
+            </ul>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h2>C++98</h2>
+          </section>
+          <section data-auto-animate>
+            <h3>Core Functional Features</h3>
+            <ul>
+              <li>Function pointers</li>
+              <li>Function references</li>
+              <li>Pointers to members</li>
+              <li>Function objects</li>
+              <li>Templates</li>
+            </ul>
+          </section>
+          <section data-auto-animate>
+            <h3>Core Functional Principles</h3>
+            <ul>
+              <li>Functions as first-class citizens</li>
+              <li>Generic programming</li>
+            </ul>
+          </section>
+          <section data-auto-animate data-visibility="hidden">
+            <h2>Function pointers</h2>
+            <ul>
+              <li>A feature shared with C</li>
+              <li>
+                Allow you to refactor high-level algorithms out of concrete
+                implementations
+              </li>
+              <li>Make functions an (arguably) first-class feature</li>
+            </ul>
+          </section>
+          <section data-auto-animate>
+            <h2>Functions as first-class citizens</h2>
+            <ul>
+              <li>Pass functions to functions</li>
+              <li>Return functions from functions</li>
+              <li>Assign functions to names</li>
+            </ul>
+          </section>
+          <section>
+            Key benefit: allows you to refactor high-level algorithms out of
+            concrete implementations
+          </section>
+          <section>
+            <h2>A real-world motivating example</h2>
+          </section>
+          <section>
+            <h2>So you need to sort a list...</h2>
+          </section>
+          <section data-auto-animate>
+            <ul>
+              <li>Need to do it two ways</li>
+            </ul>
+          </section>
+          <section data-auto-animate>
+            <ul>
+              <li>Need to do it two ways</li>
+              <li>Prefer for it to be maintainable</li>
+            </ul>
+          </section>
+          <section data-auto-animate>
+            <ul>
+              <li>Need to do it two ways</li>
+              <li>Prefer for it to be maintainable</li>
+              <li>What do you do? 🤔</li>
+            </ul>
+          </section>
+          <section>
+            <p>Our initial attempt</p>
+          </section>
+          <section>
+            <figure>
+              <pre><code data-trim data-line-numbers="63-77|78-85|57-59|41-55|35-39|30-33|14-28|8-12" class="language-cpp"><script type="text/template">
+                #include <algorithm>
+                #include <cstdlib>
+                #include <iostream>
+                #include <vector>
 
-		<script src="dist/reveal.js"></script>
-		<script src="plugin/notes/notes.js"></script>
-		<script src="plugin/markdown/markdown.js"></script>
-		<script src="plugin/highlight/highlight.js"></script>
-		<script>
-			// More info about initialization & config:
-			// - https://revealjs.com/initialization/
-			// - https://revealjs.com/config/
-			Reveal.initialize({
-				hash: true,
+                // Referenced from: https://en.wikipedia.org/wiki/Quicksort
 
-				// Learn about plugins: https://revealjs.com/plugins/
-				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
-			});
-		</script>
-	</body>
+                int lomuto_partition(
+                  std::vector<int>& v,
+                  int const first_element_index,
+                  int const last_element_index
+                ); // Definition elided
+
+                void lomuto_quicksort_impl(
+                  std::vector<int>& v,
+                  int const first_element_index,
+                  int const last_element_index
+                ) {
+                  if (first_element_index >= last_element_index
+                      || first_element_index < 0) return;
+                    int const pivot_index = lomuto_partition(
+                      v,
+                      first_element_index,
+                      last_element_index
+                    );
+                  lomuto_quicksort_impl(v, first_element_index, pivot_index - 1);
+                  lomuto_quicksort_impl(v, pivot_index + 1, last_element_index);
+                }
+
+                void lomuto_quicksort(std::vector<int>& v)
+                {
+                  lomuto_quicksort_impl(v, 0, static_cast<int>(v.size()) - 1);
+                }
+
+                int hoare_partition(
+                  std::vector<int>& v,
+                  int const first_element_index,
+                  int const last_element_index
+                ); // Definition elided
+
+                void hoare_quicksort_impl(
+                  std::vector<int>& v,
+                  int const first_element_index,
+                  int const last_element_index
+                ) {
+                  if (first_element_index >= last_element_index
+                      || first_element_index < 0) return;
+                  int const pivot_index = hoare_partition(
+                    v,
+                    first_element_index,
+                    last_element_index
+                  );
+                  hoare_quicksort_impl(v, 0, pivot_index - 1);
+                  hoare_quicksort_impl(v, pivot_index + 1, last_element_index);
+                }
+
+                void hoare_quicksort(std::vector<int>& v) {
+                  hoare_quicksort_impl(v, 0, static_cast<int>(v.size()) - 1);
+                }
+
+                int main()
+                {
+                  std::vector<int> v1;
+                  v1.reserve(10);
+                  v1.push_back(3);
+                  v1.push_back(2);
+                  v1.push_back(0);
+                  v1.push_back(1);
+                  v1.push_back(8);
+                  v1.push_back(9);
+                  v1.push_back(7);
+                  v1.push_back(5);
+                  v1.push_back(6);
+                  v1.push_back(4);
+                  std::vector<int> v2(v1);
+                  lomuto_quicksort(v1);
+                  hoare_quicksort(v2);
+                  for (std::vector<int>::size_type i = 0; i < v1.size(); ++i) {
+                    std::cout << v1[i] << ' ';
+                  }
+                  std::cout << '\n';
+                  for (std::vector<int>::size_type i = 0; i < v2.size(); ++i) {
+                    std::cout << v2[i] << ' ';
+                  }
+                  std::cout << '\n';
+                  return EXIT_SUCCESS;
+                }
+              </script></code></pre>
+              <figcaption>
+                <a href="https://godbolt.org/z/sb38Gzx49">https://godbolt.org/z/sb38Gzx49</a>
+              </figcaption>
+            </figure>
+          </section>
+          <section>
+            <h2>Same driver skeleton</h2>
+            <pre><code data-trim class="language-cpp"><script type="text/template">
+              void variant_quicksort(std::vector<int>& v) {
+                variant_quicksort_impl(v, 0, static_cast<int>(v.size()) - 1);
+              }
+            </script></code></pre>
+          </section>
+          <section>
+            <h2>Same algorithm skeleton</h2>
+            <pre><code data-trim data-line-numbers="8-11|13|14" class="language-cpp"><script type="text/template">
+              void variant_quicksort_impl(
+                std::vector<int>& v,
+                int const first_element_index,
+                int const last_element_index
+              ) {
+                if (first_element_index >= last_element_index
+                    || first_element_index < 0) return;
+                  int const pivot_index = variant_partition(
+                    v,
+                    first_element_index,
+                    last_element_index
+                  );
+                variant_quicksort_impl(v, first_element_index, pivot_index - 1);
+                variant_quicksort_impl(v, pivot_index + 1, last_element_index);
+              }
+            </script></code></pre>
+          </section>
+          <section><h2>Only differing partition strategies!</h2></section>
+          <section>
+            <p>💡 Extract out the function as a parameter</p>
+          </section>
+          <section>
+            <figure>
+              <pre><code data-trim data-line-numbers="63-64|36-46|21-34|8-19" class="language-cpp"><script type="text/template">
+                #include <algorithm>
+                #include <cstdlib>
+                #include <iostream>
+                #include <vector>
+
+                // Referenced from: https://en.wikipedia.org/wiki/Quicksort
+
+                int lomuto_partition(
+                  std::vector<int>& v,
+                  int const first_element_index,
+                  int const last_element_index
+                ); // Definition elided
+
+
+                int hoare_partition(
+                  std::vector<int>& v,
+                  int const first_element_index,
+                  int const last_element_index
+                ); // Definition elided
+
+                void quicksort_impl(
+                  std::vector<int>& v,
+                  int const first_element_index,
+                  int const last_element_index,
+                  int (*partition)(std::vector<int>&, int, int)
+                ) {
+                  if (first_element_index >= last_element_index
+                      || first_element_index < 0) return;
+                  int const pivot_index = partition(
+                    v, first_element_index, last_element_index
+                  );
+                  quicksort_impl(v, 0, pivot_index - 1, partition);
+                  quicksort_impl(v, pivot_index + 1, last_element_index, partition);
+                }
+
+                void quicksort(
+                  std::vector<int>& v,
+                  int (*partition)(std::vector<int>&, int, int)
+                ) {
+                  quicksort_impl(
+                    v,
+                    0,
+                    static_cast<int>(v.size()) - 1,
+                    partition
+                  );
+                }
+
+                int main()
+                {
+                  std::vector<int> v1;
+                  v1.reserve(10);
+                  v1.push_back(3);
+                  v1.push_back(2);
+                  v1.push_back(0);
+                  v1.push_back(1);
+                  v1.push_back(8);
+                  v1.push_back(9);
+                  v1.push_back(7);
+                  v1.push_back(5);
+                  v1.push_back(6);
+                  v1.push_back(4);
+                  std::vector<int> v2(v1);
+                  quicksort(v1, &lomuto_partition);
+                  quicksort(v2, &hoare_partition);
+                  for (std::vector<int>::size_type i = 0; i < v1.size(); ++i) {
+                    std::cout << v1[i] << ' ';
+                  }
+                  std::cout << '\n';
+                  for (std::vector<int>::size_type i = 0; i < v2.size(); ++i) {
+                    std::cout << v2[i] << ' ';
+                  }
+                  std::cout << '\n';
+                  return EXIT_SUCCESS;
+                }
+              </script></code></pre>
+              <figcaption>
+                <a href="https://godbolt.org/z/49G5aPoav">https://godbolt.org/z/49G5aPoav</a>
+              </figcaption>
+            </figure>
+          </section>
+          <section>
+            <h2>Benefits</h2>
+            <ul>
+              <li>
+                Sorting algorithm separated from concrete partition strategy
+              </li>
+              <li>
+                Code can be refactored or extended with new strategies without
+                code bloat
+              </li>
+            </ul>
+          </section>
+          <section>
+            <h2>Cons</h2>
+            <ul>
+              <li>Parameter drilling of function pointer</li>
+              <li>Runtime penalty of function pointer dereference</li>
+            </ul>
+          </section>
+          <section>
+            <h3>Function references</h3>
+            <ul>
+              <li>Similar to function pointers</li>
+              <li>But cannot be reseated</li>
+              <li>And can never be null</li>
+            </ul>
+          </section>
+          <section>
+            <p>Let&apos;s revisit how we sort</p>
+          </section>
+          <section>
+            <figure>
+              <pre><code data-trim data-line-numbers="63-64|38|25|8-19" class="language-cpp"><script type="text/template">
+                #include <algorithm>
+                #include <cstdlib>
+                #include <iostream>
+                #include <vector>
+
+                // Referenced from: https://en.wikipedia.org/wiki/Quicksort
+
+                int lomuto_partition(
+                  std::vector<int>& v,
+                  int const first_element_index,
+                  int const last_element_index
+                ); // Definition elided
+
+
+                int hoare_partition(
+                  std::vector<int>& v,
+                  int const first_element_index,
+                  int const last_element_index
+                ); // Definition elided
+
+                void quicksort_impl(
+                  std::vector<int>& v,
+                  int const first_element_index,
+                  int const last_element_index,
+                  int (&partition)(std::vector<int>&, int, int)
+                ) {
+                  if (first_element_index >= last_element_index
+                      || first_element_index < 0) return;
+                  int const pivot_index = partition(
+                    v, first_element_index, last_element_index
+                  );
+                  quicksort_impl(v, 0, pivot_index - 1, partition);
+                  quicksort_impl(v, pivot_index + 1, last_element_index, partition);
+                }
+
+                void quicksort(
+                  std::vector<int>& v,
+                  int (&partition)(std::vector<int>&, int, int)
+                ) {
+                  quicksort_impl(
+                    v,
+                    0,
+                    static_cast<int>(v.size()) - 1,
+                    partition
+                  );
+                }
+
+                int main()
+                {
+                  std::vector<int> v1;
+                  v1.reserve(10);
+                  v1.push_back(3);
+                  v1.push_back(2);
+                  v1.push_back(0);
+                  v1.push_back(1);
+                  v1.push_back(8);
+                  v1.push_back(9);
+                  v1.push_back(7);
+                  v1.push_back(5);
+                  v1.push_back(6);
+                  v1.push_back(4);
+                  std::vector<int> v2(v1);
+                  quicksort(v1, lomuto_partition);
+                  quicksort(v2, hoare_partition);
+                  for (std::vector<int>::size_type i = 0; i < v1.size(); ++i) {
+                    std::cout << v1[i] << ' ';
+                  }
+                  std::cout << '\n';
+                  for (std::vector<int>::size_type i = 0; i < v2.size(); ++i) {
+                    std::cout << v2[i] << ' ';
+                  }
+                  std::cout << '\n';
+                  return EXIT_SUCCESS;
+                }
+              </script></code></pre>
+              <figcaption>
+                <a href="https://godbolt.org/z/7cMMT1qYa">https://godbolt.org/z/7cMMT1qYa</a>
+              </figcaption>
+            </figure>
+          </section>
+          <section data-markdown>
+            <textarea data-template>
+	      ## The `<functional>` header
+            </textarea>
+          </section>
+          <section data-markdown>
+            <textarea data-template>
+	      * Defines a set of function objects that compose well with algorithm templates
+	        * A function object is any object for which `operator()` is defined
+	      * Introduces _closures_ and _partial application_ to the world of C++
+	    </textarea
+            >
+          </section>
+          <section>
+            <p>Let&apos;s do another refactor</p>
+          </section>
+          <section>
+            <p>Key idea: allow the user to pick the type of customization</p>
+          </section>
+          <section>
+            <figure>
+              <pre><code data-trim data-line-numbers="22-28|6|11|15-19"><script type="text/template">
+                #include <algorithm>
+                #include <vector>
+
+                // Referenced from: https://en.wikipedia.org/wiki/Quicksort
+
+                template <typename PartitionStrategy>
+                void quicksort_impl(
+                  std::vector<int>& v,
+                  int const first_element_index,
+                  int const last_element_index,
+                  PartitionStrategy partition
+                {
+                  if (first_element_index >= last_element_index
+                      || first_element_index < 0) return;
+                  int const pivot_index = partition(
+                    v, first_element_index, last_element_index
+                  );
+                  quicksort_impl(v, 0, pivot_index - 1, partition);
+                  quicksort_impl(v, pivot_index + 1, last_element_index, partition);
+                }
+                
+                template <typename PartitionStrategy>
+                void quicksort(
+                  std::vector<int>& v,
+                  PartitionStrategy partition
+                ) {
+                  quicksort_impl(v, 0, static_cast<int>(v.size()) - 1, partition);
+                }
+              </script></code></pre>
+              <figcaption>
+                <a href="https://godbolt.org/z/xcfK4fKT8">https://godbolt.org/z/xcfK4fKT8</a>
+              </figcaption>
+            </figure>
+          </section>
+          <section>
+            <p>...and the client code can stay the same, too</p>
+          </section>
+          <section>
+            <figure>
+              <pre><code data-trim data-line-numbers="37-38|16-20|10-14"><script type="text/template">
+                #include "quicksort.hpp"
+
+                #include <algorithm>
+                #include <cstdlib>
+                #include <iostream>
+                #include <vector>
+
+                // Referenced from: https://en.wikipedia.org/wiki/Quicksort
+
+                int lomuto_partition(
+                  std::vector<int>& v,
+                  int const first_element_index,
+                  int const last_element_index
+                ); // Definition elided
+
+                int hoare_partition(
+                  std::vector<int>& v,
+                  int const first_element_index,
+                  int const last_element_index
+                ); // Definition elided
+
+                int main()
+                {
+                  std::vector<int> v1;
+                  v1.reserve(10);
+                  v1.push_back(3);
+                  v1.push_back(2);
+                  v1.push_back(0);
+                  v1.push_back(1);
+                  v1.push_back(8);
+                  v1.push_back(9);
+                  v1.push_back(7);
+                  v1.push_back(5);
+                  v1.push_back(6);
+                  v1.push_back(4);
+                  std::vector<int> v2(v1);
+                  quicksort(v1, lomuto_partition);
+                  quicksort(v2, hoare_partition);
+                  for (std::vector<int>::size_type i = 0; i < v1.size(); ++i) {
+                    std::cout << v1[i] << ' ';
+                  }
+                  std::cout << '\n';
+                  for (std::vector<int>::size_type i = 0; i < v2.size(); ++i) {
+                    std::cout << v2[i] << ' ';
+                  }
+                  std::cout << '\n';
+                  return EXIT_SUCCESS;
+                }
+              </script></code></pre>
+              <figcaption>
+                <a href="https://godbolt.org/z/xcfK4fKT8">https://godbolt.org/z/xcfK4fKT8</a>
+              </figcaption>
+            </figure>
+          </section>
+          <section data-markdown>
+            <textarea data-template>
+	      Now, we can pass function objects to `quicksort` to specify the partition strategy.
+	    </textarea
+            >
+          </section>
+          <section>
+            <figure>
+              <pre><code data-trim data-line-numbers="10-16|18-24|41-42"><script type="text/template">
+                #include "quicksort.hpp"
+
+                #include <algorithm>
+                #include <cstdlib>
+                #include <iostream>
+                #include <vector>
+
+                // Referenced from: https://en.wikipedia.org/wiki/Quicksort
+
+                struct LomutoPartition {
+                   int operator()(
+                     std::vector<int>& v,
+                     int const first_element_index,
+                     int const last_element_index
+                   ); // Definition elided
+                };
+
+                struct HoarePartition{
+                  int operator()(
+                    std::vector<int>& v,
+                    int const first_element_index,
+                    int const last_element_index
+                  ); // Definition elided
+                };
+
+                int main()
+                {
+                  std::vector<int> v1;
+                  v1.reserve(10);
+                  v1.push_back(3);
+                  v1.push_back(2);
+                  v1.push_back(0);
+                  v1.push_back(1);
+                  v1.push_back(8);
+                  v1.push_back(9);
+                  v1.push_back(7);
+                  v1.push_back(5);
+                  v1.push_back(6);
+                  v1.push_back(4);
+                  std::vector<int> v2(v1);
+                  quicksort(v1, LomutoPartition());
+                  quicksort(v2, HoarePartition());
+                  for (std::vector<int>::size_type i = 0; i < v1.size(); ++i) {
+                    std::cout << v1[i] << ' ';
+                  }
+                  std::cout << '\n';
+                  for (std::vector<int>::size_type i = 0; i < v2.size(); ++i) {
+                    std::cout << v2[i] << ' ';
+                  }
+                  std::cout << '\n';
+                  return EXIT_SUCCESS;
+                }
+              </script></code></pre>
+              <figcaption>
+                <a href="https://godbolt.org/z/6oKExrras">https://godbolt.org/z/6oKExrras</a>
+              </figcaption>
+            </figure>
+          </section>
+          <section>
+            <p>
+              Function objects allow us to emulate closures by capturing values
+              or variables upon construction
+            </p>
+          </section>
+          <section>
+            <figure>
+              <pre><code data-trim data-line-numbers="6-15|18-30"><script type="text/template">
+                #include <algorithm>
+                #include <cstdlib>
+                #include <iostream>
+                #include <vector>
+
+                class AddNumber {
+                  int number;
+                  public:
+                  AddNumber(int number) {
+                    this->number = number;
+                  }
+                  int operator()(int other_number) {
+                    return number + other_number;
+                  }
+                };
+
+                int main() {
+                  std::vector<int> v1, v2;
+                  v1.push_back(1);
+                  v1.push_back(2);
+                  v1.push_back(3);
+                  int x = 5;
+                  std::transform(
+                    v1.begin(), v1.end(), std::back_inserter(v2), AddNumber(5)
+                  );
+                  for (std::vector<int>::size_type i = 0; i < v2.size(); ++i) {
+                    std::cout << v2[i] << ' ';
+                  }
+                  std::cout << '\n';
+                  return EXIT_SUCCESS;
+                }
+              </script></code></pre>
+              <figcaption>
+                <a href="https://godbolt.org/z/aEG9n3P6W">https://godbolt.org/z/aEG9n3P6W</a>
+              </figcaption>
+            </figure>
+          </section>
+          <section data-auto-animate>
+            <h2>A slight problem</h2>
+          </section>
+          <section data-auto-animate>
+            <h2>A slight problem</h2>
+            <ul>
+              <li>
+                Already have a function object that expresses our desired
+                computation
+              </li>
+            </ul>
+          </section>
+          <section data-auto-animate>
+            <h2>A slight problem</h2>
+            <ul>
+              <li>
+                Already have a function object that expresses our desired
+                computation
+              </li>
+              <li>But its signature is a bit too general</li>
+            </ul>
+          </section>
+          <section data-auto-animate>
+            <h2>A slight problem</h2>
+            <ul>
+              <li>
+                Already have a function object that expresses our desired
+                computation
+              </li>
+              <li>But its signature is a bit too general</li>
+              <li>Can we avoid unnecessary code repetition?</li>
+            </ul>
+          </section>
+          <section>
+            <figure>
+              <pre><code data-trim data-line-numbers="14|12-15"><script type="text/template">
+                #include <algorithm>
+                #include <cstdlib>
+                #include <iostream>
+                #include <numeric>
+                #include <vector>
+
+                int main() {
+                  std::vector<int> v1;
+                  v1.push_back(1);
+                  v1.push_back(2);
+                  v1.push_back(3);
+                  // Printing out the sum
+                  std::cout << std::accumulate(
+                    v1.begin(), v1.end(), 0, std::plus<int>()
+                  ) << '\n';
+                  return EXIT_SUCCESS;
+                }
+              </script></code></pre>
+              <figcaption>
+                <a href="https://godbolt.org/z/We4czjMej">https://godbolt.org/z/We4czjMej</a>
+              </figcaption>
+            </figure>
+          </section>
+          <section>
+            <p>
+              Solution: specialising a function object we already have at hand
+            </p>
+          </section>
+          <section>
+            <figure>
+              <pre><code data-trim data-line-numbers="17|13-18|12"><script type="text/template">
+                #include <algorithm>
+                #include <cstdlib>
+                #include <iostream>
+                #include <vector>
+
+                int main()
+                {
+                  std::vector<int> v1, v2;
+                  v1.push_back(1);
+                  v1.push_back(2);
+                  v1.push_back(3);
+                  int x = 5;
+                  std::transform(
+                    v1.begin(),
+                    v1.end(),
+                    std::back_inserter(v2),
+                    bind1st(std::plus<int>(), x)
+                  );
+                  for (std::vector<int>::size_type i = 0; i < v2.size(); ++i) {
+                    std::cout << v2[i] << ' ';
+                  }
+                  std::cout << '\n';
+                  return EXIT_SUCCESS;
+                }
+              </script></code></pre>
+              <figcaption>
+                <a href="https://godbolt.org/z/Yxo6W9aq6">https://godbolt.org/z/Yxo6W9aq6</a>
+              </figcaption>
+            </figure>
+          </section>
+          <section data-markdown>
+            <textarea data-template>
+              * Similar to `bind1st`, `bind2nd` specialises a function object by binding the second argument
+              * Many other function objects in `<functional>` header like `minus<T>`, `equal_to<T>`, etc.
+	    </textarea
+            >
+          </section>
+          <section data-markdown>
+            <textarea data-template>
+            ## A note about pointers to members
+              * Can be turned into function objects that take an object and return a member
+              * `<functional>` also provides function objects and free-standing function templates like `mem_fun_t` and `mem_fun` for this purpose
+            </textarea>
+          </section>
+          <section>Tying back to Haskell</section>
+          <section>
+            <ul>
+              <li>First-class functions = bread and butter</li>
+              <li>No OOP-style classes or objects 🤯</li>
+            </ul>
+          </section>
+          <section>Let&apos;s see it in code.</section>
+          <section>
+            <figure>
+              <pre><code data-trim data-line-numbers="5-9|11-17|19-23|25-28|32-34" class="language-haskell">
+                module Main where
+
+                import Data.Foldable (foldl&apos;)
+
+                add :: Float -> Float -> Float
+                add a b = a + b
+
+                mult :: Float -> Float -> Float
+                mult a b = a * b
+
+                listSum :: [Float] -> Float
+                listSum xs = foldl' add 0 xs
+                -- alternatively use foldl' (+) 0 xs
+
+                listProd :: [Float] -> Float
+                listProd xs = foldl' mult 1 xs
+                -- alternatively use foldl' (*) 1 xs
+
+                mean :: [Float] -> Float
+                mean xs = listSum xs / (fromIntegral (length xs))
+
+                geomMean :: [Float] -> Float
+                geomMean xs = listProd xs ** (1.0 / fromIntegral (length xs))
+
+                useGeomMean :: Bool -> [Float] -> Float
+                useGeomMean (True) = geomMean
+                useGeomMean (False) = mean
+                -- alternatively use an if expression
+
+                main :: IO ()
+                main = do
+                  let list = [1.0, 2.0, 3.0]
+                  putStrLn (show (useGeomMean True list))
+                  putStrLn (show (useGeomMean False list))
+              </code></pre>
+              <figcaption>
+                <a href="https://godbolt.org/z/f5sPnf5zq">https://godbolt.org/z/f5sPnf5zq</a>
+              </figcaption>
+            </figure>
+          </section>
+          <section>Generic programming and templates</section>
+          <section data-markdown>
+            <textarea data-template>
+	      * Templates allow you to specify generic _recipes_ for baking concrete classes or functions
+	      * Enable one to _specialise_ the recipe for specific classes
+	    </textarea>
+          </section>
+          <section>A (somewhat) realistic example</section>
+          <section>
+            <figure>
+              <pre><code data-trim data-line-numbers="21-22|24-27|29-31|34-37" class="language-cpp"><script type="text/template">
+                #ifndef STACK_HPP_INCLUDED
+                #define STACK_HPP_INCLUDED
+
+                #include <cstdlib>
+                #include <stdexcept>
+
+                template <typename T>
+                struct StackNode {
+                  T value;
+                  StackNode* rest;
+                  StackNode* previous;
+                  StackNode(T const value) {
+                    this->value = value;
+                  }
+                  StackNode() {
+                    rest = previous = NULL;
+                  }
+                };
+
+                template <typename T>
+                class Stack {
+                  StackNode<T>* head;
+
+                  public:
+                  Stack() {
+                    head = NULL;
+                  }
+
+                  Stack(T const value) {
+                    push(value);
+                  }
+
+                  // Definitions elided
+                  void push(T const value);
+                  T front();
+                  T pop();
+                  ~Stack();
+                };
+
+                #endif
+              </script></code></pre>
+              <figcaption>
+                <a href="https://godbolt.org/z/Gjx17vjdo">https://godbolt.org/z/Gjx17vjdo</a>
+              </figcaption>
+            </figure>
+          </section>
+          <section>
+            <figure>
+              <pre><code data-trim data-line-numbers class="language-cpp"><script type="text/template">
+                #include "Stack.hpp"
+
+                #include <cstdlib>
+                #include <iostream>
+
+                int main() {
+                  Stack<int> stack;
+                  for (std::size_t i = 0; i < 3; ++i) {
+                    stack.push(i);
+                  }
+                  for (std::size_t i = 0; i < 3; ++i) {
+                    std::cout << stack.pop() << '\n';
+                  }
+                  return EXIT_SUCCESS;
+                }
+              </script></code></pre>
+              <figcaption>
+                <a href="https://godbolt.org/z/Gjx17vjdo">https://godbolt.org/z/Gjx17vjdo</a>
+              </figcaption>
+            </figure>
+          </section>
+          <section>An example of specialisation</section>
+          <section>
+            <figure>
+              <pre><code data-trim data-line-numbers="40-41|46-55|57-65|67-78|81-84"><script type="text/template">
+                #ifndef STACK_HPP_INCLUDED
+                #define STACK_HPP_INCLUDED
+
+                #include <cstdlib>
+                #include <stdexcept>
+
+                template <typename T>
+                struct StackNode {
+                  T value;
+                  StackNode* rest;
+                  StackNode* previous;
+                  StackNode(T const value) {
+                    this->value = value;
+                  }
+                  StackNode() {
+                    rest = previous = NULL;
+                  }
+                };
+
+                template <typename T>
+                class Stack {
+                  StackNode<T>* head;
+
+                  public:
+                  Stack() {
+                    head = NULL;
+                  }
+
+                  Stack(T const value) {
+                    push(value);
+                  }
+
+                  // Definitions elided
+                  void push(T const value);
+                  T front();
+                  T pop();
+                  ~Stack();
+                };
+
+                template <>
+                class Stack<bool> {
+                  unsigned char* bitset;
+                  std::size_t num_elements;
+                  std::size_t capacity;
+
+                  void resize()
+                  {
+                    unsigned char* old_bitset = bitset;
+                    std::size_t const num_chars_used = capacity / sizeof(unsigned char) / 8;
+                    bitset = new unsigned char[num_chars_used * 2];
+                    for (std::size_t i = 0; i < num_chars_used; ++i) {
+                      bitset[i] = old_bitset[i];
+                    }
+                    capacity *= 2;
+                  }
+
+                  static std::size_t char_index(std::size_t i)
+                  {
+                    return i / (sizeof(unsigned char) * 8);
+                  }
+
+                  static std::size_t bit_index(std::size_t i)
+                  {
+                    return i % (sizeof(unsigned char) * 8);
+                  }
+
+                  public:
+                  Stack()
+                  {
+                    bitset = NULL;
+                    num_elements = 0;
+                    capacity = sizeof(unsigned char) * 8;
+                  }
+
+                  Stack(bool b)
+                  {
+                    push(b);
+                  }
+
+                  // Definitions elided
+                  void push(bool b);
+                  bool front();
+                  bool pop();
+                  ~Stack();
+                };
+
+                #endif
+              </script></code></pre>
+              <figcaption>
+                <a href="https://godbolt.org/z/cjnYcYs6r">https://godbolt.org/z/cjnYcYs6r</a>
+              </figcaption>
+            </figure>
+          </section>
+          <section>
+            <figure>
+              <pre><code data-trim data-line-numbers="6-17"><script type="text/template">
+                #include "Stack.hpp"
+
+                #include <cstdlib>
+                #include <iostream>
+
+                int main()
+                {
+                  Stack<bool> stack;
+                  for (std::size_t i = 0; i < 16; ++i) {
+                    stack.push(bool(i & 1));
+                  }
+                  std::cout << std::boolalpha;
+                  for (std::size_t i = 0; i < 16; ++i) {
+                    std::cout << stack.pop() << '\n';
+                  }
+                  return EXIT_SUCCESS;
+                }
+              </script></code></pre>
+              <figcaption>
+                <a href="https://godbolt.org/z/cjnYcYs6r">https://godbolt.org/z/cjnYcYs6r</a>
+              </figcaption>
+            </figure>
+          </section>
+          <section>How user-defined data types work in Haskell</section>
+          <section>
+            <figure>
+              <pre><code data-trim data-line-numbers="6-7|12-19|20-23"><script type="text/template">
+                module Main where
+
+                -- Haskell already has the `Maybe` type constructor,
+                -- but we use this custom type for the sake of
+                -- example
+                data Optional a = None | Some a
+                  deriving (Show)
+
+                main :: IO ()
+                main = do
+                  let
+                    x :: Optional Int
+                    x = Some 3
+                    y :: Optional Int
+                    y = None
+                    z :: Optional String
+                    z = None
+                    w :: Optional String
+                    w = Some "Hello, world!"
+                  putStrLn (show x) -- Some 3
+                  putStrLn (show y) -- None
+                  putStrLn (show z) -- None
+                  putStrLn (show w) -- Some "Hello, world!"
+              </script></code></pre>
+              <figcaption>
+                <a href="https://godbolt.org/z/cYGfbrThq"
+                  >https://godbolt.org/z/cYGfbrThq</a
+                >
+              </figcaption>
+            </figure>
+          </section>
+          <section>
+            What about specialisation in Haskell?
+          </section>
+          <section>
+            <ul>
+              <li>Emulating the specialisability of C++ templates is more difficult
+                <ul>
+                  <li>Requires dipping into type and data families</li>
+                </ul>
+              </li>
+              <li>Example at: <a href="https://godbolt.org/z/G3G53YPG3">https://godbolt.org/z/G3G53YPG3</a></li>
+            </ul>
+          </section>
+	  <section data-markdown>
+	    <textarea data-template>
+	      C++ facilitates creating ergonomic and _transparently_ performant data structures
+	    </textarea>
+	  </section>
+	  <section>
+	    Now, what about C++98 template meta-programming?
+	  </section>
+	  <section>
+	    We&apos;ll return to that. 😉
+	  </section>
+        </section>
+        <section>
+          <section>
+            <h2>C++11</h2>
+          </section>
+          <section data-markdown>
+            <textarea data-template>
+              ## Core Functional Features
+              - Lambdas
+              - `std::function`
+              - `std::bind` and partial application
+              - `auto` type deduction
+              - More compile-time meta-programming
+            </textarea
+            >
+          </section>
+          <section>
+            <h3>Lambdas</h3>
+            <ul>
+              <li>
+                Can be easily defined for any number arguments (not just one or
+                two)
+              </li>
+              <li>
+                Can capture variables from surrounding scope to form closures
+              </li>
+            </ul>
+          </section>
+          <section data-auto-animate>
+            <h3>The anatomy of a lambda</h3>
+            <pre><code data-trim class="language-cpp centered">[captures](parameters){ body }</code></pre>
+          </section>
+          <section>A string/file processing example</section>
+          <section>
+            <figure>
+              <pre><code data-trim data-line-numbers="9-10|11-18|15-17" class="language-cpp"><script type="text/template">
+                #include <algorithm>
+                #include <cstdlib>
+                #include <iostream>
+                #include <iterator>
+                #include <string>
+                #include <vector>
+
+                int main() {
+                  std::vector<std::string> filenames{ "logs.txt", "app.hs", "mock.cpp" };
+                  std::vector<std::string> programs;
+                  std::copy_if(
+                    filenames.cbegin(),
+                    filenames.cend(),
+                    std::back_inserter(programs),
+                    [](std::string filename){
+                      return filename.rfind(".txt") == std::string::npos;
+                    }
+                  );
+                  for (auto program: programs) {
+                    std::cout << program << '\n';
+                  }
+                  return EXIT_SUCCESS;
+                }
+              </script></code></pre>
+              <figcaption>
+                <a href="https://godbolt.org/z/xe9hY9Pe5">https://godbolt.org/z/xe9hY9Pe5</a>
+              </figcaption>
+            </figure>
+          </section>
+          <section>Capturing variables with closures</section>
+          <section>
+            <figure>
+              <pre><code data-trim data-line-numbers="9-11|12-15|20"><script type="text/template">
+                #ifndef LIB_HPP_INCLUDED
+                #define LIB_HPP_INCLUDED
+
+                #include <algorithm>
+                #include <iostream>
+                #include <string>
+                #include <vector>
+
+                std::vector<std::string> get_programs(
+                  std::vector<std::string> filenames
+                ) {
+                  std::vector<std::string> programs;
+                  std::string ignored_file_extension;
+                  std::cout << "What file extension would you like to ignore? ";
+                  std::cin >> ignored_file_extension;
+                  std::copy_if(
+                    filenames.cbegin(),
+                    filenames.cend(),
+                    std::back_inserter(programs),
+                    [&ignored_file_extension](std::string filename) {
+                      return filename.rfind(ignored_file_extension) != std::string::npos;
+                    }
+                  );
+                  return programs;
+                }
+
+                #endif
+              </script></code></pre>
+              <figcaption>
+                <a href="https://godbolt.org/z/cPTao68YW">https://godbolt.org/z/cPTao68YW</a>
+              </figcaption>
+            </figure>
+          </section>
+          <section>
+            <figure>
+              <pre><code data-trim data-line-numbers><script type="text/template">
+                #include "lib.hpp"
+
+                #include <cstdlib>
+                #include <iostream>
+                #include <string>
+                #include <vector>
+
+                int main() {
+                  std::vector<std::string> filenames{ "logs.txt", "app.hs", "profiler.cpp" };
+                  std::vector<std::string> programs{ get_programs(filenames) };
+                  for (auto program: programs) {
+                    std::cout << program << '\n';
+                  }
+                  return EXIT_SUCCESS;
+                }
+              </script></code></pre>
+              <figcaption>
+                <a href="https://godbolt.org/z/cPTao68YW">https://godbolt.org/z/cPTao68YW</a>
+              </figcaption>
+            </figure>
+          </section>
+          <section>
+            Partial application
+          </section>
+          <section data-auto-animate>
+            An example with machine learning
+          </section>
+          <section data-markdown>
+	    <textarea data-template>
+	      - Already have a trained model object with a `predict` method
+	      - Receive a set of new data
+	      - Wish to transform the data to get a set of predictions
+            </textarea>
+          </section>
+	  <section>
+	    <figure>
+	      <pre><code data-trim data-line-numbers="12-22" class="language-cpp"><script type="text/template">
+                #ifndef PERCEPTRON_HPP
+                #define PERCEPTRON_HPP
+
+                #include "Coordinate.hpp"
+
+                #include <algorithm>
+                #include <cstddef>
+                #include <limits>
+                #include <numeric>
+                #include <random>
+
+                class Perceptron {
+                  public:
+                  Perceptron();
+                  void train(
+                    std::vector<Coordinate> const& data,
+                    std::vector<double> const& labels
+                  );
+                  double predict(Coordinate c) const {
+                    return w0 + w1 * c.x + w2 * c.y >= 0 ? 1 : -1;
+                  }
+                };
+
+                #endif
+              </script></code></pre>
+	      <figcaption><a href="https://godbolt.org/z/jq181GEdE">https://godbolt.org/z/jq181GEdE</a></figcaption>
+	    </figure>
+	  </section>
+	  <section>
+	    <figure>
+	      <pre><code data-trim data-line-numbers="19|20|21-23|25-30|29" class="language-cpp"><script type="text/template">
+                #include "Coordinate.hpp"
+                #include "Perceptron.hpp"
+
+                #include <algorithm>
+                #include <cstdlib>
+                #include <functional>
+                #include <iostream>
+                #include <vector>
+
+                int main()
+                {
+                  using namespace std::placeholders;
+                  std::vector<Coordinate> const training_data{
+                    { 1.0, 1.0 }, { 2.0, 1.0 }, { -5.0, -1.0 }, { -2.0, -2.0 }
+                  };
+                  std::vector<double> const training_labels{
+                    1.0, 1.0, -1.0, -1.0
+                  };
+                  Perceptron model{};
+                  model.train(training_data, training_labels);
+                  std::vector<Coordinate> const test_data{
+                    { 1.8, 3.8 }, { -100.1, -1.0 }, { 20.0, 5.0}, { -3.0, -15.0 }
+                  };
+                  std::vector<double> predictions(test_data.size());
+                  std::transform(
+                    test_data.cbegin(),
+                    test_data.cend(),
+                    predictions.begin(),
+                    std::bind(&Perceptron::predict, &model, _1)
+                  );
+                  for (auto prediction: predictions) {
+                    std::cout << prediction << '\n';
+                  }
+                  return EXIT_SUCCESS;
+                }
+              </script></code></pre>
+              <figcaption><a href="https://godbolt.org/z/jq181GEdE">https://godbolt.org/z/jq181GEdE</a></figcaption>
+            </figure>
+          </section>
+          <section data-markdown>
+            <textarea data-template>
+              - `std::bind` allows you to create ad-hoc specialised functions from more general ones
+                - Great for when you know some arguments ahead of time
+              - Can do this so-called _partial application_ for as many arguments as we need
+            </textarea>
+          </section>
+	  <section data-markdown>
+            <textarea data-template>
+              #### `auto` type deduction
+              - Allow you to bind values to names without having to specify types
+                - Can make code more readable and maintainable
+              - A hallmark of advanced functional languages
+            </textarea>
+          </section>
+          <section>
+            <pre><code data-trim data-line-numbers="4-5" class="language-cpp"><script type="text/template">
+              #include <cstdlib>
+
+              int main() {
+                double x = 2.0;
+                auto x_squared{ x * x };
+                return EXIT_SUCCESS;
+              }
+            </script></code></pre>
+            <!-- https://godbolt.org/z/xYh8hWvTx -->
+          </section>
+          <section data-markdown>
+            <textarea data-template>
+              #### `std::function`
+              - Lambdas -> unique types
+              - `std::function` can erase specific type to guarantee a general signature
+              - Useful when a desired function can only be known at _runtime_
+            </textarea>
+          </section>
+          <section>
+            <figure>
+              <pre><code data-trim data-line-numbers="7-16|25|26-30|31|32|33|38-44|45|50|46-51" class="language-cpp"><script type="text/template">
+                #include <algorithm>
+                #include <cstdlib>
+                #include <functional>
+                #include <iostream>
+                #include <vector>
+
+                enum class Plan {
+                  standard,
+                  plus,
+                  ultra
+                };
+
+                struct Subscriber {
+                  Plan plan;
+                  bool active_last_month;
+                };
+
+                std::ostream& operator<<(std::ostream& out, Plan plan);
+
+                std::ostream& operator<<(
+                  std::ostream& out,
+                  Subscriber const& subscriber
+                );
+
+                std::function<bool(Subscriber)> get_qos_filter() {
+                  int choice;
+                  std::cout << "Do you wish to differentiate by "
+                    "ultra membership (1) or by activity (2)?"
+                    "\nPlease enter a digit for your choice: ";
+                  std::cin >> choice;
+                  if (choice == 1) {
+                    return [](Subscriber s) { return s.plan == Plan::ultra; };
+                  } else return &Subscriber::active_last_month;
+                }
+
+                int main()
+                {
+                  std::vector<Subscriber> subscribers{
+                    { Plan::standard, false },
+                    { Plan::ultra, true },
+                    { Plan::ultra, false },
+                    { Plan::plus, true },
+                    { Plan::standard, true }
+                  };
+                  std::vector<Subscriber> elite_subscribers;
+                  std::copy_if(
+                    subscribers.cbegin(),
+                    subscribers.cend(),
+                    std::back_inserter(elite_subscribers),
+                    get_qos_filter()
+                  );
+                  for (auto subscriber: elite_subscribers) {
+                    std::cout << subscriber << '\n';
+                  }
+                  return EXIT_SUCCESS;
+                }
+              </script></code></pre>
+              <figcaption><a href="https://godbolt.org/z/zY55YvssT">https://godbolt.org/z/zY55YvssT</a></figcaption>
+            </figure>
+          </section>
+          <section>
+            <h3>C++11 Template Meta-programming</h3>
+            <ul>
+              <li>Provided better support for primitive &quot;concepts&quot;
+                <ul>
+                  <li>Enabled by C++11 variadic generics, alias templates and the <span class="code">&lt;type_traits&gt;</span> header</li>
+                  <li>Utilizes SFINAE first introduced with C++98</li>
+                </ul>
+              </li>
+              <li>Enables <em>ad-hoc</em> polymorphism</li>
+            </ul>
+          </section>
+          <section>An example</section>
+          <section>
+            <figure>
+              <pre><code data-trim data-line-numbers="194-195|197|200|202|163-177|150-161|39-48|28-37" class="language-cpp"><script type="text/template">
+                #include <cstdlib>
+                #include <functional>
+                #include <iostream>
+                #include <numeric>
+                #include <string>
+                #include <type_traits>
+                #include <utility>
+                #include <vector>
+
+                template <typename T>
+                using my_remove_cvref_t =
+                  typename std::remove_cv<
+                    typename std::remove_reference<T>::type
+                  >::type;
+
+                template <bool b, typename T = void>
+                using my_enable_if_t = typename std::enable_if<b, T>::type;
+
+                template <typename T, typename MonoidInstance = void>
+                struct Monoid;
+
+                template <typename T, typename ProductInstance = void>
+                struct Product;
+
+                template <typename T, typename SumInstance = void>
+                struct Sum;
+
+                template <typename T>
+                struct Product<T, my_enable_if_t<
+                  std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                > {
+                  T value;
+                  constexpr Product(my_remove_cvref_t<T>&& value)
+                      : value { value }
+                  {
+                  }
+                };
+
+                template <typename T>
+                struct Sum<T, my_enable_if_t<
+                  std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                > {
+                  T value;
+                  constexpr Sum(my_remove_cvref_t<T>&& value)
+                      : value { value }
+                  {
+                  }
+                };
+
+                template <typename T>
+                Product<my_remove_cvref_t<T>> make_product(T&& t) {
+                  return { std::forward<my_remove_cvref_t<T>>(t) };
+                }
+
+                template <typename T>
+                Sum<my_remove_cvref_t<T>> make_sum(T&& t) {
+                  return { std::forward<T>(t) };
+                }
+
+                template <typename T>
+                struct Monoid<T, my_enable_if_t<
+                  std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                > {
+                  static T const mempty;
+                  static T mappend(T a, T b) { return a + b; }
+                };
+
+                template <typename T>
+                T const Monoid<T, my_enable_if_t<
+                  std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                >::mempty{};
+
+                template <typename T>
+                struct Monoid<T, my_enable_if_t<
+                  std::is_convertible<my_remove_cvref_t<T>,
+                    std::string>::value
+                  >
+                > {
+                  static T const mempty;
+                  template <typename U, typename V>
+                  static my_enable_if_t<
+                    std::is_same<U, V>::value, std::string
+                  > mappend(U&& a, V&& b)
+                  {
+                    return std::string { std::forward<U>(a) } +
+                      std::string { std::forward<V>(b) };
+                  }
+                };
+
+                template <typename T>
+                T const Monoid<T, my_enable_if_t<
+                  std::is_convertible<my_remove_cvref_t<T>,
+                    std::string>::value
+                  >
+                >::mempty { "" };
+
+                template <typename T>
+                struct Monoid<Product<T>> {
+                  static Product<T> const mempty;
+                  template <typename U, typename V>
+                  static my_enable_if_t<
+                    std::is_same<
+                      Product<T>, my_remove_cvref_t<U>
+                    >::value &&
+                    std::is_same<
+                      Product<T>,my_remove_cvref_t<V>
+                    >::value, Product<T>
+                  > mappend(
+                      U&& a,
+                      V&& b) { return { std::forward<U>(a).value *
+                                 std::forward<V>(b).value }; }
+                };
+
+                template <typename T>
+                struct Monoid<Sum<T>> {
+                  static Sum<T> const mempty;
+                  template <typename U, typename V>
+                  static my_enable_if_t<
+                    std::is_same<Sum<T>,
+                      my_remove_cvref_t<U>>::value &&
+                      std::is_same<Sum<T>, my_remove_cvref_t<V>>::value,
+                    Sum<T>
+                  > mappend(
+                      U&& a,
+                      V&& b) { return { std::forward<U>(a).value +
+                                 std::forward<V>(b).value }; }
+                };
+
+                template <typename T>
+                Product<T> const Monoid<Product<T>>::mempty{ 1 };
+
+                template <typename T>
+                Sum<T> const Monoid<Sum<T>>::mempty{ 0 };
+
+                template <typename T>
+                T mempty() { return Monoid<T>::mempty; }
+
+                template <typename T, typename U>
+                my_enable_if_t<
+                  std::is_same<
+                    my_remove_cvref_t<T>, my_remove_cvref_t<U>
+                  >::value, my_remove_cvref_t<T>
+                > mappend(T&& a, U&& b)
+                {
+                  return Monoid<my_remove_cvref_t<T>>::mappend(
+                      std::forward<my_remove_cvref_t<T>>(a),
+                      std::forward<my_remove_cvref_t<U>>(b));
+                }
+
+                template <
+                  typename Collection,
+                  typename Element = typename
+                    my_remove_cvref_t<Collection>::value_type
+                > Element foldM(Collection&& c)
+                {
+                  return std::accumulate(
+                      c.cbegin(),
+                      c.cend(),
+                      mempty<Element>(),
+                      [](Element acc, Element e) { return mappend(acc, e); });
+                }
+
+                template <
+                  typename Monoid,
+                  typename Collection,
+                  typename Element = typename
+                    my_remove_cvref_t<Collection>::value_type
+                > Monoid foldMap(
+                  Collection&& c,
+                  std::function<Monoid(my_remove_cvref_t<Element>)> f
+                ) {
+                  return std::accumulate(
+                      c.cbegin(),
+                      c.cend(),
+                      mempty<Monoid>(),
+                      [=](Monoid acc, Element e) { return mappend(acc, f(e)); });
+                }
+
+                int main()
+                {
+                  auto i { make_product(3) };
+                  //  auto j{ make_sum("adf") };
+                  // char const (&)[4] is not arithmetic
+                  auto k { mempty<Product<int>>() };
+                  auto l { mappend(i, k) };
+                  auto m { make_sum(3.0) };
+                  auto n { make_sum<float>(3.0) };
+                  //  auto o{ mappend(m, n) };
+                  // can't mappend float and double Products
+                  //  auto p{ mappend(l, m) };
+                  // can't mappend Sum and Product
+                  auto q { mempty<std::string>() };
+                  auto r { mempty<int>() };
+                  std::vector<int> v1 { 1, 2, 3, 4 };
+                  std::vector<std::string> v2 { "Hello ", "there, ", "world!" };
+                  std::cout <<
+                    foldMap<Product<int>>(v1, make_product<int>).value
+                    << '\n';
+                  std::cout <<
+                    foldMap<Sum<int>>(v1, make_sum<int>).value
+                    << '\n';
+                  std::cout << foldM(v2) << '\n';
+                  return EXIT_SUCCESS;
+                }
+               </script></code></pre>
+               <!-- Compiler bug in GCC/Clang?: https://godbolt.org/z/c1vrE1fEa -->
+               <!-- https://godbolt.org/z/Ya41PePbe -->
+               <figcaption><a href="https://godbolt.org/z/Ya41PePbe">https://godbolt.org/z/Ya41PePbe</a></figcaption>
+            </figure>
+          </section>
+          <section>
+            Ad-hoc polymorphism in Haskell
+          </section>
+          <section>
+            <figure>
+               <pre><code data-trim data-line-numbers="6-8|10-11|13-21|23-24|29-30" class="language-haskell">
+                 module Main where
+
+                 import Data.Foldable (foldl&apos;)
+
+                 -- Haskell already provides `Monoid` and `Product`
+                 class MyMonoid a where
+                   my_mempty :: a
+                   my_mappend :: a -> a -> a
+
+                 data MyProduct a = MyProduct { getProduct :: a }
+                 data MySum a = MySum { getSum :: a }
+
+                 instance Num a => MyMonoid (MyProduct a) where
+                   my_mempty = MyProduct 1
+                   my_mappend (MyProduct a) (MyProduct b)
+                     = MyProduct (a * b)
+                 
+                 instance Num a => MyMonoid (MySum a) where
+                   my_mempty = MySum 0
+                   my_mappend (MySum a) (MySum b)
+                     = MySum (a + b)
+
+                 foldMList :: MyMonoid m => [m] -> m
+                 foldMList = foldl&apos; my_mappend my_mempty
+
+                 main :: IO ()
+                 main = do
+                   let nums = [1..4] :: [Int]
+                   print $ getProduct . foldMList . map MyProduct $ nums -- 24
+                   print $ getSum . foldMList . map MySum $ nums             -- 10
+               </code></pre>
+               <figcaption><a href="https://godbolt.org/z/vn6Pjbvef">https://godbolt.org/z/vn6Pjbvef</a></figcaption>
+            </figure>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h2>C++14</h2>
+          </section>
+          <section>
+            <h3>Core Functional Features</h3>
+            <ul>
+              <li><span class="code">auto</span> return type deduction</li>
+              <li><span class="code">auto</span> lambda parameters</li>
+            </ul>
+          </section>
+          <section>
+            <figure>
+              <pre><code data-trim data-line-numbers="163-177|168|176|150-161|154|160|136" class="language-cpp"><script type="text/template">
+                #include <cstdlib>
+                #include <functional>
+                #include <iostream>
+                #include <numeric>
+                #include <string>
+                #include <type_traits>
+                #include <utility>
+                #include <vector>
+
+                template <typename T>
+                using my_remove_cvref_t =
+                  typename std::remove_cv<
+                    typename std::remove_reference<T>::type
+                  >::type;
+
+                template <bool b, typename T = void>
+                using my_enable_if_t = typename std::enable_if<b, T>::type;
+
+                template <typename T, typename MonoidInstance = void>
+                struct Monoid;
+
+                template <typename T, typename ProductInstance = void>
+                struct Product;
+
+                template <typename T, typename SumInstance = void>
+                struct Sum;
+
+                template <typename T>
+                struct Product<T, my_enable_if_t<
+                  std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                > {
+                  T value;
+                  constexpr Product(my_remove_cvref_t<T>&& value)
+                      : value { value }
+                  {
+                  }
+                };
+
+                template <typename T>
+                struct Sum<T, my_enable_if_t<
+                  std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                > {
+                  T value;
+                  constexpr Sum(my_remove_cvref_t<T>&& value)
+                      : value { value }
+                  {
+                  }
+                };
+
+                template <typename T>
+                Product<my_remove_cvref_t<T>> make_product(T&& t) {
+                  return { std::forward<my_remove_cvref_t<T>>(t) };
+                }
+
+                template <typename T>
+                Sum<my_remove_cvref_t<T>> make_sum(T&& t) {
+                  return { std::forward<T>(t) };
+                }
+
+                template <typename T>
+                struct Monoid<T, my_enable_if_t<
+                  std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                > {
+                  static T const mempty;
+                  static T mappend(T a, T b) { return a + b; }
+                };
+
+                template <typename T>
+                T const Monoid<T, my_enable_if_t<
+                  std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                >::mempty{};
+
+                template <typename T>
+                struct Monoid<T, my_enable_if_t<
+                  std::is_convertible<my_remove_cvref_t<T>,
+                    std::string>::value
+                  >
+                > {
+                  static T const mempty;
+                  template <typename U, typename V>
+                  static my_enable_if_t<
+                    std::is_same<U, V>::value, std::string
+                  > mappend(U&& a, V&& b)
+                  {
+                    return std::string { std::forward<U>(a) } +
+                      std::string { std::forward<V>(b) };
+                  }
+                };
+
+                template <typename T>
+                T const Monoid<T, my_enable_if_t<
+                  std::is_convertible<my_remove_cvref_t<T>,
+                    std::string>::value
+                  >
+                >::mempty { "" };
+
+                template <typename T>
+                struct Monoid<Product<T>> {
+                  static Product<T> const mempty;
+                  template <typename U, typename V>
+                  static my_enable_if_t<
+                    std::is_same<
+                      Product<T>, my_remove_cvref_t<U>
+                    >::value &&
+                    std::is_same<
+                      Product<T>,my_remove_cvref_t<V>
+                    >::value, Product<T>
+                  > mappend(
+                      U&& a,
+                      V&& b) { return { std::forward<U>(a).value *
+                                 std::forward<V>(b).value }; }
+                };
+
+                template <typename T>
+                struct Monoid<Sum<T>> {
+                  static Sum<T> const mempty;
+                  template <typename U, typename V>
+                  static my_enable_if_t<
+                    std::is_same<Sum<T>,
+                      my_remove_cvref_t<U>>::value &&
+                      std::is_same<Sum<T>, my_remove_cvref_t<V>>::value,
+                    Sum<T>
+                  > mappend(
+                      U&& a,
+                      V&& b) { return { std::forward<U>(a).value +
+                                 std::forward<V>(b).value }; }
+                };
+
+                template <typename T>
+                Product<T> const Monoid<Product<T>>::mempty{ 1 };
+
+                template <typename T>
+                Sum<T> const Monoid<Sum<T>>::mempty{ 0 };
+
+                template <typename T>
+                auto mempty() { return Monoid<T>::mempty; }
+
+                template <typename T, typename U>
+                my_enable_if_t<
+                  std::is_same<
+                    my_remove_cvref_t<T>, my_remove_cvref_t<U>
+                  >::value, my_remove_cvref_t<T>
+                > mappend(T&& a, U&& b)
+                {
+                  return Monoid<my_remove_cvref_t<T>>::mappend(
+                      std::forward<my_remove_cvref_t<T>>(a),
+                      std::forward<my_remove_cvref_t<U>>(b));
+                }
+
+                template <
+                  typename Collection,
+                  typename Element = typename
+                    my_remove_cvref_t<Collection>::value_type
+                > auto foldM(Collection&& c)
+                {
+                  return std::accumulate(
+                      c.cbegin(),
+                      c.cend(),
+                      mempty<Element>(),
+                      [](auto acc, auto e) { return mappend(acc, e); });
+                }
+
+                template <
+                  typename Monoid,
+                  typename Collection,
+                  typename Element = typename
+                    my_remove_cvref_t<Collection>::value_type
+                > auto foldMap(
+                  Collection&& c,
+                  std::function<Monoid(my_remove_cvref_t<Element>)> f
+                ) {
+                  return std::accumulate(
+                      c.cbegin(),
+                      c.cend(),
+                      mempty<Monoid>(),
+                      [=](auto acc, auto e) { return mappend(acc, f(e)); });
+                }
+
+                int main()
+                {
+                  auto i { make_product(3) };
+                  //  auto j{ make_sum("adf") };
+                  // char const (&)[4] is not arithmetic
+                  auto k { mempty<Product<int>>() };
+                  auto l { mappend(i, k) };
+                  auto m { make_sum(3.0) };
+                  auto n { make_sum<float>(3.0) };
+                  //  auto o{ mappend(m, n) };
+                  // can&quot;t mappend float and double Products
+                  //  auto p{ mappend(l, m) };
+                  // can&quot;t mappend Sum and Product
+                  auto q { mempty<std::string>() };
+                  auto r { mempty<int>() };
+                  std::vector<int> v1 { 1, 2, 3, 4 };
+                  std::vector<std::string> v2 { "Hello ", "there, ", "world!" };
+                  std::cout <<
+                    foldMap<Product<int>>(v1, make_product<int>).value
+                    << '\n';
+                  std::cout <<
+                    foldMap<Sum<int>>(v1, make_sum<int>).value
+                    << '\n';
+                  std::cout << foldM(v2) << '\n';
+                  return EXIT_SUCCESS;
+                }
+              </script></code></pre>
+              <figcaption><a href="https://godbolt.org/z/ezh1xqGGr">https://godbolt.org/z/ezh1xqGGr</a></figcaption>
+            </figure>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h2>C++17</h2>
+          </section>
+          <section data-auto-animate>
+            <h3>Core Functional Features</h3>
+            <ul>
+              <li>Structured bindings</li>
+              <li><span class="code">std::optional</span></li>
+              <li><span class="code">std::variant</span></li>
+              <li>Parallel algorithms</li>
+            </ul>
+          </section>
+          <section data-auto-animate>
+            <h3>Core Functional Features</h3>
+            <ul>
+              <li>Basic pattern matching and <em>Algebraic data types</em></li>
+              <li>Parallel algorithms</li>
+            </ul>
+          </section>
+          <section>
+            <span class="code">Structured bindings</span>
+          </section>
+          <section>
+            <figure>
+              <pre><code data-trim data-line-numbers="6-10|12-16|19-22|19|20-21" class="language-cpp"><script type="text/template">
+                #include <cstdlib>
+                #include <iostream>
+                #include <string>
+                #include <vector>
+
+                struct Subscriber {
+                  std::size_t id;
+                  std::string name;
+                  std::size_t years_as_member;
+                };
+
+                // An imaginary database of subscribers
+                static std::vector<Subscriber> subscribers{
+                  { 0, "Abel", 2 },
+                  { 1, "John", 5 }
+                };
+
+                int main() {
+                  for (auto const [_, name, years_as_member]: subscribers) {
+                    std::cout << name << " has been a member for " <<
+                    years_as_member << " years.\n";
+                  }
+                  return EXIT_SUCCESS;
+                }
+              </script></code></pre>
+              <figcaption><a href="https://godbolt.org/z/dW8noT7ar">https://godbolt.org/z/dW8noT7ar</a></figcaption>
+            </figure>
+          </section>
+          <section>
+            <span class="code">std::optional</span>
+          </section>
+          <section>
+            <ul>
+              <li>Gives us the ability to meaningfully compose computations that have <em>at most</em> one meaningful result<sup><a href="#composing-std-optional">1</a></sup></li>
+              <li>Essentially provides us with the <span class="code">Maybe</span> type constructor in Haskell we saw earlier</li>
+              <li>Provides a <em>value-semantic</em> alternative to misappropriating pointers, heap allocation and exceptions for working with nullable values</li>
+            </ul>
+            <footer>
+              <ol>
+                <li id="composing-std-optional">At least starting with C++20</li>
+              </ol>
+            </footer>
+            <!--
+              User input and smart constructors
+            -->
+          </section>
+          <section>
+            <figure>
+              <pre><code data-trim data-line-numbers="6-15|29-32|36|43|44-50|51" class="language-cpp"><script type="text/template">
+                #include <cstdlib>
+                #include <optional>
+                #include <string>
+                #include <string_view>
+
+                struct PhoneNumber {};
+
+                class User {
+                  std::size_t age;
+                  std::string first_name;
+                  std::string last_name;
+                  std::string email;
+                  // Don&quot;t use a pointer and heap
+                  // allocation for a nullable member
+                  std::optional<PhoneNumber> phone;
+
+                  public:
+                  User(
+                    std::size_t age,
+                    std::string_view first_name,
+                    std::string_view last_name,
+                    std::string_view email,
+                    std::optional<PhoneNumber> phone
+                  ): age{ age }, first_name{ first_name },
+                  last_name{ last_name }, email{ email },
+                  phone{ phone } {}
+                };
+
+                // Don&quot;t throw if we can&quot;t validate,
+                // just have a failed parse
+                std::optional<PhoneNumber>
+                parse_phone_number(std::string_view phone);
+
+                bool is_valid(std::string_view email);
+
+                std::optional<User> make_user(
+                  std::size_t age,
+                  std::string_view first_name,
+                  std::string_view last_name,
+                  std::string_view email,
+                  std::optional<PhoneNumber> phone
+                ) {
+                  if (age > 18 && is_valid(email))
+                    return User(
+                      age,
+                      first_name,
+                      last_name,
+                      email,
+                      phone
+                    );
+                  else return {};
+                }
+              </script></code></pre>
+              <figcaption><a href="https://godbolt.org/z/9q43n1zs9">https://godbolt.org/z/9q43n1zs9</a></figcaption>
+            </figure>
+          </section>
+          <section>
+            <span class="code">std::variant</span>
+            <!-- Note talk by Klaus -->
+          </section>
+          <section>
+            <ul>
+              <li>A generalization of enums that provides type-safe alternative to unions</li>
+              <li>A tool for defining <em>sum types</em></li>
+	      <li>Offers an alternative to rigid inheritance hierarchies</li>
+            </ul>
+          </section>
+          <section>
+            <figure>
+              <pre><code data-trim data-line-numbers class="language-cpp"><script type="text/template">
+              </script></code></pre>
+              <figcaption><a href="#">#</a></figcaption>
+            </figure>
+          </section>
+        </section>
+        <section data-visibility="hidden">
+          FAQ Can you specialise functions to specific types in Haskell?
+        </section>
+      </div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script>
+      // More info about initialization & config:
+      // - https://revealjs.com/initialization/
+      // - https://revealjs.com/config/
+      Reveal.initialize({
+        hash: true,
+        // Learn about plugins: https://revealjs.com/plugins/
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes],
+        slideNumber: "c/t",
+      });
+    </script>
+  </body>
 </html>

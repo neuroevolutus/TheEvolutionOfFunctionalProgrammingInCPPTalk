@@ -1,0 +1,249 @@
+/**
+ * A simple theme for reveal.js presentations, similar
+ * to the default theme. The accent color is darkblue.
+ *
+ * This theme is Copyright (C) 2024 Abel Sen, https://github.com/neuroevolutus. It is MIT licensed.
+ * reveal.js is Copyright (C) 2011-2012 Hakim El Hattab, http://hakim.se
+ */
+
+
+// Default mixins and settings -----------------
+@import "../template/mixins";
+@import "../template/settings";
+// ---------------------------------------------
+
+// Open Sans
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital@0;1&display=swap');
+// JetBrains Mono
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
+
+// Nord palette
+$nord0: #2E3440;
+$nord1: #3B4252;
+$nord2: #434C5E;
+$nord3: #4C566A;
+
+$nord4: #D8DEE9;
+$nord5: #E5E9F0;
+$nord6: #ECEFF4;
+
+$nord7: #8FBCBB;
+$nord8: #88C0D0;
+$nord9: #81A1C1;
+$nord10: #5E81AC;
+
+$nord11: #BF616A;
+$nord12: #D08770;
+$nord13: #EBCB8B;
+$nord14: #A3BE8C;
+$nord15: #B48EAD;
+
+// Background of the presentation
+$backgroundColor: $nord0;
+
+// Primary/body text
+$mainFont: 'Open Sans', sans-serif;
+$mainFontSize: 2.5rem;
+$mainColor: $nord6;
+
+// Vertical spacing between blocks of text
+$blockMargin: 0.125rem;
+
+// Headings
+$headingMargin: 0 0 $blockMargin 0;
+$headingFont: 'Open Sans', Impact, sans-serif;
+$headingColor: $nord6;
+$headingLineHeight: 1.5;
+$headingLetterSpacing: normal;
+$headingTextShadow: none;
+$headingTextTransform: none;
+$heading1TextShadow: $headingTextShadow;
+$heading1Size: 4rem;
+$heading2Size: 3.6rem;
+$heading3Size: 2.8rem;
+$heading4Size: 1.1rem;
+
+// Code
+$codeFont: 'JetBrains Mono';
+
+span.code {
+  font-family: $codeFont;
+}
+
+// Links and actions
+$linkColor: $nord9;
+$linkColorHover: $nord15;
+$selectionBackgroundColor: $nord13;
+
+$overlayElementBgColor: 0, 0, 0;
+$overlayElementFgColor: 240, 240, 240;
+
+// Change text colors against dark slide backgrounds
+@include dark-bg-text-color(#fff);
+
+.code-example {
+  pre {
+    box-shadow: none !important;
+  }
+}
+
+.slide-header {
+  margin-block-end: 1.5rem !important;
+}
+
+figure.code-example {
+  pre {
+    margin-block-end: 3%;
+  }
+  figcaption {
+    font-size: .8em;
+  }
+}
+
+.socials svg {
+  filter: invert(89%) sepia(7%) saturate(6109%) hue-rotate(178deg) brightness(83%) contrast(77%);
+}
+
+section h2 {
+  margin-block-end: 1.5rem !important;
+}
+
+section footer {
+  margin-block-start: 2rem;
+  font-size: 1.5rem;
+}
+
+section ul li.de-emphasised {
+  filter: brightness(55%);
+}
+
+section#bibliography ol li {
+  font-size: 1.4rem;
+}
+
+// Highlight.js
+pre code.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 1em
+}
+code.hljs {
+  padding: 3px 5px
+}
+
+.hljs {
+  /* var(--highlight-color) */
+  color: #ffffff;
+  /* var(--highlight-bg) */
+  background: $nord0;
+}
+.hljs-subst {
+  /* var(--highlight-color) */
+  color: #ffffff
+}
+.hljs-comment {
+  /* var(--highlight-comment) */
+  color: $nord3;
+}
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-meta .hljs-keyword,
+.hljs-doctag,
+.hljs-section {
+  /* var(--highlight-keyword) */
+  color: #88aece
+}
+.hljs-attr {
+  /* var(--highlight-attribute); */
+  color: #88aece
+}
+.hljs-attribute {
+  /* var(--highlight-symbol) */
+  color: #c59bc1
+}
+.hljs-name,
+.hljs-type,
+.hljs-number,
+.hljs-selector-id,
+.hljs-quote,
+.hljs-template-tag {
+  /* var(--highlight-namespace) */
+  color: $nord7;
+}
+.hljs-selector-class {
+  /* var(--highlight-keyword) */
+  color: #88aece
+}
+.hljs-string,
+.hljs-regexp,
+.hljs-symbol,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-link,
+.hljs-selector-attr {
+  /* var(--highlight-variable) */
+  color: $nord14;
+}
+.hljs-meta,
+.hljs-selector-pseudo {
+  /* var(--highlight-keyword) */
+  color: #88aece
+}
+.hljs-built_in,
+.hljs-title,
+.hljs-literal {
+  /* var(--highlight-literal) */
+  color: $nord8;
+}
+.hljs-bullet,
+.hljs-code {
+  /* var(--highlight-punctuation) */
+  color: #cccccc
+}
+.hljs-meta .hljs-string {
+  /* var(--highlight-variable) */
+  color: $nord14;
+}
+.hljs-deletion {
+  /* var(--highlight-deletion) */
+  color: #de7176
+}
+.hljs-addition {
+  /* var(--highlight-addition) */
+  color: #76c490
+}
+.hljs-emphasis {
+  font-style: italic
+}
+.hljs-strong {
+  font-weight: bold
+}
+.hljs-formula,
+.hljs-operator,
+.hljs-params,
+.hljs-property,
+.hljs-punctuation,
+.hljs-tag {
+  /* purposely ignored */
+}
+
+/*********************************************
+ * SLIDE NUMBER
+ *********************************************/
+
+.reveal .slide-number {
+  left: 1rem;
+  bottom: 1.2rem;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 2rem;
+  width: fit-content;
+  line-height: 1.1;
+  color: $nord4;
+  background-color: $backgroundColor;
+  padding: 5px;
+}
+
+
+// Theme template ------------------------------
+@import "../template/theme";
+// ---------------------------------------------

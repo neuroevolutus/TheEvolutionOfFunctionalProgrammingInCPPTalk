@@ -1567,8 +1567,8 @@
           <section data-markdown>
             <textarea data-template>
               #### `std::function`
-              - Lambdas -> unique types
-              - `std::function` can erase specific type to guarantee a general signature
+              - Lambdas &rarr; unique types
+              - `std::function`: erases specific function type to guarantee general signature
               - Useful when a desired function can only be known at _runtime_
             </textarea>
           </section>
@@ -1915,7 +1915,7 @@
           </section>
           <section>
             <figure>
-              <pre><code data-trim data-line-numbers="163-177|168|176|150-161|154|160|136" class="language-cpp"><script type="text/template">
+              <pre><code data-trim data-line-numbers="160-174|165|173|147-158|151|157|133" class="language-cpp"><script type="text/template">
                 #include <cstdlib>
                 #include <functional>
                 #include <iostream>
@@ -1931,9 +1931,6 @@
                     typename std::remove_reference<T>::type
                   >::type;
 
-                template <bool b, typename T = void>
-                using my_enable_if_t = typename std::enable_if<b, T>::type;
-
                 template <typename T, typename MonoidInstance = void>
                 struct Monoid;
 
@@ -1944,7 +1941,7 @@
                 struct Sum;
 
                 template <typename T>
-                struct Product<T, my_enable_if_t<
+                struct Product<T, std::enable_if_t<
                   std::is_arithmetic<my_remove_cvref_t<T>>::value>
                 > {
                   T value;
@@ -1955,7 +1952,7 @@
                 };
 
                 template <typename T>
-                struct Sum<T, my_enable_if_t<
+                struct Sum<T, std::enable_if_t<
                   std::is_arithmetic<my_remove_cvref_t<T>>::value>
                 > {
                   T value;
@@ -1976,7 +1973,7 @@
                 }
 
                 template <typename T>
-                struct Monoid<T, my_enable_if_t<
+                struct Monoid<T, std::enable_if_t<
                   std::is_arithmetic<my_remove_cvref_t<T>>::value>
                 > {
                   static T const mempty;
@@ -1984,19 +1981,19 @@
                 };
 
                 template <typename T>
-                T const Monoid<T, my_enable_if_t<
+                T const Monoid<T, std::enable_if_t<
                   std::is_arithmetic<my_remove_cvref_t<T>>::value>
                 >::mempty{};
 
                 template <typename T>
-                struct Monoid<T, my_enable_if_t<
+                struct Monoid<T, std::enable_if_t<
                   std::is_convertible<my_remove_cvref_t<T>,
                     std::string>::value
                   >
                 > {
                   static T const mempty;
                   template <typename U, typename V>
-                  static my_enable_if_t<
+                  static std::enable_if_t<
                     std::is_same<U, V>::value, std::string
                   > mappend(U&& a, V&& b)
                   {
@@ -2006,7 +2003,7 @@
                 };
 
                 template <typename T>
-                T const Monoid<T, my_enable_if_t<
+                T const Monoid<T, std::enable_if_t<
                   std::is_convertible<my_remove_cvref_t<T>,
                     std::string>::value
                   >
@@ -2016,7 +2013,7 @@
                 struct Monoid<Product<T>> {
                   static Product<T> const mempty;
                   template <typename U, typename V>
-                  static my_enable_if_t<
+                  static std::enable_if_t<
                     std::is_same<
                       Product<T>, my_remove_cvref_t<U>
                     >::value &&
@@ -2033,7 +2030,7 @@
                 struct Monoid<Sum<T>> {
                   static Sum<T> const mempty;
                   template <typename U, typename V>
-                  static my_enable_if_t<
+                  static std::enable_if_t<
                     std::is_same<Sum<T>,
                       my_remove_cvref_t<U>>::value &&
                       std::is_same<Sum<T>, my_remove_cvref_t<V>>::value,
@@ -2054,7 +2051,7 @@
                 auto mempty() { return Monoid<T>::mempty; }
 
                 template <typename T, typename U>
-                my_enable_if_t<
+                std::enable_if_t<
                   std::is_same<
                     my_remove_cvref_t<T>, my_remove_cvref_t<U>
                   >::value, my_remove_cvref_t<T>
@@ -2104,9 +2101,9 @@
                   auto m { make_sum(3.0) };
                   auto n { make_sum<float>(3.0) };
                   //  auto o{ mappend(m, n) };
-                  // can&quot;t mappend float and double Products
+                  // can't mappend float and double Products
                   //  auto p{ mappend(l, m) };
-                  // can&quot;t mappend Sum and Product
+                  // can't mappend Sum and Product
                   auto q { mempty<std::string>() };
                   auto r { mempty<int>() };
                   std::vector<int> v1 { 1, 2, 3, 4 };
@@ -2121,7 +2118,7 @@
                   return EXIT_SUCCESS;
                 }
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/ezh1xqGGr">https://godbolt.org/z/ezh1xqGGr</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/9WYo1a9x8">https://godbolt.org/z/9WYo1a9x8</a></figcaption>
             </figure>
           </section>
         </section>
@@ -2212,7 +2209,7 @@
                   std::string first_name;
                   std::string last_name;
                   std::string email;
-                  // Don&quot;t use a pointer and heap
+                  // Don't use a pointer and heap
                   // allocation for a nullable member
                   std::optional<PhoneNumber> phone;
 
@@ -2228,7 +2225,7 @@
                   phone{ phone } {}
                 };
 
-                // Don&quot;t throw if we can&quot;t validate,
+                // Don't throw if we can't validate,
                 // just have a failed parse
                 std::optional<PhoneNumber>
                 parse_phone_number(std::string_view phone);
@@ -2389,7 +2386,7 @@
           </section>
           <section>
             <figure>
-              <pre><code data-trim data-line-numbers="151-163|157-162|158|204" class="language-cpp"><script type="text/template">
+              <pre><code data-trim data-line-numbers="148-160|154-159|155|201" class="language-cpp"><script type="text/template">
                 #include <cstdlib>
                 #include <execution>
                 #include <functional>
@@ -2405,9 +2402,6 @@
                   typename std::remove_cv<
                     typename std::remove_reference<T>::type
                   >::type;
-
-                template <bool b, typename T = void>
-                using my_enable_if_t = typename std::enable_if<b, T>::type;
 
                 template <typename T, typename MonoidInstance = void>
                 struct Monoid;
@@ -2580,9 +2574,9 @@
                   auto m { make_sum(3.0) };
                   auto n { make_sum<float>(3.0) };
                   //  auto o{ mappend(m, n) };
-                  // can&quot;t mappend float and double Products
+                  // can't mappend float and double Products
                   //  auto p{ mappend(l, m) };
-                  // can&quot;t mappend Sum and Product
+                  // can't mappend Sum and Product
                   auto q { mempty<std::string>() };
                   auto r { mempty<int>() };
                   std::vector<int> v1 { 1, 2, 3, 4 };
@@ -2597,8 +2591,30 @@
                   return EXIT_SUCCESS;
                 }
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/PdrKj1f7s">https://godbolt.org/z/PdrKj1f7s</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/EfGvT4qre">https://godbolt.org/z/EfGvT4qre</a></figcaption>
             </figure>
+          </section>
+        </section>
+        <section>
+          <section>
+	    <h2>C++20</h2>
+          </section>
+          <section>
+	    <h3>Core Functional Features</h3>
+            <ul>
+              <li>Concepts</li>
+              <li>Coroutines</li>
+              <li>Ranges</li>
+            </ul>
+          </section>
+          <section>
+            Concepts
+          </section>
+          <section>
+            <ul>
+              <li>Another mechanism for expressing your <em>intent</em> as a programmer</li>
+              <li>Similar to Haskell&apos;s typeclasses for expressing ad-hoc polymorphism</li>
+            </ul>
           </section>
         </section>
         <section data-visibility="hidden">

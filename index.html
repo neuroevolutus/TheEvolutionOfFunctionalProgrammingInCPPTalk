@@ -1796,8 +1796,8 @@
                 > mappend(T&& a, U&& b)
                 {
                   return Monoid<my_remove_cvref_t<T>>::mappend(
-                      std::forward<my_remove_cvref_t<T>>(a),
-                      std::forward<my_remove_cvref_t<U>>(b));
+                    std::forward<my_remove_cvref_t<T>>(a),
+                    std::forward<my_remove_cvref_t<U>>(b));
                 }
 
                 template <
@@ -1807,10 +1807,10 @@
                 > Element foldM(Collection&& c)
                 {
                   return std::accumulate(
-                      c.cbegin(),
-                      c.cend(),
-                      mempty<Element>(),
-                      [](Element acc, Element e) { return mappend(acc, e); });
+                    c.cbegin(),
+                    c.cend(),
+                    mempty<Element>(),
+                    [](Element acc, Element e) { return mappend(acc, e); });
                 }
 
                 template <
@@ -1823,10 +1823,10 @@
                   std::function<Monoid(my_remove_cvref_t<Element>)> f
                 ) {
                   return std::accumulate(
-                      c.cbegin(),
-                      c.cend(),
-                      mempty<Monoid>(),
-                      [=](Monoid acc, Element e) { return mappend(acc, f(e)); });
+                    c.cbegin(),
+                    c.cend(),
+                    mempty<Monoid>(),
+                    [=](Monoid acc, Element e) { return mappend(acc, f(e)); });
                 }
 
                 int main()
@@ -2061,8 +2061,8 @@
                 > mappend(T&& a, U&& b)
                 {
                   return Monoid<my_remove_cvref_t<T>>::mappend(
-                      std::forward<my_remove_cvref_t<T>>(a),
-                      std::forward<my_remove_cvref_t<U>>(b));
+                    std::forward<my_remove_cvref_t<T>>(a),
+                    std::forward<my_remove_cvref_t<U>>(b));
                 }
 
                 template <
@@ -2072,10 +2072,10 @@
                 > auto foldM(Collection&& c)
                 {
                   return std::accumulate(
-                      c.cbegin(),
-                      c.cend(),
-                      mempty<Element>(),
-                      [](auto acc, auto e) { return mappend(acc, e); });
+                    c.cbegin(),
+                    c.cend(),
+                    mempty<Element>(),
+                    [](auto acc, auto e) { return mappend(acc, e); });
                 }
 
                 template <
@@ -2088,10 +2088,10 @@
                   std::function<Monoid(my_remove_cvref_t<Element>)> f
                 ) {
                   return std::accumulate(
-                      c.cbegin(),
-                      c.cend(),
-                      mempty<Monoid>(),
-                      [=](auto acc, auto e) { return mappend(acc, f(e)); });
+                    c.cbegin(),
+                    c.cend(),
+                    mempty<Monoid>(),
+                    [=](auto acc, auto e) { return mappend(acc, f(e)); });
                 }
 
                 int main()
@@ -2269,9 +2269,335 @@
           </section>
           <section>
             <figure>
-              <pre><code data-trim data-line-numbers class="language-cpp"><script type="text/template">
+              <pre><code data-trim data-line-numbers="7-11|27|50" class="language-cpp"><script type="text/template">
+                #include <cstdlib>
+                #include <functional>
+                #include <optional>
+                #include <string>
+                #include <variant>
+
+                class Slime;
+                class Goblin;
+                // Avoid creating an inheritance hierarchy
+                // you will regret later!
+                using Enemy = std::variant<Slime, Goblin>;
+
+                class Slime {
+                  int x;
+                  int y;
+                  int speed_x;
+                  int speed_y;
+                  std::size_t hunger;
+
+                  Slime(
+                    int x, int y, int speed_x, int speed_y,
+                    std::size_t hunger
+                  ): x{ x }, y{ y }, speed_x{ speed_x },
+                  speed_y{ speed_y }, hunger{ hunger } {}
+
+                  public:
+                  static Enemy make_slime(std::size_t hunger);
+                  static Enemy feed(Slime s, std::size_t food);
+                  static std::size_t get_hunger(Slime s);
+                };
+
+                class Goblin {
+                  int x;
+                  int y;
+                  int speed_x;
+                  int speed_y;
+                  std::size_t hunger;
+                  bool aggravated;
+                  std::size_t level;
+
+                  Goblin(
+                    int x, int y, int speed_x, int speed_y,
+                    std::size_t hunger, bool aggravated,
+                    std::size_t level
+                  ): x{ x }, y{ y }, speed_x{ speed_x },
+                  speed_y{ speed_y }, hunger{ hunger },
+                  aggravated{ aggravated }, level{ level } {}
+
+                  public:
+                  static std::optional<Enemy> make_goblin(std::size_t hunger);
+                  static Enemy feed(Goblin g, std::size_t food);
+                  static std::size_t get_hunger(Goblin g);
+                  static std::size_t get_level(Goblin g);
+                };
+
+                std::string show(Enemy e);
+                Enemy feed(Enemy e, std::size_t food);
+
+                template <template <typename T> typename Iterable>
+                Iterable<Enemy> feed_all(Iterable<Enemy> const& i, std::size_t food)
+                {
+                  using namespace std::placeholders;
+                  Iterable<Enemy> output{};
+                  std::transform(
+                    i.cbegin(), i.cend(), std::back_inserter(output),
+                    std::bind(feed, _1, food)
+                  );
+                  return output;
+                }
               </script></code></pre>
-              <figcaption><a href="#">#</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/ha56xTans">https://godbolt.org/z/ha56xTans</a></figcaption>
+            </figure>
+          </section>
+          <section>
+            <figure>
+              <pre><code data-trim data-line-numbers="8-9|14-16|17-19" class="language-cpp"><script type="text/template">
+                #include "lib.hpp"
+
+                #include <cstdlib>
+                #include <iostream>
+                #include <optional>
+
+                int main() {
+                  Enemy const s{ Slime::make_slime(5) };
+                  std::optional<Enemy> const g{ Goblin::make_goblin(10) };
+                  if (!g) {
+                    std::cout << "You didn't make a valid goblin!\n";
+                    return EXIT_FAILURE;
+                  }
+                  std::vector<Enemy> const enemies{
+                    s, *g
+                  };
+                  for (auto const e: enemies) {
+                    std::cout << show(e) << '\n';
+                  }
+                  auto const new_enemies{
+                    feed_all(enemies, 3)
+                  };
+                  for (auto const e: new_enemies) {
+                    std::cout << show(e) << '\n';
+                  }
+                  return EXIT_SUCCESS;
+                }
+              </script></code></pre>
+              <figcaption><a href="https://godbolt.org/z/ha56xTans">https://godbolt.org/z/ha56xTans</a></figcaption>
+            </figure>
+          </section>
+          <section>
+            Parallel algorithms
+          </section>
+          <section>
+            <ul>
+              <li>Offers parallelization for minimal code change cost</li>
+              <li>Many old algorithms come with an overload for taking an execution policy</li>
+              <li>New algorithms such as <span class="code">reduce</span> also introduced</li>
+            </ul>
+          </section>
+          <section>
+            <figure>
+              <pre><code data-trim data-line-numbers="151-163|157-162|158|204" class="language-cpp"><script type="text/template">
+                #include <cstdlib>
+                #include <execution>
+                #include <functional>
+                #include <iostream>
+                #include <numeric>
+                #include <string>
+                #include <type_traits>
+                #include <utility>
+                #include <vector>
+
+                template <typename T>
+                using my_remove_cvref_t =
+                  typename std::remove_cv<
+                    typename std::remove_reference<T>::type
+                  >::type;
+
+                template <bool b, typename T = void>
+                using my_enable_if_t = typename std::enable_if<b, T>::type;
+
+                template <typename T, typename MonoidInstance = void>
+                struct Monoid;
+
+                template <typename T, typename ProductInstance = void>
+                struct Product;
+
+                template <typename T, typename SumInstance = void>
+                struct Sum;
+
+                template <typename T>
+                struct Product<T, my_enable_if_t<
+                  std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                > {
+                  T value;
+                  constexpr Product(my_remove_cvref_t<T>&& value)
+                      : value { value }
+                  {
+                  }
+                };
+
+                template <typename T>
+                struct Sum<T, my_enable_if_t<
+                  std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                > {
+                  T value;
+                  constexpr Sum(my_remove_cvref_t<T>&& value)
+                      : value { value }
+                  {
+                  }
+                };
+
+                template <typename T>
+                Product<my_remove_cvref_t<T>> make_product(T&& t) {
+                  return { std::forward<my_remove_cvref_t<T>>(t) };
+                }
+
+                template <typename T>
+                Sum<my_remove_cvref_t<T>> make_sum(T&& t) {
+                  return { std::forward<T>(t) };
+                }
+
+                template <typename T>
+                struct Monoid<T, my_enable_if_t<
+                  std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                > {
+                  static T const mempty;
+                  static T mappend(T a, T b) { return a + b; }
+                };
+
+                template <typename T>
+                T const Monoid<T, my_enable_if_t<
+                  std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                >::mempty{};
+
+                template <typename T>
+                struct Monoid<T, my_enable_if_t<
+                  std::is_convertible<my_remove_cvref_t<T>,
+                    std::string>::value
+                  >
+                > {
+                  static T const mempty;
+                  template <typename U, typename V>
+                  static my_enable_if_t<
+                    std::is_same<U, V>::value, std::string
+                  > mappend(U&& a, V&& b)
+                  {
+                    return std::string { std::forward<U>(a) } +
+                      std::string { std::forward<V>(b) };
+                  }
+                };
+
+                template <typename T>
+                T const Monoid<T, my_enable_if_t<
+                  std::is_convertible<my_remove_cvref_t<T>,
+                    std::string>::value
+                  >
+                >::mempty { "" };
+
+                template <typename T>
+                struct Monoid<Product<T>> {
+                  static Product<T> const mempty;
+                  template <typename U, typename V>
+                  static my_enable_if_t<
+                    std::is_same<
+                      Product<T>, my_remove_cvref_t<U>
+                    >::value &&
+                    std::is_same<
+                      Product<T>,my_remove_cvref_t<V>
+                    >::value, Product<T>
+                  > mappend(
+                      U&& a,
+                      V&& b) { return { std::forward<U>(a).value *
+                                 std::forward<V>(b).value }; }
+                };
+
+                template <typename T>
+                struct Monoid<Sum<T>> {
+                  static Sum<T> const mempty;
+                  template <typename U, typename V>
+                  static my_enable_if_t<
+                    std::is_same<Sum<T>,
+                      my_remove_cvref_t<U>>::value &&
+                      std::is_same<Sum<T>, my_remove_cvref_t<V>>::value,
+                    Sum<T>
+                  > mappend(
+                      U&& a,
+                      V&& b) { return { std::forward<U>(a).value +
+                                 std::forward<V>(b).value }; }
+                };
+
+                template <typename T>
+                Product<T> const Monoid<Product<T>>::mempty{ 1 };
+
+                template <typename T>
+                Sum<T> const Monoid<Sum<T>>::mempty{ 0 };
+
+                template <typename T>
+                auto mempty() { return Monoid<T>::mempty; }
+
+                template <typename T, typename U>
+                my_enable_if_t<
+                  std::is_same<
+                    my_remove_cvref_t<T>, my_remove_cvref_t<U>
+                  >::value, my_remove_cvref_t<T>
+                > mappend(T&& a, U&& b)
+                {
+                  return Monoid<my_remove_cvref_t<T>>::mappend(
+                    std::forward<my_remove_cvref_t<T>>(a),
+                    std::forward<my_remove_cvref_t<U>>(b));
+                }
+
+                template <
+                  typename Collection,
+                  typename Element = typename
+                    my_remove_cvref_t<Collection>::value_type
+                > auto foldM(Collection&& c)
+                {
+                  return std::reduce(
+                    std::execution::par,
+                    c.cbegin(),
+                    c.cend(),
+                    mempty<Element>(),
+                    [](auto acc, auto e) { return mappend(acc, e); });
+                }
+
+                template <
+                  typename Monoid,
+                  typename Collection,
+                  typename Element = typename
+                    my_remove_cvref_t<Collection>::value_type
+                > auto foldMap(
+                  Collection&& c,
+                  std::function<Monoid(my_remove_cvref_t<Element>)> f
+                ) {
+                  return std::accumulate(
+                    c.cbegin(),
+                    c.cend(),
+                    mempty<Monoid>(),
+                    [=](auto acc, auto e) { return mappend(acc, f(e)); });
+                }
+
+                int main()
+                {
+                  auto i { make_product(3) };
+                  //  auto j{ make_sum("adf") };
+                  // char const (&)[4] is not arithmetic
+                  auto k { mempty<Product<int>>() };
+                  auto l { mappend(i, k) };
+                  auto m { make_sum(3.0) };
+                  auto n { make_sum<float>(3.0) };
+                  //  auto o{ mappend(m, n) };
+                  // can&quot;t mappend float and double Products
+                  //  auto p{ mappend(l, m) };
+                  // can&quot;t mappend Sum and Product
+                  auto q { mempty<std::string>() };
+                  auto r { mempty<int>() };
+                  std::vector<int> v1 { 1, 2, 3, 4 };
+                  std::vector<std::string> v2 { "Hello ", "there, ", "world!" };
+                  std::cout <<
+                    foldMap<Product<int>>(v1, make_product<int>).value
+                    << '\n';
+                  std::cout <<
+                    foldMap<Sum<int>>(v1, make_sum<int>).value
+                    << '\n';
+                  std::cout << foldM(v2) << '\n';
+                  return EXIT_SUCCESS;
+                }
+              </script></code></pre>
+              <figcaption><a href="https://godbolt.org/z/PdrKj1f7s">https://godbolt.org/z/PdrKj1f7s</a></figcaption>
             </figure>
           </section>
         </section>

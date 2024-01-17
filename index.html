@@ -2595,6 +2595,7 @@
           <section>
             <ul>
               <li>Another mechanism for expressing your <em>intent</em> as a programmer</li>
+              <li><span class="code">constexpr bool</span>-returning expressions on types</li>
               <li>Similar to Haskell&apos;s typeclasses for expressing ad-hoc polymorphism</li>
             </ul>
           </section>
@@ -2607,10 +2608,188 @@
           -->
           <section>
             <figure>
-              <pre><code data-trim data-line-number class="language-cpp"><script type="text/template">
+              <pre><code data-trim data-line-numbers="12-19|21-34|36-44|114-123" class="language-cpp"><script type="text/template">
+                #include <concepts>
+                #include <cstdlib>
+                #include <execution>
+                #include <functional>
+                #include <iostream>
+                #include <numeric>
+                #include <string>
+                #include <type_traits>
+                #include <utility>
+                #include <vector>
+
+                template <typename T>
+                struct Monoid;
+
+                template <typename T>
+                struct Product;
+
+                template <typename T>
+                struct Sum;
+
+                template <typename T>
+                concept arithmetic = std::is_arithmetic_v<T>;
+
+                template <typename T>
+                concept string_like =
+                  std::is_convertible_v<std::remove_cvref_t<T>, std::string>;
+
+                template <typename T, typename U>
+                concept product_on = arithmetic<U> &&
+                  std::is_same_v<Product<U>, std::remove_cvref_t<T>>;
+
+                template <typename T, typename U>
+                concept sum_on = arithmetic<U> &&
+                  std::is_same_v<Sum<U>, std::remove_cvref_t<T>>;
+
+                template <typename T>
+                concept monoid = requires(T&& a, T&& b) {
+                  { Monoid<T>::mempty } -> std::common_reference_with<T>;
+                  { Monoid<T>::mappend(std::forward<T>(a), std::forward<T>(b)) }
+                    -> std::common_reference_with<T>;
+                };
+
+                template <typename T>
+                concept monoidal = monoid<std::remove_cvref_t<T>>;
+
+                template <arithmetic T>
+                struct Product<T> {
+                  T value;
+                  constexpr Product(T&& value)
+                      : value { value }
+                  {
+                  }
+                };
+
+                template <arithmetic T>
+                struct Sum<T> {
+                  T value;
+                  constexpr Sum(T&& value)
+                      : value { value }
+                  {
+                  }
+                };
+
+                template <arithmetic T>
+                constexpr Product<T> make_product(T&& t) {
+                  return { std::forward<std::remove_cvref_t<T>>(t) };
+                }
+
+                template <arithmetic T>
+                constexpr Sum<T> make_sum(T&& t) {
+                  return { std::forward<std::remove_cvref_t<T>>(t) };
+                }
+
+                template <arithmetic T>
+                struct Monoid<T> {
+                  static inline constexpr T mempty {};
+                  static constexpr T mappend(T a, T b) { return a + b; }
+                };
+
+                template <string_like T>
+                struct Monoid<T> {
+                  static inline T const mempty {};
+                  static constexpr std::string mappend(T&& a, T&& b)
+                  {
+                    return std::string { std::forward<std::remove_cvref_t<T>>(a) }
+                      + std::string { std::forward<std::remove_cvref_t<T>>(b) };
+                  }
+                };
+
+                template <arithmetic T>
+                struct Monoid<Product<T>> {
+                  static inline constexpr Product<T> const mempty { 1 };
+                  template <product_on<T> U, product_on<T> V>
+                  static constexpr Product<T>
+                  mappend(
+                    U&& a,
+                    V&& b) {
+                    return { std::forward<U>(a).value * std::forward<V>(b).value };
+                  }
+                };
+
+                template <arithmetic T>
+                struct Monoid<Sum<T>> {
+                  static inline constexpr Sum<T> const mempty { 0 };
+                  template <sum_on<T> U, sum_on<T> V>
+                  static constexpr Sum<T>
+                  mappend(
+                    U&& a,
+                    V&& b) {
+                    return { std::forward<U>(a).value + std::forward<V>(b).value };
+                  }
+                };
+
+                template <monoid T>
+                constexpr auto mempty() { return Monoid<T>::mempty; }
+
+                template <monoidal T, std::common_reference_with<T> U>
+                constexpr auto mappend(T&& a, U&& b)
+                {
+                  return Monoid<std::remove_cvref_t<T>>::mappend(
+                    std::forward<std::remove_cvref_t<T>>(a),
+                    std::forward<std::remove_cvref_t<U>>(b));
+                }
+
+                template <typename Collection, monoidal Element =
+                  typename std::remove_cvref_t<Collection>::value_type>
+                constexpr auto foldM(Collection&& c)
+                {
+                  return std::reduce(
+                    std::execution::par,
+                    c.cbegin(),
+                    c.cend(),
+                    mempty<Element>(),
+                    [](auto acc, auto e) { return mappend(acc, e); });
+                }
+
+                template <monoid Monoid, typename Collection,
+                  monoidal Element =
+                  typename std::remove_cvref_t<Collection>::value_type>
+                constexpr auto foldMap(
+                  Collection&& c,
+                  std::function<Monoid(std::remove_cvref_t<Element>)> f
+                ) {
+                  return std::accumulate(
+                    c.cbegin(),
+                    c.cend(),
+                    mempty<Monoid>(),
+                    [=](auto acc, auto e) { return mappend(acc, f(e)); });
+                }
+
+                int main()
+                {
+                  auto i { make_product(3) };
+                  // auto j{ make_sum("adf") };
+                  // char const (&)[4] is not arithmetic
+                  auto k { mempty<Product<int>>() };
+                  auto l { mappend(i, k) };
+                  auto m { make_sum(3.0) };
+                  auto n { make_sum<float>(3.0) };
+                  // auto o{ mappend(m, n) };
+                  // can't mappend float and double Products
+                  // auto p{ mappend(l, m) };
+                  // can't mappend Sum and Product
+                  auto q { mempty<std::string>() };
+                  auto r { mempty<int>() };
+                  std::vector<int> v1 { 1, 2, 3, 4 };
+                  std::vector<std::string> v2 { "Hello ", "there, ", "world!" };
+                  std::cout
+                    << foldMap<Product<int>>(v1, make_product<int>).value
+                    << '\n';
+                  std::cout
+                    << foldMap<Sum<int>>(v1, make_sum<int>).value
+                    << '\n';
+                  std::cout << foldM(v2) << '\n';
+                  return EXIT_SUCCESS;
+                }
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/n9PrzPc1T">https://godbolt.org/z/n9PrzPc1T</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/o6eqbnYT3">https://godbolt.org/z/o6eqbnYT3</a></figcaption>
             </figure>
+          </section>
+          <section>
           </section>
         </section>
         <section data-visibility="hidden">

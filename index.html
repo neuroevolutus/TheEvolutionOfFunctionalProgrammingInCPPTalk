@@ -2794,8 +2794,8 @@
           </section>
           <section>
             <ul>
-              <li>Unify a iterator-sentinel pair<li>
-              <li>Enable <em>lazy</em> traversals of data structures</li>
+              <li>Unify a iterator-sentinel pair</li>
+              <li>Views on them enable <em>lazy</em> traversals of data structures</li>
 	      <li>Can be easily composed in a fluent, functional style</li>
             </ul>
           </section>
@@ -2804,11 +2804,80 @@
           </section>
           <section>
             <figure>
-              <pre><code data-trim data-line-number class="language-cpp"><script type="text/template">
-https://godbolt.org/z/nYnqxjhK1
+              <pre><code data-trim data-line-numbers="14-20|24-29|31-38|39-41|45-51" class="language-cpp"><script type="text/template">
+                #include <cstdlib>
+                #include <functional>
+                #include <iostream>
+                #include <iterator>
+                #include <ranges>
+                #include <vector>
+
+                enum class Plan {
+                  standard,
+                  plus,
+                  ultra
+                };
+
+                struct Subscriber {
+                  int age;
+                  std::string first_name;
+                  std::string last_name;
+                  std::vector<std::string> top_genres;
+                  Plan plan;
+                };
+
+                int main()
+                {
+                  std::vector<Subscriber> subscribers {
+                    { 25, "See", "Plus", { "romance", "comedy" }, Plan::ultra },
+                    { 35, "Hask", "Ell", { "docs", "comedy" }, Plan::plus },
+                    { 30, "Cloh", "Jeur", { "docs", "thiller", "feature" }, Plan::standard },
+                    { 60, "Ski", "Murr", { "romance", "drama" }, Plan::plus }
+                  };
+                  std::size_t total_subscribers { subscribers.size() };
+                  auto target_subscribers {
+                    subscribers
+                    | std::views::filter([](auto const& s) { return s.age < 36; })
+                    | std::views::filter([](auto const& s) { return s.age > 24; })
+                    | std::views::filter(
+                        [](auto const& s) { return s.plan != Plan::standard; }
+                      )
+                  };
+                  auto total_target_subscribers {
+                    std::ranges::distance(target_subscribers)
+                  };
+                  double target_subscriber_proportion {
+                    1.0 * total_target_subscribers / total_subscribers
+                  };
+                  std::size_t minimum_needed_genres {
+                    std::ranges::min(
+                        target_subscribers,
+                        std::less<std::size_t>(),
+                        [](auto const& s) { return s.top_genres.size(); })
+                        .top_genres.size()
+                  };
+                  std::cout << "Total subscribers: " << total_subscribers << '\n';
+                  std::cout << "Total target subcribers: " << total_target_subscribers << '\n';
+                  std::cout << "Target subscriber proportion: " << target_subscriber_proportion << '\n';
+                  std::cout << "Minimum needed genres: " << minimum_needed_genres << '\n';
+                  return EXIT_SUCCESS;
+                }
               </script></code></pre>
-              <figcaption><a href="#">#</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/jEh64WGsb">https://godbolt.org/z/jEh64WGsb</a></figcaption>
             </figure>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h2>C++23</h2>
+          </section>
+          <section>
+            <ul>
+              <li>Better ranges library support</li>
+            </ul>
+          </section>
+          <section>
+https://godbolt.org/z/1ze5z6rf5
           </section>
         </section>
         <section data-visibility="hidden">

@@ -2873,11 +2873,264 @@
           </section>
           <section>
             <ul>
-              <li>Better ranges library support</li>
+              <li><span class="code">std::expected</span></li>
+              <li><span class="code">std::optional</span> monadic operations</li>
+              <li>More ranges library support
+                <ul>
+                  <li><span class="code">std::views::join</span>, <span class="code">std::views::enumerate</span> etc.</li>
+                  <li><span class="code">std::generator</span></li>
+                </ul>
+              </li>
             </ul>
           </section>
           <section>
-            https://godbolt.org/z/8ohKvja9T
+            <span class="code">std::expected</span>
+          </section>
+          <section>
+            <figure>
+              <pre><code data-trim data-line-numbers="24-25|27-37|30-35|36|39-41|44-48|44" class="language-cpp"><script type="text/template">
+                #include <cmath>
+                #include <concepts>
+                #include <cstdlib>
+                #include <expected>
+                #include <print>
+                #include <type_traits>
+                #include <variant>
+
+                template <typename T>
+                concept arithmetic = std::integral<T> || std::floating_point<T>;
+
+                template <arithmetic T>
+                struct division_by_zero{
+                  T value;
+                };
+
+                template <std::floating_point T>
+                struct overflow {
+                  T value;
+                };
+
+                struct NaN{};
+
+                using arithmetic_error
+                  = std::variant<division_by_zero<double>, overflow<double>, NaN>;
+
+                constexpr auto divide(double a, double b) ->
+                  std::expected<double, arithmetic_error>
+                {
+                  if (std::isinf(a)) return std::unexpected(overflow{ a });
+                  if (std::isinf(b)) return std::unexpected(overflow{ b });
+                  if (std::isnan(a) || std::isnan(b)) return std::unexpected(NaN{});
+                  if (std::fpclassify(b) == FP_ZERO) return std::unexpected(
+                    division_by_zero{ a }
+                  );
+                  return a / b;
+                }
+
+                constexpr auto square(double a) -> double {
+                  return a * a;
+                }
+
+                int main() {
+                  if (auto result{ divide(3.0, 0).transform(square) }; result) {
+                    std::print("The value is {}.\n", *result);
+                  } else {
+                    std::print("The result is invalid.");
+                  }
+                  return EXIT_SUCCESS;
+                }
+              </script></code></pre>
+              <figcaption><a href="https://godbolt.org/z/Mza6YfYnh">https://godbolt.org/z/Mza6YfYnh</a></figcaption>
+            </figure>
+          </section>
+          <section>
+            <span class="code">std::optional</span> updates
+          </section>
+          <section>
+            <span class="code">transform</span> and <span class="code">and_then</span> methods similar to that of <span class="code">std::expected</span>
+          </section>
+          <section>
+            Ranges updates
+          </section>
+          <section>
+            <figure>
+              <pre><code data-trim data-line-numbers="9-14|18-26|33-41|42-56|61-64|67-72|68-70|71|73-75" class="language-cpp"><script type="text/template">
+                #include "graph.hpp"
+
+                #include <compare>
+                #include <cstdlib>
+                #include <print>
+                #include <ranges>
+                #include <string>
+
+                struct User {
+                  std::string first_name;
+                  std::string last_name;
+                  friend auto operator<=>(User const&, User const&)
+                    -> std::strong_ordering = default;
+                };
+
+                int main()
+                {
+                  Graph<User> network {};
+                  User const u1 { "Ada", "Lovelace" };
+                  User const u2 { "Abraham", "Lincoln" };
+                  User const u3 { "Nikola", "Tesla" };
+                  User const u4 { "Frederick", "Douglass" };
+                  User const u5 { "Henry", "Thoreau" };
+                  User const u6 { "Srinivasa", "Ramanujan" };
+                  User const u7 { "Yogen", "Dalal" };
+                  User const u8 { "Bertrand", "Russell" };
+                  /*
+                     Ada's connected to Abraham and Nikola.
+                     Abraham's connected to Frederick and Henry.
+                     Nikola's connected to Srinivasa, Bertrand and Yogen.
+                     Bertrand follows Ada.
+                  */
+                  network
+                    .add_node(u1)
+                    .add_node(u2)
+                    .add_node(u3)
+                    .add_node(u4)
+                    .add_node(u5)
+                    .add_node(u6)
+                    .add_node(u7)
+                    .add_node(u8)
+                    .add_edge(u1, u2)
+                    .add_edge(u2, u1)
+                    .add_edge(u1, u3)
+                    .add_edge(u3, u1)
+                    .add_edge(u2, u4)
+                    .add_edge(u4, u2)
+                    .add_edge(u2, u5)
+                    .add_edge(u5, u2)
+                    .add_edge(u3, u6)
+                    .add_edge(u6, u3)
+                    .add_edge(u3, u7)
+                    .add_edge(u7, u3)
+                    .add_edge(u3, u8)
+                    .add_edge(u8, u3)
+                    .add_edge(u8, u1);
+                  auto not_ada {
+                    [&u1](auto node) { return **node != u1; }
+                  };
+                  // Get Ada's first-degree connections
+                  auto firsts {
+                    (*network.find_node(u1))->get_neighbours()
+                    | std::views::filter(not_ada)
+                  };
+                  // Ignore duplicates among second-degree
+                  // connections for simplicity
+                  auto seconds {
+                    firsts | std::views::transform([](auto node) {
+                      return node->get_neighbours();
+                    })
+                    | std::views::join | std::views::filter(not_ada)
+                  };
+                  for (auto user : seconds) {
+                    std::print("{}\n", (*user)->first_name);
+                  }
+                  return EXIT_SUCCESS;
+                }
+              </script></code></pre>
+              <figcaption><a href="https://godbolt.org/z/8EjTMsv7r">https://godbolt.org/z/8EjTMsv7r</a></figcaption>
+            </figure>
+          </section>
+          <section>
+            Refactoring with <span class="code">std::generator</span>
+          </section>
+          <section>
+            <figure>
+              <pre><code data-trim data-line-numbers="17-31|24-30|24-25|26-27|28|74-79" class="language-cpp"><script type="text/template">
+                #include "graph.hpp"
+
+                #include <compare>
+                #include <cstdlib>
+                #include <generator>
+                #include <print>
+                #include <ranges>
+                #include <string>
+
+                struct User {
+                  std::string first_name;
+                  std::string last_name;
+                  friend auto operator<=>(User const&, User const&)
+                    -> std::strong_ordering = default;
+                };
+
+                std::generator<User> second_degree_connections(
+                    Graph<User> const& network,
+                    User const& u)
+                {
+                  auto not_user {
+                    [&u](auto node) { return **node != u; }
+                  };
+                  for (auto first : (*network.find_node(u))->get_neighbours()
+                          | std::views::filter(not_user)) {
+                    for (auto second : first->get_neighbours()
+                            | std::views::filter(not_user)) {
+                      co_yield *second;
+                    }
+                  }
+                }
+
+                int main()
+                {
+                  Graph<User> network {};
+                  User const u1 { "Ada", "Lovelace" };
+                  User const u2 { "Abraham", "Lincoln" };
+                  User const u3 { "Nikola", "Tesla" };
+                  User const u4 { "Frederick", "Douglass" };
+                  User const u5 { "Henry", "Thoreau" };
+                  User const u6 { "Srinivasa", "Ramanujan" };
+                  User const u7 { "Yogen", "Dalal" };
+                  User const u8 { "Bertrand", "Russell" };
+                  /*
+                    Ada's connected to Abraham and Nikola.
+                    Abraham's connected to Frederick and Henry.
+                    Nikola's connected to Srinivasa, Bertrand and Yogen.
+                    Bertrand follows Ada.
+                  */
+                  network
+                    .add_node(u1)
+                    .add_node(u2)
+                    .add_node(u3)
+                    .add_node(u4)
+                    .add_node(u5)
+                    .add_node(u6)
+                    .add_node(u7)
+                    .add_node(u8)
+                    .add_edge(u1, u2)
+                    .add_edge(u2, u1)
+                    .add_edge(u1, u3)
+                    .add_edge(u3, u1)
+                    .add_edge(u2, u4)
+                    .add_edge(u4, u2)
+                    .add_edge(u2, u5)
+                    .add_edge(u5, u2)
+                    .add_edge(u3, u6)
+                    .add_edge(u6, u3)
+                    .add_edge(u3, u7)
+                    .add_edge(u7, u3)
+                    .add_edge(u3, u8)
+                    .add_edge(u8, u3)
+                    .add_edge(u8, u1);
+                  for (auto const& user : second_degree_connections(
+                    network,
+                    u1
+                  )) {
+                    std::print("{}\n", user.first_name);
+                  }
+                  return EXIT_SUCCESS;
+                }
+              </script></code></pre>
+              <figcaption><a href="https://godbolt.org/z/obGWao6Gf">https://godbolt.org/z/obGWao6Gf</a></figcaption>
+            </figure>
+          </section>
+        </section>
+        <section>
+          <section>
+            C++26 and beyond
           </section>
         </section>
         <section data-visibility="hidden">

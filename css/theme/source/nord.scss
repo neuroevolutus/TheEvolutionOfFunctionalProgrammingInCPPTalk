@@ -1,0 +1,87 @@
+/**
+ * A simple theme for reveal.js presentations, similar
+ * to the default theme. The accent color is darkblue.
+ *
+ * This theme is Copyright (C) 2024 Abel Sen, https://github.com/neuroevolutus. It is MIT licensed.
+ * reveal.js is Copyright (C) 2011-2012 Hakim El Hattab, http://hakim.se
+ */
+
+
+// Default mixins and settings -----------------
+@import "../template/mixins";
+@import "../template/settings";
+// ---------------------------------------------
+
+// Open Sans
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital@0;1&display=swap');
+// JetBrains Mono
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
+
+// Nord palette
+$nord0: #2E3440;
+$nord1: #3B4252;
+$nord2: #434C5E;
+$nord3: #4C566A;
+
+$nord4: #D8DEE9;
+$nord5: #E5E9F0;
+$nord6: #ECEFF4;
+
+$nord7: #8FBCBB;
+$nord8: #88C0D0;
+$nord9: #81A1C1;
+$nord10: #5E81AC;
+
+$nord11: #BF616A;
+$nord12: #D08770;
+$nord13: #EBCB8B;
+$nord14: #A3BE8C;
+$nord15: #B48EAD;
+
+// Background of the presentation
+$backgroundColor: $nord0;
+
+// Primary/body text
+$mainFont: 'Open Sans', sans-serif;
+$mainFontSize: 2.5rem;
+$mainColor: $nord6;
+
+// Vertical spacing between blocks of text
+$blockMargin: 0.125rem;
+
+// Headings
+$headingMargin: 0 0 $blockMargin 0;
+$headingFont: 'Open Sans', Impact, sans-serif;
+$headingColor: $nord6;
+$headingLineHeight: 1.5;
+$headingLetterSpacing: normal;
+$headingTextShadow: none;
+$headingTextTransform: none;
+$heading1TextShadow: $headingTextShadow;
+$heading1Size: 4rem;
+$heading2Size: 3.6rem;
+$heading3Size: 2.8rem;
+$heading4Size: 1.1rem;
+
+// Code
+$codeFont: 'JetBrains Mono';
+
+span.code {
+  font-family: $codeFont;
+}
+
+// Links and actions
+$linkColor: $nord6;
+$linkColorHover: $nord7;
+$selectionBackgroundColor: $nord13;
+
+$overlayElementBgColor: 0, 0, 0;
+$overlayElementFgColor: 240, 240, 240;
+
+// Change text colors against dark slide backgrounds
+@include dark-bg-text-color(#fff);
+
+
+// Theme template ------------------------------
+@import "../template/theme";
+// ---------------------------------------------

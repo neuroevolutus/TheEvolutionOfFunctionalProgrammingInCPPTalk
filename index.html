@@ -671,18 +671,18 @@
               </figcaption>
             </figure>
           </section>
-          <section data-markdown>
-            <textarea data-template>
-	      ## The `<functional>` header
-            </textarea>
+          <section>
+            <h2>The <span class="code">&lt;functional&gt;</span> header</h2>
           </section>
-          <section data-markdown>
-            <textarea data-template>
-	      * Defines a set of function objects that compose well with algorithm templates
-	        * A function object is any object for which `operator()` is defined
-	      * Introduces _closures_ and _partial application_ to the world of C++
-	    </textarea
-            >
+          <section>
+            <ul>
+              <li>Defines a set of function objects that compose well with algorithm templates
+                <ul>
+                  <li>A function object is any object for which <span class="code">operator()</span> is defined</li>
+                </ul>
+              </li>
+              <li>Introduces <em>closures</em> and <em>partial application</em> to the world of C++</li>
+            </ul>
           </section>
           <section>
             <p>Let&apos;s do another refactor</p>
@@ -787,11 +787,8 @@
               </figcaption>
             </figure>
           </section>
-          <section data-markdown>
-            <textarea data-template>
-	      Now, we can pass function objects to `quicksort` to specify the partition strategy.
-	    </textarea
-            >
+          <section>
+            Now, we can pass function objects to <span class="code">quicksort</span> to specify the partition strategy.
           </section>
           <section>
             <figure>
@@ -997,19 +994,18 @@
               </figcaption>
             </figure>
           </section>
-          <section data-markdown>
-            <textarea data-template>
-              * Similar to `bind1st`, `bind2nd` specialises a function object by binding the second argument
-              * Many other function objects in `<functional>` header like `minus<T>`, `equal_to<T>`, etc.
-	    </textarea
-            >
+          <section>
+            <ul>
+              <li>Similar to <span class="code">bind1st</span>, <span class="code">bind2nd</span> specialises a function object by binding the second argument</li>
+              <li>Many other function objects in <span class="code">&lt;functional&gt;</span> header like <span class="code">minus&lt;T&gt;</span>, <span class="code">equal_to&lt;T&gt;</span>, etc.</li>
+            </ul>
           </section>
-          <section data-markdown>
-            <textarea data-template>
-            ## A note about pointers to members
-              * Can be turned into function objects that take an object and return a member
-              * `<functional>` also provides function objects and free-standing function templates like `mem_fun_t` and `mem_fun` for this purpose
-            </textarea>
+          <section>
+            <h2>A note about pointers to members</h2>
+            <ul>
+              <li>Can be turned into function objects that take an object and return a member</li>
+              <li><span class="code">&lt;functional&gt;</span> also provides function objects and free-standing function templates like <span class="code">mem_fun_t</span> and <span class="code">mem_fun</span> for this purpose</li>
+            </ul>
           </section>
           <section>Tying back to Haskell</section>
           <section>
@@ -1063,11 +1059,11 @@
             </figure>
           </section>
           <section>Generic programming and templates</section>
-          <section data-markdown>
-            <textarea data-template>
-	      * Templates allow you to specify generic _recipes_ for baking concrete classes or functions
-	      * Enable one to _specialise_ the recipe for specific classes
-	    </textarea>
+          <section>
+            <ul>
+              <li>Templates allow you to specify generic <em>recipes</em> for baking concrete classes or functions</li>
+              <li>Enable one to <em>specialise</em> the recipe for specific classes</li>
+            </ul>
           </section>
           <section>A (somewhat) realistic example</section>
           <section>
@@ -1314,32 +1310,29 @@
               <li>Example at: <a href="https://godbolt.org/z/G3G53YPG3">https://godbolt.org/z/G3G53YPG3</a></li>
             </ul>
           </section>
-	  <section data-markdown>
-	    <textarea data-template>
-	      C++ facilitates creating ergonomic and _transparently_ performant data structures
-	    </textarea>
-	  </section>
-	  <section>
-	    Now, what about C++98 template meta-programming?
-	  </section>
-	  <section>
-	    We&apos;ll return to that. 😉
-	  </section>
+          <section>
+            C++ facilitates creating ergonomic and <em>transparently</em> performant data structures
+          </section>
+          <section>
+            Now, what about C++98 template meta-programming?
+          </section>
+          <section>
+            We&apos;ll return to that. 😉
+          </section>
         </section>
         <section>
           <section>
             <h2>C++11</h2>
           </section>
-          <section data-markdown>
-            <textarea data-template>
-              ## Core Functional Features
-              - Lambdas
-              - `std::function`
-              - `std::bind` and partial application
-              - `auto` type deduction
-              - More compile-time meta-programming
-            </textarea
-            >
+          <section>
+            <h2>Core Functional Features</h2>
+            <ul>
+              <li>Lambdas</li>
+              <li><span class="code">std::function</span></li>
+              <li><span class="code">std::bind</span> and partial application</li>
+              <li><span class="code">auto</span> type deduction</li>
+              <li>More compile-time meta-programming</li>
+            </ul>
           </section>
           <section>
             <h3>Lambdas</h3>
@@ -1457,12 +1450,12 @@
           <section data-auto-animate>
             An example with machine learning
           </section>
-          <section data-markdown>
-	    <textarea data-template>
-	      - Already have a trained model object with a `predict` method
-	      - Receive a set of new data
-	      - Wish to transform the data to get a set of predictions
-            </textarea>
+          <section>
+            <ul>
+              <li>Already have a trained model object with a <span class="code">predict</span> method</li>
+              <li>Receive a set of new data</li>
+              <li>Wish to transform the data to get a set of predictions</li>
+            </ul>
           </section>
 	  <section>
 	    <figure>
@@ -1537,20 +1530,26 @@
               <figcaption><a href="https://godbolt.org/z/jq181GEdE">https://godbolt.org/z/jq181GEdE</a></figcaption>
             </figure>
           </section>
-          <section data-markdown>
-            <textarea data-template>
-              - `std::bind` allows you to create ad-hoc specialised functions from more general ones
-                - Great for when you know some arguments ahead of time
-              - Can do this so-called _partial application_ for as many arguments as we need
-            </textarea>
+          <section>
+            <ul>
+              <li><span class="code">std::bind</span> allows you to create ad-hoc specialised functions from more general ones
+                <ul>
+                  <li>Great for when you know some arguments ahead of time</li>
+                </ul>
+              </li>
+              <li>Can do this so-called <em>partial application</em> for as many arguments as needed</li>
+            </ul>
           </section>
-	  <section data-markdown>
-            <textarea data-template>
-              #### `auto` type deduction
-              - Allow you to bind values to names without having to specify types
-                - Can make code more readable and maintainable
-              - A hallmark of advanced functional languages
-            </textarea>
+          <section>
+            <h2><span class="code">auto</span> type deduction</h2>
+            <ul>
+              <li>Allow you to bind values to names without having to specify types
+                <ul>
+                  <li>Can make code more readable and maintainable</li>
+                </ul>
+              </li>
+              <li>A hallmark of advanced functional languages</li>
+            </ul>
           </section>
           <section>
             <pre><code data-trim data-line-numbers="4-5" class="language-cpp"><script type="text/template">
@@ -1564,13 +1563,13 @@
             </script></code></pre>
             <!-- https://godbolt.org/z/xYh8hWvTx -->
           </section>
-          <section data-markdown>
-            <textarea data-template>
-              #### `std::function`
-              - Lambdas &rarr; unique types
-              - `std::function`: erases specific function type to guarantee general signature
-              - Useful when a desired function can only be known at _runtime_
-            </textarea>
+          <section>
+            <h2><span class="code">std::function</span></h2>
+            <ul>
+              <li>Lambdas &rarr; unique types</li>
+              <li><span class="code">std::function</span>: erases specific function type to guarantee general signature</li>
+              <li>Useful when a desired function can only be known at <em>runtime</em></li>
+            </ul>
           </section>
           <section>
             <figure>

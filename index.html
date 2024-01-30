@@ -2847,10 +2847,10 @@
                   };
                   std::size_t minimum_needed_genres {
                     std::ranges::min(
-                        target_subscribers,
-                        std::less<std::size_t>(),
-                        [](auto const& s) { return s.top_genres.size(); })
-                        .top_genres.size()
+                      target_subscribers,
+                      std::less<std::size_t>(),
+                      [](auto const& s) { return s.top_genres.size(); })
+                      .top_genres.size()
                   };
                   std::cout << "Total subscribers: " << total_subscribers << '\n';
                   std::cout << "Total target subcribers: " << total_target_subscribers << '\n';

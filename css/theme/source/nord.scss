@@ -71,8 +71,8 @@ span.code {
 }
 
 // Links and actions
-$linkColor: $nord6;
-$linkColorHover: $nord7;
+$linkColor: $nord9;
+$linkColorHover: $nord15;
 $selectionBackgroundColor: $nord13;
 
 $overlayElementBgColor: 0, 0, 0;
@@ -80,6 +80,140 @@ $overlayElementFgColor: 240, 240, 240;
 
 // Change text colors against dark slide backgrounds
 @include dark-bg-text-color(#fff);
+
+section.present:not(.stack):has(figure.code-example) {
+  figure.code-example {
+    pre {
+      margin-block-end: 3%;
+      box-shadow: none !important;
+    }
+    figcaption {
+      font-size: .8em;
+    }
+  }
+}
+
+// Highlight.js
+pre code.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 1em
+}
+code.hljs {
+  padding: 3px 5px
+}
+
+.hljs {
+  /* var(--highlight-color) */
+  color: #ffffff;
+  /* var(--highlight-bg) */
+  background: $nord0;
+}
+.hljs-subst {
+  /* var(--highlight-color) */
+  color: #ffffff
+}
+.hljs-comment {
+  /* var(--highlight-comment) */
+  color: $nord3;
+}
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-meta .hljs-keyword,
+.hljs-doctag,
+.hljs-section {
+  /* var(--highlight-keyword) */
+  color: #88aece
+}
+.hljs-attr {
+  /* var(--highlight-attribute); */
+  color: #88aece
+}
+.hljs-attribute {
+  /* var(--highlight-symbol) */
+  color: #c59bc1
+}
+.hljs-name,
+.hljs-type,
+.hljs-number,
+.hljs-selector-id,
+.hljs-quote,
+.hljs-template-tag {
+  /* var(--highlight-namespace) */
+  color: $nord7;
+}
+.hljs-selector-class {
+  /* var(--highlight-keyword) */
+  color: #88aece
+}
+.hljs-string,
+.hljs-regexp,
+.hljs-symbol,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-link,
+.hljs-selector-attr {
+  /* var(--highlight-variable) */
+  color: $nord14;
+}
+.hljs-meta,
+.hljs-selector-pseudo {
+  /* var(--highlight-keyword) */
+  color: #88aece
+}
+.hljs-built_in,
+.hljs-title,
+.hljs-literal {
+  /* var(--highlight-literal) */
+  color: $nord8;
+}
+.hljs-bullet,
+.hljs-code {
+  /* var(--highlight-punctuation) */
+  color: #cccccc
+}
+.hljs-meta .hljs-string {
+  /* var(--highlight-variable) */
+  color: $nord14;
+}
+.hljs-deletion {
+  /* var(--highlight-deletion) */
+  color: #de7176
+}
+.hljs-addition {
+  /* var(--highlight-addition) */
+  color: #76c490
+}
+.hljs-emphasis {
+  font-style: italic
+}
+.hljs-strong {
+  font-weight: bold
+}
+.hljs-formula,
+.hljs-operator,
+.hljs-params,
+.hljs-property,
+.hljs-punctuation,
+.hljs-tag {
+  /* purposely ignored */
+}
+
+/*********************************************
+ * SLIDE NUMBER
+ *********************************************/
+
+.reveal .slide-number {
+  left: 1rem;
+  bottom: 1.2rem;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 2rem;
+  width: fit-content;
+  line-height: 1.1;
+  color: $nord4;
+  background-color: $backgroundColor;
+  padding: 5px;
+}
 
 
 // Theme template ------------------------------

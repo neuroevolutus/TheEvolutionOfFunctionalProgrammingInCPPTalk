@@ -81,16 +81,36 @@ $overlayElementFgColor: 240, 240, 240;
 // Change text colors against dark slide backgrounds
 @include dark-bg-text-color(#fff);
 
-section.present:not(.stack):has(figure.code-example) {
-  figure.code-example {
-    pre {
-      margin-block-end: 3%;
-      box-shadow: none !important;
-    }
-    figcaption {
-      font-size: .8em;
-    }
+.code-example {
+  pre {
+    box-shadow: none !important;
   }
+}
+
+.slide-header {
+  margin-block-end: 2rem !important;
+}
+
+figure.code-example {
+  pre {
+    margin-block-end: 3%;
+  }
+  figcaption {
+    font-size: .8em;
+  }
+}
+
+.socials svg {
+  filter: invert(89%) sepia(7%) saturate(6109%) hue-rotate(178deg) brightness(83%) contrast(77%);
+}
+
+section h2 {
+  margin-block-end: 1.5rem !important;
+}
+
+section footer {
+  margin-block-start: 2rem;
+  font-size: 1.5rem;
 }
 
 // Highlight.js

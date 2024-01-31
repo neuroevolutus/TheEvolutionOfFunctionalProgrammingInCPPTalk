@@ -18,15 +18,15 @@
       <div class="slides">
         <section data-background-image="images/The Evolution of Functional Programming in CPP Title Card.png"></section>
         <section data-auto-animate>
-          <h2>About Me</h2>
+          <h2 class="slide-header">About Me</h2>
           <p>Functional and systems programmer focused on Haskell and C/C++</p>
         </section>
         <section data-auto-animate>
-          <h2>About Me</h2>
+          <h2 class="slide-header">About Me</h2>
           <p>Functional and systems programmer focused on Haskell, C and C++</p>
         </section>
-        <section>
-          <h2>Socials</h2>
+        <section class="socials">
+          <h2 class="slide-header">Socials</h2>
           <p>
             <a href="https://www.linkedin.com/in/abel-sen/">
               <?xml version="1.0" encoding="UTF-8"?><svg
@@ -206,7 +206,7 @@
           </p>
         </section>
         <section>
-          <h2>Agenda</h2>
+          <h2 class="slide-header">Agenda</h2>
           <ul>
             <li>C++ Origins and Ethos</li>
             <li>
@@ -252,8 +252,11 @@
                   </li>
                 </ul>
               </li>
-              <li>C with Classes was born</li>
+              <li>Early C++, i.e. C with Classes, was born</li>
             </ul>
+          </section>
+          <section>
+            So what can we say about C++ as a language?
           </section>
           <section>
             <ul>
@@ -262,9 +265,8 @@
                 <em>real-world</em> programming problems
               </li>
               <li>
-                Offers lightweight to zero-cost abstractions that to effectively
-                model
-                <em>concepts</em> from any problem domain
+                Offers lightweight to zero-cost abstractions for effectively
+                modelling <em>concepts</em> from any problem domain
               </li>
               <li>
                 Can <em>scale</em> to handle the complexity of the problems you
@@ -278,7 +280,7 @@
             <h2>C++98</h2>
           </section>
           <section data-auto-animate>
-            <h3>Core Functional Features</h3>
+            <h3 class="slide-header">Core Functional Features</h3>
             <ul>
               <li>Function pointers</li>
               <li>Function references</li>
@@ -288,40 +290,35 @@
             </ul>
           </section>
           <section data-auto-animate>
-            <h3>Core Functional Principles</h3>
+            <h3 class="slide-header">Core Functional Features</h3>
             <ul>
               <li>Functions as first-class citizens</li>
               <li>Generic programming</li>
             </ul>
           </section>
-          <section data-auto-animate data-visibility="hidden">
-            <h2>Function pointers</h2>
+          <section data-auto-animate>
+            <h3 class="slide-header">Function pointers</h3>
             <ul>
               <li>A feature shared with C</li>
-              <li>
-                Allow you to refactor high-level algorithms out of concrete
-                implementations
-              </li>
               <li>Make functions an (arguably) first-class feature</li>
             </ul>
           </section>
           <section data-auto-animate>
-            <h2>Functions as first-class citizens</h2>
+            <h3 class="slide-header">Functions as first-class citizens</h3>
             <ul>
               <li>Pass functions to functions</li>
               <li>Return functions from functions</li>
-              <li>Assign functions to names</li>
+              <li>Associate functions with names</li>
             </ul>
           </section>
           <section>
-            Key benefit: allows you to refactor high-level algorithms out of
-            concrete implementations
+            Key benefit: refactoring high-level algorithms out of concrete implementations
           </section>
           <section>
-            <h2>A real-world motivating example</h2>
+            <p>A real-world motivating example</p>
           </section>
           <section>
-            <h2>So you need to sort a list...</h2>
+            <p>So you need to sort a list...</p>
           </section>
           <section data-auto-animate>
             <ul>
@@ -436,39 +433,43 @@
                 }
               </script></code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/sb38Gzx49">https://godbolt.org/z/sb38Gzx49</a>
+                <a href="https://godbolt.org/z/Wr5KnGzeY">https://godbolt.org/z/Wr5KnGzeY</a>
               </figcaption>
             </figure>
           </section>
           <section>
-            <h2>Same driver skeleton</h2>
-            <pre><code data-trim class="language-cpp"><script type="text/template">
-              void variant_quicksort(std::vector<int>& v) {
-                variant_quicksort_impl(v, 0, static_cast<int>(v.size()) - 1);
-              }
-            </script></code></pre>
+            <h3 class="slide-header">Same driver skeleton</h3>
+            <figure class="code-example">
+              <pre><code data-trim class="language-cpp"><script type="text/template">
+                void variant_quicksort(std::vector<int>& v) {
+                  variant_quicksort_impl(v, 0, static_cast<int>(v.size()) - 1);
+                }
+              </script></code></pre>
+            </figure>
           </section>
           <section>
-            <h2>Same algorithm skeleton</h2>
-            <pre><code data-trim data-line-numbers="8-11|13|14" class="language-cpp"><script type="text/template">
-              void variant_quicksort_impl(
-                std::vector<int>& v,
-                int const first_element_index,
-                int const last_element_index
-              ) {
-                if (first_element_index >= last_element_index
-                    || first_element_index < 0) return;
-                  int const pivot_index = variant_partition(
-                    v,
-                    first_element_index,
-                    last_element_index
-                  );
-                variant_quicksort_impl(v, first_element_index, pivot_index - 1);
-                variant_quicksort_impl(v, pivot_index + 1, last_element_index);
-              }
-            </script></code></pre>
+            <h3 class="slide-header">Same algorithm skeleton</h3>
+            <figure class="code-example">
+              <pre><code data-trim data-line-numbers="8-12|13|14" class="language-cpp"><script type="text/template">
+                void variant_quicksort_impl(
+                  std::vector<int>& v,
+                  int const first_element_index,
+                  int const last_element_index
+                ) {
+                  if (first_element_index >= last_element_index
+                      || first_element_index < 0) return;
+                    int const pivot_index = variant_partition(
+                      v,
+                      first_element_index,
+                      last_element_index
+                    );
+                  variant_quicksort_impl(v, first_element_index, pivot_index - 1);
+                  variant_quicksort_impl(v, pivot_index + 1, last_element_index);
+                }
+              </script></code></pre>
+            </figure>
           </section>
-          <section><h2>Only differing partition strategies!</h2></section>
+          <section><p>Only differing partition strategies!</p></section>
           <section>
             <p>💡 Extract out the function as a parameter</p>
           </section>
@@ -551,31 +552,31 @@
                 }
               </script></code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/49G5aPoav">https://godbolt.org/z/49G5aPoav</a>
+                <a href="https://godbolt.org/z/dv1n3q79T">https://godbolt.org/z/dv1n3q79T</a>
               </figcaption>
             </figure>
           </section>
           <section>
-            <h2>Benefits</h2>
+            <h3 class="slide-header">Benefits</h3>
             <ul>
               <li>
                 Sorting algorithm separated from concrete partition strategy
               </li>
               <li>
                 Code can be refactored or extended with new strategies without
-                code bloat
+                excessive code bloat
               </li>
             </ul>
           </section>
           <section>
-            <h2>Cons</h2>
+            <h3 class="slide-header">Cons</h3>
             <ul>
               <li>Parameter drilling of function pointer</li>
               <li>Runtime penalty of function pointer dereference</li>
             </ul>
           </section>
           <section>
-            <h3>Function references</h3>
+            <h3 class="slide-header">Function references</h3>
             <ul>
               <li>Similar to function pointers</li>
               <li>But cannot be reseated</li>
@@ -587,7 +588,7 @@
           </section>
           <section>
             <figure class="code-example">
-              <pre><code data-trim data-line-numbers="63-64|38|25|8-19" class="language-cpp"><script type="text/template">
+              <pre><code data-trim data-line-numbers="62-63|37|24|8-18" class="language-cpp"><script type="text/template">
                 #include <algorithm>
                 #include <cstdlib>
                 #include <iostream>
@@ -600,7 +601,6 @@
                   int const first_element_index,
                   int const last_element_index
                 ); // Definition elided
-
 
                 int hoare_partition(
                   std::vector<int>& v,
@@ -664,12 +664,12 @@
                 }
               </script></code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/7cMMT1qYa">https://godbolt.org/z/7cMMT1qYa</a>
+                <a href="https://godbolt.org/z/53853noP6">https://godbolt.org/z/53853noP6</a>
               </figcaption>
             </figure>
           </section>
           <section>
-            <h2>The <span class="code">&lt;functional&gt;</span> header</h2>
+            <h3>The <span class="code">&lt;functional&gt;</span> header</h3>
           </section>
           <section>
             <ul>
@@ -682,15 +682,17 @@
             </ul>
           </section>
           <section>
-            <p>Let&apos;s do another refactor</p>
+            <p>Let&apos;s first do another refactor</p>
           </section>
           <section>
-            <p>Key idea: allow the user to pick the type of customization</p>
+            <p>Key principle: Allow user to pick the type of customization similar to before</p>
           </section>
           <section>
             <figure class="code-example">
-              <pre><code data-trim data-line-numbers="22-28|6|11|15-19"><script type="text/template">
-                #include <algorithm>
+              <pre><code data-trim data-line-numbers="24-30|8|13|17-21"><script type="text/template">
+                #ifndef QUICKSORT_HPP_INCLUDED
+                #define QUICKSORT_HPP_INCLUDED
+
                 #include <vector>
 
                 // Referenced from: https://en.wikipedia.org/wiki/Quicksort
@@ -718,9 +720,11 @@
                 ) {
                   quicksort_impl(v, 0, static_cast<int>(v.size()) - 1, partition);
                 }
+
+                #endif
               </script></code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/xcfK4fKT8">https://godbolt.org/z/xcfK4fKT8</a>
+                <a href="https://godbolt.org/z/fMoe3r1Yv">https://godbolt.org/z/fMoe3r1Yv</a>
               </figcaption>
             </figure>
           </section>
@@ -780,7 +784,7 @@
                 }
               </script></code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/xcfK4fKT8">https://godbolt.org/z/xcfK4fKT8</a>
+                <a href="https://godbolt.org/z/fMoe3r1Yv">https://godbolt.org/z/fMoe3r1Yv</a>
               </figcaption>
             </figure>
           </section>
@@ -800,11 +804,11 @@
                 // Referenced from: https://en.wikipedia.org/wiki/Quicksort
 
                 struct LomutoPartition {
-                   int operator()(
-                     std::vector<int>& v,
-                     int const first_element_index,
-                     int const last_element_index
-                   ); // Definition elided
+                  int operator()(
+                    std::vector<int>& v,
+                    int const first_element_index,
+                    int const last_element_index
+                  ) const; // Definition elided
                 };
 
                 struct HoarePartition{
@@ -812,7 +816,7 @@
                     std::vector<int>& v,
                     int const first_element_index,
                     int const last_element_index
-                  ); // Definition elided
+                  ) const; // Definition elided
                 };
 
                 int main()
@@ -844,19 +848,19 @@
                 }
               </script></code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/6oKExrras">https://godbolt.org/z/6oKExrras</a>
+                <a href="https://godbolt.org/z/PP4szz8sn">https://godbolt.org/z/PP4szz8sn</a>
               </figcaption>
             </figure>
           </section>
           <section>
             <p>
               Function objects allow us to emulate closures by capturing values
-              or variables upon construction
+              or variables upon construction.
             </p>
           </section>
           <section>
             <figure class="code-example">
-              <pre><code data-trim data-line-numbers="6-15|18-30"><script type="text/template">
+              <pre><code data-trim data-line-numbers="6-15|18-32"><script type="text/template">
                 #include <algorithm>
                 #include <cstdlib>
                 #include <iostream>
@@ -868,7 +872,7 @@
                   AddNumber(int number) {
                     this->number = number;
                   }
-                  int operator()(int other_number) {
+                  int operator()(int other_number) const {
                     return number + other_number;
                   }
                 };
@@ -878,7 +882,9 @@
                   v1.push_back(1);
                   v1.push_back(2);
                   v1.push_back(3);
-                  int x = 5;
+                  // A bit of a redundant declaration,
+                  // but here for the sake of example
+                  int const x = 5;
                   std::transform(
                     v1.begin(), v1.end(), std::back_inserter(v2), AddNumber(5)
                   );
@@ -890,15 +896,15 @@
                 }
               </script></code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/aEG9n3P6W">https://godbolt.org/z/aEG9n3P6W</a>
+                <a href="https://godbolt.org/z/5cad7q174">https://godbolt.org/z/5cad7q174</a>
               </figcaption>
             </figure>
           </section>
           <section data-auto-animate>
-            <h2>A slight problem</h2>
+            <h3>A slight problem</h3>
           </section>
           <section data-auto-animate>
-            <h2>A slight problem</h2>
+            <h3 class="slide-header">A slight problem</h3>
             <ul>
               <li>
                 Already have a function object that expresses our desired
@@ -949,7 +955,7 @@
                 }
               </script></code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/We4czjMej">https://godbolt.org/z/We4czjMej</a>
+                <a href="https://godbolt.org/z/Ts4b84Ezf">https://godbolt.org/z/Ts4b84Ezf</a>
               </figcaption>
             </figure>
           </section>
@@ -960,9 +966,10 @@
           </section>
           <section>
             <figure class="code-example">
-              <pre><code data-trim data-line-numbers="17|13-18|12"><script type="text/template">
+              <pre><code data-trim data-line-numbers="18|14-19|13"><script type="text/template">
                 #include <algorithm>
                 #include <cstdlib>
+                #include <functional>
                 #include <iostream>
                 #include <vector>
 
@@ -972,12 +979,12 @@
                   v1.push_back(1);
                   v1.push_back(2);
                   v1.push_back(3);
-                  int x = 5;
+                  int const x = 5;
                   std::transform(
                     v1.begin(),
                     v1.end(),
                     std::back_inserter(v2),
-                    bind1st(std::plus<int>(), x)
+                    std::bind1st(std::plus<int>(), x)
                   );
                   for (std::vector<int>::size_type i = 0; i < v2.size(); ++i) {
                     std::cout << v2[i] << ' ';
@@ -987,18 +994,18 @@
                 }
               </script></code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/Yxo6W9aq6">https://godbolt.org/z/Yxo6W9aq6</a>
+                <a href="https://godbolt.org/z/vba5dsGM5">https://godbolt.org/z/vba5dsGM5</a>
               </figcaption>
             </figure>
           </section>
           <section>
             <ul>
-              <li>Similar to <span class="code">bind1st</span>, <span class="code">bind2nd</span> specialises a function object by binding the second argument</li>
+              <li>Similar to <span class="code">bind1st</span>, <span class="code">bind2nd</span> specialises a function object by binding the <em>second</em> argument.</li>
               <li>Many other function objects in <span class="code">&lt;functional&gt;</span> like <span class="code">minus&lt;T&gt;</span>, <span class="code">equal_to&lt;T&gt;</span>, etc.</li>
             </ul>
           </section>
           <section>
-            <h2>A note about pointers to members</h2>
+            <h3 class="slide-header">A note about pointers to members</h3>
             <ul>
               <li>Can be turned into function objects that take an object and return a member</li>
               <li><span class="code">&lt;functional&gt;</span> also provides function objects and function templates like <span class="code">mem_fun_t</span> and <span class="code">mem_fun</span> for this purpose</li>
@@ -1058,7 +1065,7 @@
           <section>Generic programming and templates</section>
           <section>
             <ul>
-              <li>Templates allow you to specify generic <em>recipes</em> for baking concrete classes or functions</li>
+              <li>Templates allow you to specify generic <em>recipes</em> for baking concrete classes or functions.</li>
               <li>Enable one to <em>specialise</em> the recipe for specific classes</li>
             </ul>
           </section>
@@ -1100,7 +1107,7 @@
 
                   // Definitions elided
                   void push(T const value);
-                  T front();
+                  T front() const;
                   T pop();
                   ~Stack();
                 };
@@ -1108,7 +1115,7 @@
                 #endif
               </script></code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/Gjx17vjdo">https://godbolt.org/z/Gjx17vjdo</a>
+                <a href="https://godbolt.org/z/6nszxW8az">https://godbolt.org/z/6nszxW8az</a>
               </figcaption>
             </figure>
           </section>
@@ -1132,14 +1139,14 @@
                 }
               </script></code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/Gjx17vjdo">https://godbolt.org/z/Gjx17vjdo</a>
+                <a href="https://godbolt.org/z/6nszxW8az">https://godbolt.org/z/6nszxW8az</a>
               </figcaption>
             </figure>
           </section>
           <section>An example of specialisation</section>
           <section>
             <figure class="code-example">
-              <pre><code data-trim data-line-numbers="40-41|46-55|57-65|67-78|81-84"><script type="text/template">
+              <pre><code data-trim data-line-numbers="40-42|46-56|58-66|68-79|82-85"><script type="text/template">
                 #ifndef STACK_HPP_INCLUDED
                 #define STACK_HPP_INCLUDED
 
@@ -1174,7 +1181,7 @@
 
                   // Definitions elided
                   void push(T const value);
-                  T front();
+                  T front() const;
                   T pop();
                   ~Stack();
                 };
@@ -1188,7 +1195,8 @@
                   void resize()
                   {
                     unsigned char* old_bitset = bitset;
-                    std::size_t const num_chars_used = capacity / sizeof(unsigned char) / 8;
+                    std::size_t const num_chars_used
+                      = capacity / sizeof(unsigned char) / 8;
                     bitset = new unsigned char[num_chars_used * 2];
                     for (std::size_t i = 0; i < num_chars_used; ++i) {
                       bitset[i] = old_bitset[i];
@@ -1221,7 +1229,7 @@
 
                   // Definitions elided
                   void push(bool b);
-                  bool front();
+                  bool front() const;
                   bool pop();
                   ~Stack();
                 };
@@ -1229,7 +1237,7 @@
                 #endif
               </script></code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/cjnYcYs6r">https://godbolt.org/z/cjnYcYs6r</a>
+                <a href="https://godbolt.org/z/f46q345P6">https://godbolt.org/z/f46q345P6</a>
               </figcaption>
             </figure>
           </section>
@@ -1255,7 +1263,7 @@
                 }
               </script></code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/cjnYcYs6r">https://godbolt.org/z/cjnYcYs6r</a>
+                <a href="https://godbolt.org/z/f46q345P6">https://godbolt.org/z/f46q345P6</a>
               </figcaption>
             </figure>
           </section>
@@ -1288,9 +1296,7 @@
                   putStrLn (show w) -- Some "Hello, world!"
               </script></code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/cYGfbrThq"
-                  >https://godbolt.org/z/cYGfbrThq</a
-                >
+                <a href="https://godbolt.org/z/cYGfbrThq">https://godbolt.org/z/cYGfbrThq</a>
               </figcaption>
             </figure>
           </section>
@@ -1301,20 +1307,20 @@
             <ul>
               <li>Emulating the specialisability of C++ templates is more difficult
                 <ul>
-                  <li>Requires dipping into type and data families</li>
+                  <li>Requires leveraging type and data families</li>
                 </ul>
               </li>
               <li>Example at: <a href="https://godbolt.org/z/G3G53YPG3">https://godbolt.org/z/G3G53YPG3</a></li>
             </ul>
           </section>
           <section>
-            C++ facilitates creating ergonomic and <em>transparently</em> performant data structures
+            C++ facilitates creating ergonomic and <em>transparently</em> performant data structures.
           </section>
           <section>
             Now, what about C++98 template meta-programming?
           </section>
           <section>
-            We&apos;ll return to that. 😉
+            Probably best left for another talk 😉
           </section>
         </section>
         <section>
@@ -1322,7 +1328,7 @@
             <h2>C++11</h2>
           </section>
           <section>
-            <h2>Core Functional Features</h2>
+            <h3 class="slide-header">Core Functional Features</h3>
             <ul>
               <li>Lambdas</li>
               <li><span class="code">std::function</span></li>
@@ -1332,25 +1338,25 @@
             </ul>
           </section>
           <section>
-            <h3>Lambdas</h3>
+            <h3 class="slide-header">Lambdas</h3>
             <ul>
               <li>
                 Can be easily defined for any number arguments (not just one or
                 two)
               </li>
               <li>
-                Can capture variables from surrounding scope to form closures
+                Can capture variables from surrounding scope to form <em>actual</em> closures
               </li>
             </ul>
           </section>
           <section data-auto-animate>
-            <h3>The anatomy of a lambda</h3>
-            <pre><code data-trim class="language-cpp centered">[captures](parameters){ body }</code></pre>
+            <h3 class="slide-header">The anatomy of a lambda</h3>
+            <span class="code">[captures](parameters){ body }</span>
           </section>
           <section>A string/file processing example</section>
           <section>
             <figure class="code-example">
-              <pre><code data-trim data-line-numbers="9-10|11-18|15-17" class="language-cpp"><script type="text/template">
+              <pre><code data-trim data-line-numbers="9-12|13-20|17-19" class="language-cpp"><script type="text/template">
                 #include <algorithm>
                 #include <cstdlib>
                 #include <iostream>
@@ -1359,7 +1365,9 @@
                 #include <vector>
 
                 int main() {
-                  std::vector<std::string> filenames{ "logs.txt", "app.hs", "mock.cpp" };
+                  std::vector<std::string> const filenames{
+                    "logs.txt", "app.hs", "mock.cpp"
+                  };
                   std::vector<std::string> programs;
                   std::copy_if(
                     filenames.cbegin(),
@@ -1369,21 +1377,21 @@
                       return filename.rfind(".txt") == std::string::npos;
                     }
                   );
-                  for (auto program: programs) {
+                  for (auto const& program: programs) {
                     std::cout << program << '\n';
                   }
                   return EXIT_SUCCESS;
                 }
               </script></code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/xe9hY9Pe5">https://godbolt.org/z/xe9hY9Pe5</a>
+                <a href="https://godbolt.org/z/PWz633ezv">https://godbolt.org/z/PWz633ezv</a>
               </figcaption>
             </figure>
           </section>
           <section>Capturing variables with closures</section>
           <section>
             <figure class="code-example">
-              <pre><code data-trim data-line-numbers="9-11|12-15|20"><script type="text/template">
+              <pre><code data-trim data-line-numbers="9-11|12-15|20|20-23"><script type="text/template">
                 #ifndef LIB_HPP_INCLUDED
                 #define LIB_HPP_INCLUDED
 
@@ -1393,7 +1401,7 @@
                 #include <vector>
 
                 std::vector<std::string> get_programs(
-                  std::vector<std::string> filenames
+                  std::vector<std::string> const& filenames
                 ) {
                   std::vector<std::string> programs;
                   std::string ignored_file_extension;
@@ -1403,8 +1411,9 @@
                     filenames.cbegin(),
                     filenames.cend(),
                     std::back_inserter(programs),
-                    [&ignored_file_extension](std::string filename) {
-                      return filename.rfind(ignored_file_extension) != std::string::npos;
+                    [&ignored_file_extension](std::string const& filename) {
+                      return filename.rfind(ignored_file_extension)
+                        != std::string::npos;
                     }
                   );
                   return programs;
@@ -1413,13 +1422,13 @@
                 #endif
               </script></code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/cPTao68YW">https://godbolt.org/z/cPTao68YW</a>
+                <a href="https://godbolt.org/z/3WvMh1Pv7">https://godbolt.org/z/3WvMh1Pv7</a>
               </figcaption>
             </figure>
           </section>
           <section>
             <figure class="code-example">
-              <pre><code data-trim data-line-numbers><script type="text/template">
+              <pre><code data-trim data-line-numbers="8-17"><script type="text/template">
                 #include "lib.hpp"
 
                 #include <cstdlib>
@@ -1428,16 +1437,18 @@
                 #include <vector>
 
                 int main() {
-                  std::vector<std::string> filenames{ "logs.txt", "app.hs", "profiler.cpp" };
-                  std::vector<std::string> programs{ get_programs(filenames) };
-                  for (auto program: programs) {
+                  std::vector<std::string> const filenames{
+                    "logs.txt", "app.hs", "profiler.cpp"
+                  };
+                  std::vector<std::string> const programs{ get_programs(filenames) };
+                  for (auto const& program: programs) {
                     std::cout << program << '\n';
                   }
                   return EXIT_SUCCESS;
                 }
               </script></code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/cPTao68YW">https://godbolt.org/z/cPTao68YW</a>
+                <a href="https://godbolt.org/z/3WvMh1Pv7">https://godbolt.org/z/3WvMh1Pv7</a>
               </figcaption>
             </figure>
           </section>
@@ -1457,8 +1468,8 @@
           <section>
             <figure class="code-example">
               <pre><code data-trim data-line-numbers="12-22" class="language-cpp"><script type="text/template">
-                #ifndef PERCEPTRON_HPP
-                #define PERCEPTRON_HPP
+                #ifndef PERCEPTRON_HPP_INCLUDED
+                #define PERCEPTRON_HPP_INCLUDED
 
                 #include "Coordinate.hpp"
 
@@ -1482,7 +1493,7 @@
 
                 #endif
               </script></code></pre>
-	      <figcaption><a href="https://godbolt.org/z/jq181GEdE">https://godbolt.org/z/jq181GEdE</a></figcaption>
+	      <figcaption><a href="https://godbolt.org/z/644xjh3xq">https://godbolt.org/z/644xjh3xq</a></figcaption>
 	    </figure>
 	  </section>
 	  <section>
@@ -1524,21 +1535,18 @@
                   return EXIT_SUCCESS;
                 }
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/jq181GEdE">https://godbolt.org/z/jq181GEdE</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/644xjh3xq">https://godbolt.org/z/644xjh3xq</a></figcaption>
             </figure>
           </section>
           <section>
             <ul>
               <li><span class="code">std::bind</span> allows you to create ad-hoc specialised functions from more general ones
-                <ul>
-                  <li>Great for when you know some arguments ahead of time</li>
-                </ul>
-              </li>
-              <li>Can do this so-called <em>partial application</em> for as many arguments as needed</li>
+              <li>Great for when you know some arguments ahead of time, e.g. the <span class="code">this</span> argument of a member function</li>
+              <li>Can do this so-called <em>partial application</em> for as many arguments as needed more generally</li>
             </ul>
           </section>
           <section>
-            <h2><span class="code">auto</span> type deduction</h2>
+            <h3 class="slide-header"><span class="code">auto</span> type deduction</h3>
             <ul>
               <li>Allow you to bind values to names without having to specify types
                 <ul>
@@ -1554,7 +1562,7 @@
 
               int main() {
                 double x = 2.0;
-                auto x_squared{ x * x };
+                auto const x_squared{ x * x };
                 return EXIT_SUCCESS;
               }
             </script></code></pre>
@@ -1564,8 +1572,8 @@
             <h2><span class="code">std::function</span></h2>
             <ul>
               <li>Lambdas &rarr; unique types</li>
-              <li><span class="code">std::function</span>: erases specific function type to guarantee general signature</li>
-              <li>Useful when a desired function can only be known at <em>runtime</em></li>
+              <li><span class="code">std::function</span>: erases concrete type to provide a general function signature</li>
+              <li>Useful for when a desired function can only be known at <em>runtime</em></li>
             </ul>
           </section>
           <section>
@@ -1608,7 +1616,7 @@
 
                 int main()
                 {
-                  std::vector<Subscriber> subscribers{
+                  std::vector<Subscriber> const subscribers{
                     { Plan::standard, false },
                     { Plan::ultra, true },
                     { Plan::ultra, false },
@@ -1628,7 +1636,7 @@
                   return EXIT_SUCCESS;
                 }
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/zY55YvssT">https://godbolt.org/z/zY55YvssT</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/js64rTcdj">https://godbolt.org/z/js64rTcdj</a></figcaption>
             </figure>
           </section>
           <section>
@@ -1637,7 +1645,7 @@
               <li>Provided better support for primitive &quot;concepts&quot;
                 <ul>
                   <li>Enabled by C++11 variadic generics, alias templates and the <span class="code">&lt;type_traits&gt;</span> header</li>
-                  <li>Utilizes SFINAE first introduced with C++98</li>
+                  <li>Empowered by C++98 SFINAE</li>
                 </ul>
               </li>
               <li>Enables <em>ad-hoc</em> polymorphism</li>
@@ -1646,7 +1654,7 @@
           <section>An example</section>
           <section>
             <figure class="code-example">
-              <pre><code data-trim data-line-numbers="194-195|197|200|202|163-177|150-161|39-48|28-37" class="language-cpp"><script type="text/template">
+              <pre><code data-trim data-line-numbers="196-197|199|202|204|165-179|152-163|40-50|28-38" class="language-cpp"><script type="text/template">
                 #include <cstdlib>
                 #include <functional>
                 #include <iostream>
@@ -1675,34 +1683,36 @@
                 struct Sum;
 
                 template <typename T>
-                struct Product<T, my_enable_if_t<
-                  std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                struct Product<
+                  T,
+                  my_enable_if_t<std::is_arithmetic<my_remove_cvref_t<T>>::value>
                 > {
                   T value;
                   constexpr Product(my_remove_cvref_t<T>&& value)
-                      : value { value }
-                  {
-                  }
+                    : value { std::move(value) } {}
+                  constexpr Product(my_remove_cvref_t<T> const& value)
+                    : value { value } {}
                 };
 
                 template <typename T>
-                struct Sum<T, my_enable_if_t<
-                  std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                struct Sum<
+                  T,
+                  my_enable_if_t<std::is_arithmetic<my_remove_cvref_t<T>>::value>
                 > {
                   T value;
                   constexpr Sum(my_remove_cvref_t<T>&& value)
-                      : value { value }
-                  {
-                  }
+                    : value { std::move(value) } {}
+                  constexpr Sum(my_remove_cvref_t<T> const& value)
+                    : value { value } {}
                 };
 
                 template <typename T>
-                Product<my_remove_cvref_t<T>> make_product(T&& t) {
+                constexpr Product<my_remove_cvref_t<T>> make_product(T&& t) {
                   return { std::forward<my_remove_cvref_t<T>>(t) };
                 }
 
                 template <typename T>
-                Sum<my_remove_cvref_t<T>> make_sum(T&& t) {
+                constepxr Sum<my_remove_cvref_t<T>> make_sum(T&& t) {
                   return { std::forward<T>(t) };
                 }
 
@@ -1711,7 +1721,7 @@
                   std::is_arithmetic<my_remove_cvref_t<T>>::value>
                 > {
                   static T const mempty;
-                  static T mappend(T a, T b) { return a + b; }
+                  static constexpr T mappend(T a, T b) { return a + b; }
                 };
 
                 template <typename T>
@@ -1727,7 +1737,7 @@
                 > {
                   static T const mempty;
                   template <typename U, typename V>
-                  static my_enable_if_t<
+                  static constexpr my_enable_if_t<
                     std::is_same<U, V>::value, std::string
                   > mappend(U&& a, V&& b)
                   {
@@ -1747,7 +1757,7 @@
                 struct Monoid<Product<T>> {
                   static Product<T> const mempty;
                   template <typename U, typename V>
-                  static my_enable_if_t<
+                  static constexpr my_enable_if_t<
                     std::is_same<
                       Product<T>, my_remove_cvref_t<U>
                     >::value &&
@@ -1764,7 +1774,7 @@
                 struct Monoid<Sum<T>> {
                   static Sum<T> const mempty;
                   template <typename U, typename V>
-                  static my_enable_if_t<
+                  static constexpr my_enable_if_t<
                     std::is_same<Sum<T>,
                       my_remove_cvref_t<U>>::value &&
                       std::is_same<Sum<T>, my_remove_cvref_t<V>>::value,
@@ -1782,14 +1792,14 @@
                 Sum<T> const Monoid<Sum<T>>::mempty{ 0 };
 
                 template <typename T>
-                T mempty() { return Monoid<T>::mempty; }
+                constexpr T mempty() { return Monoid<T>::mempty; }
 
                 template <typename T, typename U>
                 my_enable_if_t<
                   std::is_same<
                     my_remove_cvref_t<T>, my_remove_cvref_t<U>
                   >::value, my_remove_cvref_t<T>
-                > mappend(T&& a, U&& b)
+                > constexpr mappend(T&& a, U&& b)
                 {
                   return Monoid<my_remove_cvref_t<T>>::mappend(
                     std::forward<my_remove_cvref_t<T>>(a),
@@ -1800,7 +1810,7 @@
                   typename Collection,
                   typename Element = typename
                     my_remove_cvref_t<Collection>::value_type
-                > Element foldM(Collection&& c)
+                > constexpr Element foldM(Collection&& c)
                 {
                   return std::accumulate(
                     c.cbegin(),
@@ -1814,7 +1824,7 @@
                   typename Collection,
                   typename Element = typename
                     my_remove_cvref_t<Collection>::value_type
-                > Monoid foldMap(
+                > constexpr Monoid foldMap(
                   Collection&& c,
                   std::function<Monoid(my_remove_cvref_t<Element>)> f
                 ) {
@@ -1822,26 +1832,26 @@
                     c.cbegin(),
                     c.cend(),
                     mempty<Monoid>(),
-                    [=](Monoid acc, Element e) { return mappend(acc, f(e)); });
+                    [&](Monoid acc, Element e) { return mappend(acc, f(e)); });
                 }
 
                 int main()
                 {
-                  auto i { make_product(3) };
-                  //  auto j{ make_sum("adf") };
+                  auto const i { make_product(3) };
+                  // auto const j{ make_sum("adf") };
                   // char const (&)[4] is not arithmetic
-                  auto k { mempty<Product<int>>() };
-                  auto l { mappend(i, k) };
-                  auto m { make_sum(3.0) };
-                  auto n { make_sum<float>(3.0) };
-                  //  auto o{ mappend(m, n) };
+                  auto const k { mempty<Product<int>>() };
+                  auto const l { mappend(i, k) };
+                  auto const m { make_sum(3.0) };
+                  auto const n { make_sum<float>(3.0) };
+                  //  auto const o{ mappend(m, n) };
                   // can't mappend float and double Products
-                  //  auto p{ mappend(l, m) };
+                  //  auto const p{ mappend(l, m) };
                   // can't mappend Sum and Product
-                  auto q { mempty<std::string>() };
-                  auto r { mempty<int>() };
-                  std::vector<int> v1 { 1, 2, 3, 4 };
-                  std::vector<std::string> v2 { "Hello ", "there, ", "world!" };
+                  auto const q { mempty<std::string>() };
+                  auto const r { mempty<int>() };
+                  std::vector<int> const v1 { 1, 2, 3, 4 };
+                  std::vector<std::string> const v2 { "Hello ", "there, ", "world!" };
                   std::cout <<
                     foldMap<Product<int>>(v1, make_product<int>).value
                     << '\n';
@@ -1854,11 +1864,11 @@
                </script></code></pre>
                <!-- Compiler bug in GCC/Clang?: https://godbolt.org/z/c1vrE1fEa -->
                <!-- https://godbolt.org/z/Ya41PePbe -->
-               <figcaption><a href="https://godbolt.org/z/Ya41PePbe">https://godbolt.org/z/Ya41PePbe</a></figcaption>
+               <figcaption><a href="https://godbolt.org/z/G6fe4so5x">https://godbolt.org/z/G6fe4so5x</a></figcaption>
             </figure>
           </section>
           <section>
-            Ad-hoc polymorphism in Haskell
+            Ad-hoc polymorphism in Haskell with typeclasses
           </section>
           <section>
             <figure class="code-example">
@@ -1892,9 +1902,9 @@
                  main = do
                    let nums = [1..4] :: [Int]
                    print $ getProduct . foldMList . map MyProduct $ nums -- 24
-                   print $ getSum . foldMList . map MySum $ nums             -- 10
+                   print $ getSum . foldMList . map MySum $ nums         -- 10
                </code></pre>
-               <figcaption><a href="https://godbolt.org/z/vn6Pjbvef">https://godbolt.org/z/vn6Pjbvef</a></figcaption>
+               <figcaption><a href="https://godbolt.org/z/zajYG4zG3">https://godbolt.org/z/zajYG4zG3</a></figcaption>
             </figure>
           </section>
         </section>
@@ -1903,7 +1913,7 @@
             <h2>C++14</h2>
           </section>
           <section>
-            <h3>Core Functional Features</h3>
+            <h3 class="slide-header">Core Functional Features</h3>
             <ul>
               <li><span class="code">auto</span> return type deduction</li>
               <li><span class="code">auto</span> lambda parameters</li>
@@ -1911,7 +1921,7 @@
           </section>
           <section>
             <figure class="code-example">
-              <pre><code data-trim data-line-numbers="160-174|165|173|147-158|151|157|133" class="language-cpp"><script type="text/template">
+              <pre><code data-trim data-line-numbers="162-176|167|175|149-160|153|159|135" class="language-cpp"><script type="text/template">
                 #include <cstdlib>
                 #include <functional>
                 #include <iostream>
@@ -1937,34 +1947,36 @@
                 struct Sum;
 
                 template <typename T>
-                struct Product<T, std::enable_if_t<
-                  std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                struct Product<
+                  T,
+                  std::enable_if_t<std::is_arithmetic<my_remove_cvref_t<T>>::value>
                 > {
                   T value;
                   constexpr Product(my_remove_cvref_t<T>&& value)
-                      : value { value }
-                  {
-                  }
+                    : value { std::move(value) } {}
+                  constexpr Product(my_remove_cvref_t<T> const& value)
+                    : value { value } {}
                 };
 
                 template <typename T>
-                struct Sum<T, std::enable_if_t<
-                  std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                struct Sum<
+                  T,
+                  std::enable_if_t<std::is_arithmetic<my_remove_cvref_t<T>>::value>
                 > {
                   T value;
                   constexpr Sum(my_remove_cvref_t<T>&& value)
-                      : value { value }
-                  {
-                  }
+                    : value { std::move(value) } {}
+                  constexpr Sum(my_remove_cvref_t<T> const& value)
+                    : value { value } {}
                 };
 
                 template <typename T>
-                Product<my_remove_cvref_t<T>> make_product(T&& t) {
+                constexpr Product<my_remove_cvref_t<T>> make_product(T&& t) {
                   return { std::forward<my_remove_cvref_t<T>>(t) };
                 }
 
                 template <typename T>
-                Sum<my_remove_cvref_t<T>> make_sum(T&& t) {
+                constepxr Sum<my_remove_cvref_t<T>> make_sum(T&& t) {
                   return { std::forward<T>(t) };
                 }
 
@@ -1973,7 +1985,7 @@
                   std::is_arithmetic<my_remove_cvref_t<T>>::value>
                 > {
                   static T const mempty;
-                  static T mappend(T a, T b) { return a + b; }
+                  static constexpr T mappend(T a, T b) { return a + b; }
                 };
 
                 template <typename T>
@@ -1989,7 +2001,7 @@
                 > {
                   static T const mempty;
                   template <typename U, typename V>
-                  static std::enable_if_t<
+                  static constexpr std::enable_if_t<
                     std::is_same<U, V>::value, std::string
                   > mappend(U&& a, V&& b)
                   {
@@ -2009,7 +2021,7 @@
                 struct Monoid<Product<T>> {
                   static Product<T> const mempty;
                   template <typename U, typename V>
-                  static std::enable_if_t<
+                  static constexpr std::enable_if_t<
                     std::is_same<
                       Product<T>, my_remove_cvref_t<U>
                     >::value &&
@@ -2026,7 +2038,7 @@
                 struct Monoid<Sum<T>> {
                   static Sum<T> const mempty;
                   template <typename U, typename V>
-                  static std::enable_if_t<
+                  static constexpr std::enable_if_t<
                     std::is_same<Sum<T>,
                       my_remove_cvref_t<U>>::value &&
                       std::is_same<Sum<T>, my_remove_cvref_t<V>>::value,
@@ -2044,14 +2056,14 @@
                 Sum<T> const Monoid<Sum<T>>::mempty{ 0 };
 
                 template <typename T>
-                auto mempty() { return Monoid<T>::mempty; }
+                constexpr auto mempty() { return Monoid<T>::mempty; }
 
                 template <typename T, typename U>
                 std::enable_if_t<
                   std::is_same<
                     my_remove_cvref_t<T>, my_remove_cvref_t<U>
                   >::value, my_remove_cvref_t<T>
-                > mappend(T&& a, U&& b)
+                > constexpr mappend(T&& a, U&& b)
                 {
                   return Monoid<my_remove_cvref_t<T>>::mappend(
                     std::forward<my_remove_cvref_t<T>>(a),
@@ -2062,7 +2074,7 @@
                   typename Collection,
                   typename Element = typename
                     my_remove_cvref_t<Collection>::value_type
-                > auto foldM(Collection&& c)
+                > constexpr auto foldM(Collection&& c)
                 {
                   return std::accumulate(
                     c.cbegin(),
@@ -2076,7 +2088,7 @@
                   typename Collection,
                   typename Element = typename
                     my_remove_cvref_t<Collection>::value_type
-                > auto foldMap(
+                > constexpr auto foldMap(
                   Collection&& c,
                   std::function<Monoid(my_remove_cvref_t<Element>)> f
                 ) {
@@ -2084,26 +2096,26 @@
                     c.cbegin(),
                     c.cend(),
                     mempty<Monoid>(),
-                    [=](auto acc, auto e) { return mappend(acc, f(e)); });
+                    [&](auto acc, auto e) { return mappend(acc, f(e)); });
                 }
 
                 int main()
                 {
-                  auto i { make_product(3) };
-                  //  auto j{ make_sum("adf") };
+                  auto const i { make_product(3) };
+                  // auto const j{ make_sum("adf") };
                   // char const (&)[4] is not arithmetic
-                  auto k { mempty<Product<int>>() };
-                  auto l { mappend(i, k) };
-                  auto m { make_sum(3.0) };
-                  auto n { make_sum<float>(3.0) };
-                  //  auto o{ mappend(m, n) };
+                  auto const k { mempty<Product<int>>() };
+                  auto const l { mappend(i, k) };
+                  auto const m { make_sum(3.0) };
+                  auto const n { make_sum<float>(3.0) };
+                  //  auto const o{ mappend(m, n) };
                   // can't mappend float and double Products
-                  //  auto p{ mappend(l, m) };
+                  //  auto const p{ mappend(l, m) };
                   // can't mappend Sum and Product
-                  auto q { mempty<std::string>() };
-                  auto r { mempty<int>() };
-                  std::vector<int> v1 { 1, 2, 3, 4 };
-                  std::vector<std::string> v2 { "Hello ", "there, ", "world!" };
+                  auto const q { mempty<std::string>() };
+                  auto const r { mempty<int>() };
+                  std::vector<int> const v1 { 1, 2, 3, 4 };
+                  std::vector<std::string> const v2 { "Hello ", "there, ", "world!" };
                   std::cout <<
                     foldMap<Product<int>>(v1, make_product<int>).value
                     << '\n';
@@ -2114,7 +2126,7 @@
                   return EXIT_SUCCESS;
                 }
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/9WYo1a9x8">https://godbolt.org/z/9WYo1a9x8</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/1qEvo88dG">https://godbolt.org/z/1qEvo88dG</a></figcaption>
             </figure>
           </section>
         </section>
@@ -2123,7 +2135,7 @@
             <h2>C++17</h2>
           </section>
           <section data-auto-animate>
-            <h3>Core Functional Features</h3>
+            <h3 class="slide-header">Core Functional Features</h3>
             <ul>
               <li>Structured bindings</li>
               <li><span class="code">std::optional</span></li>
@@ -2132,14 +2144,14 @@
             </ul>
           </section>
           <section data-auto-animate>
-            <h3>Core Functional Features</h3>
+            <h3 class="slide-header">Core Functional Features</h3>
             <ul>
-              <li>Basic pattern matching and <em>Algebraic data types</em></li>
+              <li>Basic pattern matching and <em>algebraic data types</em></li>
               <li>Parallel algorithms</li>
             </ul>
           </section>
           <section>
-            <span class="code">Structured bindings</span>
+            Structured bindings
           </section>
           <section>
             <figure class="code-example">
@@ -2156,7 +2168,7 @@
                 };
 
                 // An imaginary database of subscribers
-                static std::vector<Subscriber> subscribers{
+                static const std::vector<Subscriber> subscribers{
                   { 0, "Abel", 2 },
                   { 1, "John", 5 }
                 };
@@ -2169,7 +2181,7 @@
                   return EXIT_SUCCESS;
                 }
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/dW8noT7ar">https://godbolt.org/z/dW8noT7ar</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/Y8MjY59Y1">https://godbolt.org/z/Y8MjY59Y1</a></figcaption>
             </figure>
           </section>
           <section>
@@ -2178,12 +2190,12 @@
           <section>
             <ul>
               <li>Gives us the ability to meaningfully compose computations that have <em>at most</em> one meaningful result<sup><a href="#composing-std-optional">1</a></sup></li>
-              <li>Essentially provides us with the <span class="code">Maybe</span> type constructor in Haskell we saw earlier</li>
+              <li>Essentially provides us with the <span class="code">Maybe</span> type constructor from Haskell we saw earlier</li>
               <li>Provides a <em>value-semantic</em> alternative to misappropriating pointers, heap allocation and exceptions for working with nullable values</li>
             </ul>
             <footer>
               <ol>
-                <li id="composing-std-optional">At least starting with C++20</li>
+                <li id="composing-std-optional">At least starting with C++23</li>
               </ol>
             </footer>
             <!--
@@ -2221,7 +2233,7 @@
                   phone{ phone } {}
                 };
 
-                // Don't throw if we can't validate,
+                // Do not throw if we cannot validate,
                 // just have a failed parse
                 std::optional<PhoneNumber>
                 parse_phone_number(std::string_view phone);
@@ -2233,20 +2245,20 @@
                   std::string_view first_name,
                   std::string_view last_name,
                   std::string_view email,
-                  std::optional<PhoneNumber> phone
+                  std::string_view phone
                 ) {
-                  if (age > 18 && is_valid(email))
+                  if (auto p{ parse_phone_number(phone) }; age > 18 && is_valid(email) && p)
                     return User(
                       age,
                       first_name,
                       last_name,
                       email,
-                      phone
+                      p
                     );
                   else return {};
                 }
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/9q43n1zs9">https://godbolt.org/z/9q43n1zs9</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/8KnjszeTK">https://godbolt.org/z/8KnjszeTK</a></figcaption>
             </figure>
           </section>
           <section>
@@ -2255,8 +2267,8 @@
           </section>
           <section>
             <ul>
-              <li>A generalization of enums that provides type-safe alternative to unions</li>
-              <li>A tool for defining <em>sum types</em></li>
+              <li>A generalization of enum / union that provides type-safe alternative to unions</li>
+              <li>A tool for defining <em>sum types</em> from FP languages</li>
               <li>Offers an alternative to rigid inheritance hierarchies</li>
             </ul>
           </section>

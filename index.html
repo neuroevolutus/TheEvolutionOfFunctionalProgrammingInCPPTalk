@@ -2805,6 +2805,48 @@
                 }
               </script></code></pre>
               <figcaption><a href="https://godbolt.org/z/vnYYxv8Ed">https://godbolt.org/z/vnYYxv8Ed</a></figcaption>
+          <section>
+            <p>Is it easier in Haskell?</p>
+          </section>
+          <section>
+            <p>Yes, because of ordinary functions and function composition!</p>
+          </section>
+          <section>
+            <figure class="code-example">
+              <pre><code data-trim data-line-numbers="18-31" data-language="haskell"><script type="text/template">
+                {-# LANGUAGE BlockArguments #-}
+
+                module Main where
+
+                import Control.Monad (forM_)
+
+                data Plan = Standard | Plus | Ultra
+                  deriving (Eq)
+
+                data Subscriber a
+                  = Subscriber
+                  { age :: a
+                  , firstName :: String
+                  , lastName :: String
+                  , plan :: Plan
+                  }
+
+                main :: IO ()
+                main = do
+                  let subscribers = [ Subscriber 25 "See" "Plus" Ultra
+                                    , Subscriber 35 "Hask" "Ell" Plus
+                                    , Subscriber 30 "Cloh" "Jeur" Standard
+                                    , Subscriber 60 "Ski" "Murr" Plus
+                                    ]
+                  let targetSubscribers = map firstName
+                                        . filter (\s -> plan s /= Standard)
+                                        . filter (\s -> age s > 24)
+                                        . filter (\s -> age s < 36)
+                                        $ subscribers
+                  forM_ targetSubscribers \s -> do
+                    putStrLn s
+              </script></code></pre>
+              <figcaption><a href="https://godbolt.org/z/48axsnP33">https://godbolt.org/z/48axsnP33</a></figcaption>
             </figure>
           </section>
         </section>

@@ -2779,32 +2779,18 @@
                     | std::views::filter(
                         [](auto const& s) { return s.plan != Plan::standard; }
                       )
+                    | std::views::transform(&Subscriber::first_name)
                   };
-                  auto total_target_subscribers {
-                    std::ranges::distance(target_subscribers)
-                  };
-                  double target_subscriber_proportion {
-                    1.0 * total_target_subscribers / total_subscribers
-                  };
-                  std::size_t minimum_needed_genres {
-                    std::ranges::min(
-                      target_subscribers,
-                      std::less<std::size_t>(),
-                      [](auto const& s) { return s.top_genres.size(); }
-                    ).top_genres.size()
-                  };
-                  std::cout << "Total subscribers: "
-                    << total_subscribers << '\n';
-                  std::cout << "Total target subcribers: "
-                    << total_target_subscribers << '\n';
-                  std::cout << "Target subscriber proportion: "
-                    << target_subscriber_proportion << '\n';
-                  std::cout << "Minimum needed genres: "
-                    << minimum_needed_genres << '\n';
+                  for (auto const& subscriber: target_subscribers) {
+                    std::cout << subscriber << '\n';
+                  }
                   return EXIT_SUCCESS;
                 }
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/vnYYxv8Ed">https://godbolt.org/z/vnYYxv8Ed</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/P69xM8Pva">https://godbolt.org/z/P69xM8Pva</a></figcaption>
+              <!-- Old link: https://godbolt.org/z/vnYYxv8Ed -->
+            </figure>
+          </section>
           <section>
             <p>Is it easier in Haskell?</p>
           </section>

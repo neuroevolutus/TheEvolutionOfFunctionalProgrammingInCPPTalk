@@ -1475,29 +1475,28 @@
                 #include <string>
                 #include <vector>
 
-                std::vector<std::string> get_programs(
+                std::vector<std::string> filter_files(
                   std::vector<std::string> const& filenames
                 ) {
-                  std::vector<std::string> programs;
+                  std::vector<std::string> desired_files;
                   std::string ignored_file_extension;
                   std::cout << "What file extension would you like to ignore? ";
                   std::cin >> ignored_file_extension;
                   std::copy_if(
-                    filenames.cbegin(),
-                    filenames.cend(),
-                    std::back_inserter(programs),
-                    [&ignored_file_extension](std::string const& filename) {
-                      return filename.rfind(ignored_file_extension)
-                        != std::string::npos;
-                    }
-                  );
-                  return programs;
+                      filenames.cbegin(),
+                      filenames.cend(),
+                      std::back_inserter(desired_files),
+                      [&ignored_file_extension](std::string const& filename) {
+                        return filename.rfind(ignored_file_extension)
+                          == std::string::npos;
+                      });
+                  return desired_files;
                 }
 
                 #endif
               </script></code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/3WvMh1Pv7">https://godbolt.org/z/3WvMh1Pv7</a>
+                <a href="https://godbolt.org/z/vK4eGe87Y">https://godbolt.org/z/vK4eGe87Y</a>
               </figcaption>
             </figure>
           </section>
@@ -1511,19 +1510,20 @@
                 #include <string>
                 #include <vector>
 
-                int main() {
-                  std::vector<std::string> const filenames{
+                int main()
+                {
+                  std::vector<std::string> const filenames {
                     "logs.txt", "app.hs", "profiler.cpp"
                   };
-                  std::vector<std::string> const programs{ get_programs(filenames) };
-                  for (auto const& program: programs) {
+                  std::vector<std::string> const programs { filter_files(filenames) };
+                  for (auto const& program : programs) {
                     std::cout << program << '\n';
                   }
                   return EXIT_SUCCESS;
                 }
               </script></code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/3WvMh1Pv7">https://godbolt.org/z/3WvMh1Pv7</a>
+                <a href="https://godbolt.org/z/vK4eGe87Y">https://godbolt.org/z/vK4eGe87Y</a>
               </figcaption>
             </figure>
           </section>

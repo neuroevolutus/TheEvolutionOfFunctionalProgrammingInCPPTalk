@@ -888,11 +888,10 @@
                   v1.push_back(1);
                   v1.push_back(2);
                   v1.push_back(3);
-                  // A bit of a redundant declaration,
-                  // but here for the sake of example
+                  // Pretend x is a user-supplied int
                   int const x = 5;
                   std::transform(
-                    v1.begin(), v1.end(), std::back_inserter(v2), AddNumber(5)
+                    v1.begin(), v1.end(), std::back_inserter(v2), AddNumber(x)
                   );
                   for (std::vector<int>::size_type i = 0; i < v2.size(); ++i) {
                     std::cout << v2[i] << ' ';

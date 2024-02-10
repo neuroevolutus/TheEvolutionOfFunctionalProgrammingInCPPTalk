@@ -88,7 +88,7 @@ $overlayElementFgColor: 240, 240, 240;
 }
 
 .slide-header {
-  margin-block-end: 2rem !important;
+  margin-block-end: 1.5rem !important;
 }
 
 figure.code-example {
@@ -110,6 +110,14 @@ section h2 {
 
 section footer {
   margin-block-start: 2rem;
+  font-size: 1.5rem;
+}
+
+section ul li.de-emphasised {
+  filter: brightness(55%);
+}
+
+section#bibliography ol li {
   font-size: 1.5rem;
 }
 

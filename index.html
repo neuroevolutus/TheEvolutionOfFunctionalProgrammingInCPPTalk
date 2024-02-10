@@ -282,6 +282,13 @@
           <section data-auto-animate>
             <h3 class="slide-header">Core Functional Features</h3>
             <ul>
+              <li>Functions as first-class citizens</li>
+              <li>Generic programming</li>
+            </ul>
+          </section>
+          <section data-auto-animate>
+            <h3 class="slide-header">Core Functional Features</h3>
+            <ul>
               <li>Function pointers</li>
               <li>Function references</li>
               <li>Pointers to members</li>
@@ -292,8 +299,7 @@
           <section data-auto-animate>
             <h3 class="slide-header">Core Functional Features</h3>
             <ul>
-              <li>Functions as first-class citizens</li>
-              <li>Generic programming</li>
+              <li class="emphasised">Function pointers</li>
             </ul>
           </section>
           <section data-auto-animate>
@@ -576,6 +582,16 @@
             </ul>
           </section>
           <section>
+            <h3 class="slide-header">Core Functional Features</h3>
+            <ul>
+              <li class="de-emphasised">Function pointers</li>
+              <li class="emphasised">Function references</li>
+              <li class="de-emphasised">Pointers to members</li>
+              <li class="de-emphasised">Function objects</li>
+              <li class="de-emphasised">Templates</li>
+            </ul>
+          </section>
+          <section>
             <h3 class="slide-header">Function references</h3>
             <ul>
               <li>Similar to function pointers</li>
@@ -669,9 +685,20 @@
             </figure>
           </section>
           <section>
+            <h3 class="slide-header">Core Functional Features</h3>
+            <ul>
+              <li class="de-emphasised">Function pointers</li>
+              <li class="de-emphasised">Function references</li>
+              <li class="de-emphasised">Pointers to members</li>
+              <li class="emphasised">Function objects</li>
+              <li class="de-emphasised">Templates</li>
+            </ul>
+          </section>
+          <section>
             <h3>The <span class="code">&lt;functional&gt;</span> header</h3>
           </section>
           <section>
+            <h3 class="slide-header">The <span class="code">&lt;functional&gt;</span> header</h3>
             <ul>
               <li>Defines a set of function objects that compose well with algorithm templates
                 <ul>
@@ -854,8 +881,8 @@
           </section>
           <section>
             <ul>
-              <li>Benefit: Potentially better inlining due to using templates and stateless objects</li>
-              <li>Con: More code bloat because of templates</li>
+              <li>Benefit: potentially better inlining due to using templates and stateless objects</li>
+              <li>Con: more code bloat because of templates</li>
             </ul>
           </section>
           <section>
@@ -918,7 +945,7 @@
             </ul>
           </section>
           <section data-auto-animate>
-            <h2>A slight problem</h2>
+            <h3 class="slide-header">A slight problem</h3>
             <ul>
               <li>
                 Already have a function object that expresses our desired
@@ -928,7 +955,7 @@
             </ul>
           </section>
           <section data-auto-animate>
-            <h2>A slight problem</h2>
+            <h3 class="slide-header">A slight problem</h3>
             <ul>
               <li>
                 Already have a function object that expresses our desired
@@ -1010,14 +1037,34 @@
             </ul>
           </section>
           <section>
+            <h3 class="slide-header">Core Functional Features</h3>
+            <ul>
+              <li class="de-emphasised">Function pointers</li>
+              <li class="de-emphasised">Function references</li>
+              <li class="emphasised">Pointers to members</li>
+              <li class="de-emphasised">Function objects</li>
+              <li class="de-emphasised">Templates</li>
+            </ul>
+          </section>
+          <section>
             <h3 class="slide-header">Pointers to members</h3>
             <ul>
               <li>Can be turned into function objects that take an object and return a member</li>
               <li><span class="code">&lt;functional&gt;</span> also provides function objects and function templates like <span class="code">mem_fun_t</span> and <span class="code">mem_fun</span> for this purpose</li>
             </ul>
           </section>
-          <section>Generic programming and templates</section>
           <section>
+            <h3 class="slide-header">Core Functional Features</h3>
+            <ul>
+              <li class="de-emphasised">Function pointers</li>
+              <li class="de-emphasised">Function references</li>
+              <li class="de-emphasised">Pointers to members</li>
+              <li class="de-emphasised">Function objects</li>
+              <li class="emphasised">Templates</li>
+            </ul>
+          </section>
+          <section>
+            <h3 class="slide-header">Generic programming and templates</h3>
             <ul>
               <li>Templates allow you to specify generic <em>recipes</em> for baking concrete classes or functions.</li>
               <li>Enable one to <em>specialise</em> the recipe for specific classes</li>
@@ -1407,7 +1454,7 @@
           <section>
             <h2>C++11</h2>
           </section>
-          <section>
+          <section data-auto-animate>
             <h3 class="slide-header">Core Functional Features</h3>
             <ul>
               <li>Lambdas</li>
@@ -1417,11 +1464,17 @@
               <li>More compile-time meta-programming</li>
             </ul>
           </section>
+          <section data-auto-animate>
+            <h3 class="slide-header">Core Functional Features</h3>
+            <ul>
+              <li>Lambdas</li>
+            </ul>
+          </section>
           <section>
             <h3 class="slide-header">Lambdas</h3>
             <ul>
               <li>Can be easily passed around and bound to names</li>
-              <li>Can capture variables from surrounding scope to true lexical closures</li>
+              <li>Can capture variables from surrounding scope to form true lexical closures</li>
             </ul>
           </section>
           <section data-auto-animate>
@@ -1527,6 +1580,16 @@
               </figcaption>
             </figure>
           </section>
+          <section data-auto-animate>
+            <h3 class="slide-header">Core Functional Features</h3>
+            <ul>
+              <li class="de-emphasised">Lambdas</li>
+              <li class="emphasised"><span class="code">std::function</span></li>
+              <li class="de-emphasised"><span class="code">std::bind</span> and partial application</li>
+              <li class="de-emphasised"><span class="code">auto</span> type deduction</li>
+              <li class="de-emphasised">More compile-time meta-programming</li>
+            </ul>
+          </section>
           <section>
             <h3 class="slide-header"><span class="code">std::function</span></h3>
             <ul>
@@ -1599,9 +1662,28 @@
             </figure>
           </section>
           <section>
-            <span class="code">std::bind</span> and partial application
+            <h3 class="slide-header">Core Functional Features</h3>
+            <ul>
+              <li class="de-emphasised">Lambdas</li>
+              <li class="de-emphasised"><span class="code">std::function</span></li>
+              <li class="emphasised"><span class="code">std::bind</span> and partial application</li>
+              <li class="de-emphasised"><span class="code">auto</span> type deduction</li>
+              <li class="de-emphasised">More compile-time meta-programming</li>
+            </ul>
           </section>
-          <section data-auto-animate>
+          <section>
+            <h3 class="slide-header"><span class="code">std::bind</span> and partial application</h3>
+            <ul>
+              <li><span class="code">std::bind</span> allows you to create ad-hoc specialised functions from more general ones
+              <li>Great for when you know some arguments ahead of time
+                <ul>
+                  <li>e.g. the <span class="code">this</span> argument of a member function</li>
+                </ul>
+              </li>
+              <li>Can do this so-called <em>partial application</em> for as many arguments as needed more generally</li>
+            </ul>
+          </section>
+          <section>
             An example with machine learning
           </section>
           <section>
@@ -1684,15 +1766,14 @@
               <figcaption><a href="https://godbolt.org/z/644xjh3xq">https://godbolt.org/z/644xjh3xq</a></figcaption>
             </figure>
           </section>
-          <section>
+          <section data-auto-animate>
+            <h3 class="slide-header">Core Functional Features</h3>
             <ul>
-              <li><span class="code">std::bind</span> allows you to create ad-hoc specialised functions from more general ones
-              <li>Great for when you know some arguments ahead of time
-                <ul>
-                  <li>e.g. the <span class="code">this</span> argument of a member function</li>
-                </ul>
-              </li>
-              <li>Can do this so-called <em>partial application</em> for as many arguments as needed more generally</li>
+              <li class="de-emphasised">Lambdas</li>
+              <li class="de-emphasised"><span class="code">std::function</span></li>
+              <li class="de-emphasised"><span class="code">std::bind</span> and partial application</li>
+              <li class="emphasised"><span class="code">auto</span> type deduction</li>
+              <li class="de-emphasised">More compile-time meta-programming</li>
             </ul>
           </section>
           <section>
@@ -1730,8 +1811,18 @@
             </script></code></pre>
             <!-- https://godbolt.org/z/xYh8hWvTx -->
           </section>
+          <section data-auto-animate>
+            <h3 class="slide-header">Core Functional Features</h3>
+            <ul>
+              <li class="de-emphasised">Lambdas</li>
+              <li class="de-emphasised"><span class="code">std::function</span></li>
+              <li class="de-emphasised"><span class="code">std::bind</span> and partial application</li>
+              <li class="de-emphasised"><span class="code">auto</span> type deduction</li>
+              <li class="emphasised">More compile-time meta-programming</li>
+            </ul>
+          </section>
           <section>
-            <h3>C++11 Template Meta-programming</h3>
+            <h3 class="slide-header">C++11 Template Meta-programming</h3>
             <ul>
               <li>Provided better support for primitive &quot;concepts&quot;
                 <ul>
@@ -1743,10 +1834,11 @@
             </ul>
           </section>
           <section>Some fun with monoids</section>
+          <section>What is a monoid?</section>
           <section>
-            <h3 class="slide-header">What is a monoid?</h3>
             <ul>
-              <li>\[\text{a} \circ (\text{b} \circ \text{c}) = (\text{a} \circ \text{b}) \circ \text{c}\]</li>
+              <li>A set of elements $S$ equipped with an operation $\circ$</li>
+              <li>$\text{a} \circ (\text{b} \circ \text{c}) = (\text{a} \circ \text{b}) \circ \text{c}$</li>
               <li>An identity element $e$</li>
             </ul>
           </section>
@@ -2224,6 +2316,13 @@
           <section data-auto-animate>
             <h3 class="slide-header">Core Functional Features</h3>
             <ul>
+              <li>Basic destructuring</li>
+              <li>Algebraic data types</li>
+            </ul>
+          </section>
+          <section data-auto-animate>
+            <h3 class="slide-header">Core Functional Features</h3>
+            <ul>
               <li>Structured bindings</li>
               <li><span class="code">std::optional</span></li>
               <li><span class="code">std::variant</span></li>
@@ -2232,12 +2331,8 @@
           <section data-auto-animate>
             <h3 class="slide-header">Core Functional Features</h3>
             <ul>
-              <li>Basic destructuring</li>
-              <li>Algebraic data types</li>
+              <li>Structured bindings</li>
             </ul>
-          </section>
-          <section>
-            Structured bindings
           </section>
           <section>
             <figure class="code-example">
@@ -2270,10 +2365,16 @@
               <figcaption><a href="https://godbolt.org/z/Y8MjY59Y1">https://godbolt.org/z/Y8MjY59Y1</a></figcaption>
             </figure>
           </section>
-          <section>
-            <span class="code">std::optional</span>
+          <section data-auto-animate>
+            <h3 class="slide-header">Core Functional Features</h3>
+            <ul>
+              <li class="de-emphasised">Structured bindings</li>
+              <li class="emphasised"><span class="code">std::optional</span></li>
+              <li class="de-emphasised"><span class="code">std::variant</span></li>
+            </ul>
           </section>
           <section>
+            <h3 class="slide-header"><span class="code">std::optional</span></h3>
             <ul>
               <li>Gives us the ability to meaningfully compose computations that have <em>at most</em> one meaningful result<sup><a href="#composing-std-optional">1</a></sup></li>
               <li>Essentially provides us with the <span class="code">Maybe</span> type constructor from Haskell we saw earlier</li>
@@ -2347,8 +2448,13 @@
               <figcaption><a href="https://godbolt.org/z/8KnjszeTK">https://godbolt.org/z/8KnjszeTK</a></figcaption>
             </figure>
           </section>
-          <section>
-            <span class="code">std::variant</span>
+          <section data-auto-animate>
+            <h3 class="slide-header">C++17 Core Functional Features</h3>
+            <ul>
+              <li class="de-emphasised">Structured bindings</li>
+              <li class="de-emphasised"><span class="code">std::optional</span></li>
+              <li class="emphasised"><span class="code">std::variant</span></li>
+            </ul>
             <!-- Note talk by Klaus -->
           </section>
           <section>
@@ -2468,22 +2574,69 @@
               <figcaption><a href="https://godbolt.org/z/c1soTEYMx">https://godbolt.org/z/c1soTEYMx</a></figcaption>
             </figure>
           </section>
+          <section data-auto-animate>
+            <h3 class="slide-header">C++17 Recap</h3>
+          </section>
+          <section data-auto-animate>
+            <h3 class="slide-header">C++17 Recap</h3>
+            <ul>
+              <li>Structured bindings</li>
+            </ul>
+          </section>
+          <section data-auto-animate>
+            <h3 class="slide-header">C++17 Recap</h3>
+            <ul>
+              <li>Structured bindings</li>
+              <li><span class="code">std::optional</span></li>
+            </ul>
+          </section>
+          <section data-auto-animate>
+            <h3 class="slide-header">C++17 Recap</h3>
+            <ul>
+              <li>Structured bindings</li>
+              <li><span class="code">std::optional</span></li>
+              <li><span class="code">std::variant</span></li>
+            </ul>
+          </section>
         </section>
         <section>
           <section>
             <h2>C++20</h2>
           </section>
           <section>
-            <h3>Core Functional Features</h3>
+            <h3 class="slide-header">Core Functional Features</h3>
             <ul>
+              <li>Coroutines</li>
               <li>Concepts</li>
               <li>Ranges</li>
             </ul>
           </section>
           <section>
-            Concepts
+            <h3 class="slide-header">Core Functional Features</h3>
+            <ul>
+              <li class="emphasised">Coroutines</li>
+              <li class="de-emphasised">Concepts</li>
+              <li class="de-emphasised">Ranges</li>
+            </ul>
           </section>
           <section>
+            <h3 class="slide-header">Coroutines</h3>
+	    <ul>
+              <li>Facilitate lazy computations</li>
+              <li>Similar to one-shot continuations</li>
+              <li>See Dr. Ivan Čukić's talk for more!</li>
+            </ul>
+          </section>
+          <section>
+            <h3 class="slide-header">Core Functional Features</h3>
+            <ul>
+              <li class="de-emphasised">Coroutines</li>
+              <li class="emphasised">Concepts</li>
+              <li class="de-emphasised">Ranges</li>
+            </ul>
+          </section>
+          <section>
+            <h3 class="slide-header">Concepts</h3>
             <ul>
               <li>A powerful mechanism for expressing your <em>intent</em> as a programmer</li>
               <li>Think <span class="code">consteval</span> type predicate template</li>
@@ -2726,9 +2879,15 @@
           </section>
           <!-- https://godbolt.org/z/cG61MWjWc -->
           <section>
-            Ranges
+            <h3 class="slide-header">Core Functional Features</h3>
+            <ul>
+              <li class="de-emphasised">Coroutines</li>
+              <li class="de-emphasised">Concepts</li>
+              <li class="emphasised">Ranges</li>
+            </ul>
           </section>
           <section>
+            <h3 class="slide-header">Ranges</h3>
             <ul>
               <li>Unify a iterator-sentinel pair</li>
               <li>Views on them enable <em>lazy</em> traversals of data structures</li>
@@ -2835,12 +2994,37 @@
               <figcaption><a href="https://godbolt.org/z/48axsnP33">https://godbolt.org/z/48axsnP33</a></figcaption>
             </figure>
           </section>
+          <section data-auto-animate>
+            <h3 class="slide-header">C++20 Recap</h3>
+          </section>
+          <section data-auto-animate>
+            <h3 class="slide-header">C++20 Recap</h3>
+            <ul>
+              <li>Coroutines</li>
+            </ul>
+          </section>
+          <section data-auto-animate>
+            <h3 class="slide-header">C++20 Recap</h3>
+            <ul>
+              <li>Coroutines</li>
+              <li>Concepts</li>
+            </ul>
+          </section>
+          <section data-auto-animate>
+            <h3 class="slide-header">C++20 Recap</h3>
+            <ul>
+              <li>Coroutines</li>
+              <li>Concepts</li>
+              <li>Ranges</li>
+            </ul>
+          </section>
         </section>
         <section>
           <section>
             <h2>C++23</h2>
           </section>
-          <section>
+          <section data-auto-animate>
+            <h3 class="slide-header">Core Functional Concepts</h3>
             <ul>
               <li><span class="code">std::expected</span></li>
               <li><span class="code">std::optional</span> monadic operations</li>
@@ -2852,10 +3036,14 @@
               </li>
             </ul>
           </section>
-          <section>
-            <span class="code">std::expected</span>
+          <section data-auto-animate>
+            <h3 class="slide-header">Core Functional Concepts</h3>
+            <ul>
+              <li><span class="code">std::expected</span></li>
+            </ul>
           </section>
           <section>
+            <h3 class="slide-header"><span class="code">std::expected</span></h3>
             <ul>
               <li>Similar to <span class="code">std::optional</span> but with an error tag</li>
               <li>Another great tool for clarifying your intent as a programmer</li>
@@ -2919,13 +3107,36 @@
             </figure>
           </section>
           <section>
-            <span class="code">std::optional</span> updates
+            <h3 class="slide-header">Core Functional Concepts</h3>
+            <ul>
+              <li class="de-emphasised"><span class="code">std::expected</span></li>
+              <li class="emphasised"><span class="code">std::optional</span> monadic operations</li>
+              <li class="de-emphasised">More ranges library support
+                <ul>
+                  <li><span class="code">std::views::join</span>, <span class="code">std::views::enumerate</span> etc.</li>
+                  <li><span class="code">std::generator</span></li>
+                </ul>
+              </li>
+            </ul>
           </section>
           <section>
-            <span class="code">transform</span> and <span class="code">and_then</span> methods similar to that of <span class="code">std::expected</span>
+            <h3 class="slide-header"><span class="code">std::optional</span> monadic operations</h3>
+            <ul>
+              <li><span class="code">transform</span> and <span class="code">and_then</span> methods similar to that of <span class="code">std::expected</span></li>
+            </ul>
           </section>
           <section>
-            Ranges updates
+            <h3 class="slide-header">Core Functional Concepts</h3>
+            <ul>
+              <li class="de-emphasised"><span class="code">std::expected</span></li>
+              <li class="de-emphasised"><span class="code">std::optional</span> monadic operations</li>
+              <li class="emphasised">More ranges library support
+                <ul>
+                  <li><span class="code">std::views::join</span>, <span class="code">std::views::enumerate</span> etc.</li>
+                  <li><span class="code">std::generator</span></li>
+                </ul>
+              </li>
+            </ul>
           </section>
           <section>
             <figure class="code-example">
@@ -3154,16 +3365,27 @@
         <section>
           Thanks for coming!
         </section>
-        <section data-visibility="hidden">
-          <a href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/p0963r1.html">Structured binding as a condition</a>
-          <a href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/p2714r1.html"><span class="code">bind</span> NTTP</a>
-          <a href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/p2841r1.pdf">Concept template parameters</a>
-          <a href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/p2986r0.html">Generic function pointer</a>
-          <a href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/p2761r0.pdf">Structured <span class="code">if</span> binding</a>
-          <a href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/p2996r1.html">Reflection</a>
-          <a href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/p2806r2.html"><span class="code">do</span> expressions</a>
-          <a href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2024/p1255r12.pdf">views::maybe</a>
-          <a href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2024/p2900r4.pdf">Contracts</a>
+        <section id="bibliography">
+          <h2 class="slide-header">Bibliography</h2>
+          <ol>
+            <li><a href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/p0963r1.html">p0963</a></li>
+            <li><a href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/p2714r1.html">p2714</a></li>
+            <li><a href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/p2841r1.pdf">p2841</a></li>
+            <li><a href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/p2986r0.html">p2986</a></li>
+            <li><a href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/p2761r0.pdf">p2761</a></li>
+            <li><a href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/p2996r1.html">p2996</a></li>
+            <li><a href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/p2806r2.html">p2806</a></li>
+            <li><a href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2024/p1255r12.pdf">p1255</a></li>
+            <li><a href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2024/p2900r4.pdf">p2900</a></li>
+            <li><a href="https://blog.tartanllama.xyz/passing-overload-sets/">Passing Overload Sets</a></li>
+            <li><a href="https://youtu.be/OsB09djvfl4">Functional Data Structures in C++</a></li>
+            <li><a href="https://youtu.be/69edOm889V4">The Design of C++</a></li>
+            <li><a href="https://youtu.be/aC-aAiS5Wuc">C++ Weekly - Episode 332</a></li>
+            <li><a href="https://www.stroustrup.com/hopl2.pdf">A History of C++: 1979 − 1991</a></li>
+            <li><a href="https://www.stroustrup.com/dne.html"><em>The Design and Evolution of C++</em></a></li>
+            <li><a href="https://en.wikipedia.org/wiki/Modern_C%2B%2B_Design"><em>Modern C++ Design</em></a></li>
+            <li><a href="https://searchworks.stanford.edu/view/14165994"><em>C++ Template Metaprogramming: Concepts, Tools, and Techniques from Boost and Beyond</em></a></li>
+          </ol>
         </section>
         <section data-visibility="hidden">
           FAQ Can you specialise functions to specific types in Haskell?

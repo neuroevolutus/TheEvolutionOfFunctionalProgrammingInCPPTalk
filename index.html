@@ -2410,7 +2410,7 @@
             <ul>
               <li>Structured bindings</li>
               <li><span class="code">std::optional</span></li>
-              <li><span class="code">std::variant</span></li>
+              <li><span class="code">std::variant</span> and <span class="code">std::visit</span></li>
             </ul>
           </section>
           <section data-auto-animate>
@@ -2455,7 +2455,7 @@
             <ul>
               <li class="de-emphasised">Structured bindings</li>
               <li class="emphasised"><span class="code">std::optional</span></li>
-              <li class="de-emphasised"><span class="code">std::variant</span></li>
+              <li class="de-emphasised"><span class="code">std::variant</span> and <span class="code">std::visit</span></li>
             </ul>
           </section>
           <section>
@@ -2476,7 +2476,7 @@
           </section>
           <section>
             <figure class="code-example">
-              <pre><code data-trim data-line-numbers="6-15|29-32|36|43|44-50|51" class="language-cpp"><script type="text/template">
+              <pre><code data-trim data-line-numbers="6-15|29-32|36|43-44|45-51|52" class="language-cpp"><script type="text/template">
                 #include <cstdlib>
                 #include <optional>
                 #include <string>
@@ -2519,7 +2519,8 @@
                   std::string_view email,
                   std::string_view phone
                 ) {
-                  if (auto p{ parse_phone_number(phone) }; age > 18 && is_valid(email) && p)
+                  if (auto p{ parse_phone_number(phone) };
+                       age > 18 && is_valid(email) && p)
                     return User(
                       age,
                       first_name,
@@ -2538,7 +2539,7 @@
             <ul>
               <li class="de-emphasised">Structured bindings</li>
               <li class="de-emphasised"><span class="code">std::optional</span></li>
-              <li class="emphasised"><span class="code">std::variant</span></li>
+              <li class="emphasised"><span class="code">std::variant</span> and <span class="code">std::visit</span></li>
             </ul>
             <!-- Note talk by Klaus -->
           </section>
@@ -2627,6 +2628,104 @@
           </section>
           <section>
             <figure class="code-example">
+              <pre><code data-trim data-line-numbers="58-64|66-80|67-79|68-72|73-78" class="language-cpp"><script type="text/template">
+                #include "lib.hpp"
+
+                #include <algorithm>
+                #include <cstdlib>
+                #include <functional>
+                #include <optional>
+                #include <sstream>
+                #include <string>
+                #include <variant>
+
+                Enemy Slime::make_slime(std::size_t hunger)
+                {
+                  return Slime(1, 1, 1, 1, hunger);
+                }
+
+                Enemy Slime::feed(Slime s, std::size_t food)
+                {
+                  return Slime {
+                    // A slime is easily satisfied.
+                    s.x, s.y, s.speed_x, s.speed_y, 0
+                  };
+                }
+
+                std::size_t Slime::get_hunger(Slime s)
+                {
+                  return s.hunger;
+                }
+
+                std::optional<Enemy> Goblin::make_goblin(std::size_t hunger)
+                {
+                  // A goblin must always be very hungry.
+                  if (hunger < 5)
+                    return {};
+                  else
+                    return Goblin(0, 0, 1, 1, hunger, false, 10);
+                }
+
+                Enemy Goblin::feed(Goblin g, std::size_t food)
+                {
+                  return Goblin {
+                    g.x, g.y, g.speed_x, g.speed_y,
+                    // Check for underflow
+                    g.hunger - food > g.hunger ? 0 : g.hunger - food,
+                    g.aggravated, g.level
+                  };
+                }
+
+                std::size_t Goblin::get_hunger(Goblin g)
+                {
+                  return g.hunger;
+                }
+
+                std::size_t Goblin::get_level(Goblin g)
+                {
+                  return g.level;
+                }
+
+                template <typename... Ts>
+                struct overloaded : Ts... {
+                  using Ts::operator()...;
+                };
+
+                template <typename... Ts>
+                overloaded(Ts...) -> overloaded<Ts...>;
+
+                std::string show(Enemy e) { return std::visit(
+                    overloaded {
+                      [=](Slime s) {
+                        std::ostringstream o;
+                        o << "Slime with hunger " << Slime::get_hunger(s);
+                        return o.str();
+                      },
+                      [=](Goblin g) {
+                        std::ostringstream o;
+                        o << "Goblin at level " << Goblin::get_level(g)
+                          << " with hunger " << Goblin::get_hunger(g);
+                        return o.str();
+                      }
+                    }, e);
+                }
+
+                Enemy feed(Enemy e, std::size_t food)
+                {
+                  return std::visit(
+                    overloaded {
+                      [=](Slime s) -> Enemy { return Slime::feed(s, food); },
+                      [=](Goblin g) -> Enemy { return Goblin::feed(g, food); }
+                    },
+                    e
+                  );
+                }
+              </script></code></pre>
+              <figcaption><a href="https://godbolt.org/z/ovqxxjY9K">https://godbolt.org/z/ovqxxjY9K</a></figcaption>
+            </figure>
+          </section>
+          <section>
+            <figure class="code-example">
               <pre><code data-trim data-line-numbers="8-9|14-16|17-19" class="language-cpp"><script type="text/template">
                 #include "lib.hpp"
 
@@ -2636,13 +2735,11 @@
 
                 int main() {
                   Enemy const s{ Slime::make_slime(5) };
-                  std::optional<Enemy> const g{ Goblin::make_goblin(10) };
-                  if (!g) {
-                    std::cout << "You didn't make a valid goblin!\n";
-                    return EXIT_FAILURE;
-                  }
+                  // Skip optional handling for the sake
+                   // of the example
+                  Enemy const g{ *Goblin::make_goblin(10) };
                   std::vector<Enemy> const enemies{
-                    s, *g
+                    s, g
                   };
                   for (auto const e: enemies) {
                     std::cout << show(e) << '\n';
@@ -2656,7 +2753,7 @@
                   return EXIT_SUCCESS;
                 }
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/c1soTEYMx">https://godbolt.org/z/c1soTEYMx</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/ovqxxjY9K">https://godbolt.org/z/ovqxxjY9K</a></figcaption>
             </figure>
           </section>
           <section data-auto-animate>
@@ -2709,7 +2806,7 @@
 	    <ul>
               <li>Facilitate lazy computations</li>
               <li>Similar to one-shot continuations</li>
-              <li>See Dr. Ivan Čukić's talk for more!</li>
+              <li>See Dr. Ivan Čukić's Prog C++ talk for more!</li>
             </ul>
           </section>
           <section>

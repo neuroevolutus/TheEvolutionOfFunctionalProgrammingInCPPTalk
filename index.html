@@ -2190,7 +2190,1038 @@
           </section>
           <section>
             <figure class="code-example">
-              <pre><code data-trim data-line-numbers="52-58|57|99-111|106-108|106|157-170|166-168|166|167|168" class="language-cpp"><script type="text/template">
+              <pre><code data-trim data-line-numbers="52-58|57" class="language-cpp"><script type="text/template">
+                #ifndef MONOID_HPP_INCLUDED
+                #define MONOID_HPP_INCLUDED
+
+                #include <functional>
+                #include <numeric>
+                #include <sstream>
+                #include <string>
+                #include <type_traits>
+                #include <utility>
+                #include <vector>
+
+                template <typename T>
+                using my_remove_cvref_t
+                  = typename std::remove_cv<
+                      typename std::remove_reference<T>::type
+                    >::type;
+
+                template <bool b, typename T = void>
+                using my_enable_if_t = typename std::enable_if<b, T>::type;
+
+                template <typename T, typename MonoidInstance = void>
+                struct Monoid;
+
+                template <typename T, typename ProductInstance = void>
+                struct Product;
+
+                template <typename T, typename SumInstance = void>
+                struct Sum;
+
+                template <typename T> struct Product<
+                  T,
+                  my_enable_if_t<std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                > {
+                  T value;
+                  constexpr Product(T value): value { value } { }
+                };
+
+                template <typename T> struct Sum<
+                  T,
+                  my_enable_if_t<std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                > {
+                  T value;
+                  constexpr Sum(T value): value { value } { }
+                };
+
+                template <typename T>
+                constexpr Product<T> make_product(T t) { return { t }; }
+
+                template <typename T>
+                constexpr Sum<T> make_sum(T t) { return { t }; }
+
+                template <typename T> struct Monoid<
+                  T,
+                  my_enable_if_t<std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                > {
+                  static T const mempty;
+                  static constexpr T mappend(T a, T b) { return a + b; }
+                };
+
+                template <typename T> T const Monoid<
+                  T,
+                  my_enable_if_t<std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                >::mempty {};
+                
+                template <typename T> struct Monoid<T,
+                  my_enable_if_t<std::is_convertible<my_remove_cvref_t<T>,
+                    std::string>::value>> {
+                  static T const mempty;
+                  template <typename U, typename V>
+                  static constexpr my_enable_if_t<
+                    std::is_convertible<my_remove_cvref_t<U>, std::string>::value
+                    && std::is_convertible<my_remove_cvref_t<V>, std::string>
+                      ::value, std::string> mappend(U&& a, V&& b)
+                  {
+                    std::ostringstream s;
+                    s << std::forward<U>(a) << std::forward<V>(b);
+                    return s.str();
+                  }
+                };
+
+                template <typename T> T const Monoid<
+                  T,
+                  my_enable_if_t<
+                    std::is_convertible<
+                      my_remove_cvref_t<T>,
+                      std::string
+                    >::value
+                  >
+                >::mempty { "" };
+
+                template <typename T> struct Monoid<Product<T>> {
+                  static Product<T> const mempty;
+                  static constexpr Product<T> mappend(
+                    Product<T> a,
+                    Product<T> b
+                  ) { return { a.value * b.value }; }
+                };
+
+                template <typename T> struct Monoid<Sum<T>> {
+                  template <
+                    typename Collection,
+                    typename U = typename Collection::value_type
+                  > static constexpr Sum<T> mconcat(Collection&& c) {
+                    return std::accumulate(
+                      c.cbegin(), c.cend(), Sum<T>{0},
+                      [](Sum<T> acc, Sum<T> e) {
+                        return Sum<T>(acc.value + e.value);
+                      }
+                    );
+                  }
+                };
+
+                template <typename T>
+                Product<T> const Monoid<Product<T>>::mempty { 1 };
+
+                template <typename T>
+                constexpr decltype(Monoid<T>::mempty)
+                mempty() { return Monoid<T>::mempty; }
+
+                template <typename T>
+                constexpr decltype(
+                  Monoid<T>::template mconcat<std::vector<T>>(std::vector<T>{})
+                ) mempty() {
+                  return Monoid<T>::template mconcat<std::vector<T>>({});
+                }
+
+                template <typename T, typename U>
+                constexpr auto mappend(T&& a, U&& b) ->
+                  my_enable_if_t<
+                    std::is_same<
+                      my_remove_cvref_t<T>, my_remove_cvref_t<U>
+                    >::value,
+                    decltype(Monoid<my_remove_cvref_t<T>>::mappend(
+                      std::forward<T>(a), std::forward<U>(b))
+                    )
+                > {
+                  return Monoid<my_remove_cvref_t<T>>::mappend(
+                    std::forward<T>(a), std::forward<U>(b)
+                  );
+                }
+
+                template <typename T, typename U> constexpr auto
+                mappend(T&& a, U&& b) -> my_enable_if_t<
+                  std::is_same<my_remove_cvref_t<T>, my_remove_cvref_t<U>>::value,
+                  decltype(Monoid<my_remove_cvref_t<T>>::template
+                    mconcat<std::vector<my_remove_cvref_t<T>>>(
+                    std::vector<my_remove_cvref_t<T>>{
+                      std::forward<T>(a), std::forward<U>(b)
+                    }))>
+                {
+                  return Monoid<my_remove_cvref_t<T>>::mconcat(
+                    std::vector<my_remove_cvref_t<T>>{
+                      std::forward<T>(a), std::forward<U>(b)
+                    });
+                }
+
+                template <
+                  typename Collection,
+                  typename Element =
+                    typename my_remove_cvref_t<Collection>::value_type
+                > constexpr decltype(Monoid<Element>::mempty)
+                mconcat(Collection&& c)
+                {
+                  return std::accumulate(
+                    c.cbegin(), c.cend(), mempty<Element>(),
+                    [](Element acc, Element e) { return mappend(acc, e); }
+                  );
+                }
+
+                template <
+                   typename Collection,
+                   typename Element
+                     = typename my_remove_cvref_t<Collection>::value_type
+                > constexpr decltype(Monoid<Element>::template
+                mconcat(std::declval<Collection>())) mconcat(Collection&& c)
+                {
+                  return Monoid<Element>::template mconcat<Collection>(c);
+                }
+
+                template <
+                  typename Monoid, typename Collection, typename F,
+                  typename Element
+                    = typename my_remove_cvref_t<Collection>::value_type
+                > constexpr my_enable_if_t<
+                    std::is_convertible<
+                      F, std::function<Monoid(my_remove_cvref_t<Element>)>
+                    >::value, Monoid
+                > foldMap(Collection&& c, F&& f)
+                {
+                  return std::accumulate(c.cbegin(), c.cend(), mempty<Monoid>(),
+                    [&](Monoid acc, Element e) {
+                      return mappend(acc, std::forward<F>(f)(e)); }
+                  );
+                }
+
+                #endif
+              </script></code></pre>
+              <!-- Compiler bug in GCC/Clang?: https://godbolt.org/z/c1vrE1fEa -->
+              <!-- https://godbolt.org/z/Ya41PePbe -->
+              <!-- Old code: https://godbolt.org/z/G6fe4so5x -->
+              <!-- Newer old code: https://godbolt.org/z/T1hTbWG4h -->
+              <figcaption><a href="https://godbolt.org/z/voo9Wo9Eb">https://godbolt.org/z/voo9Wo9Eb</a></figcaption>
+            </figure>
+          </section>
+          <section>
+            <figure class="code-example">
+              <pre><code data-trim data-line-numbers="57" class="language-cpp"><script type="text/template">
+                #ifndef MONOID_HPP_INCLUDED
+                #define MONOID_HPP_INCLUDED
+
+                #include <functional>
+                #include <numeric>
+                #include <sstream>
+                #include <string>
+                #include <type_traits>
+                #include <utility>
+                #include <vector>
+
+                template <typename T>
+                using my_remove_cvref_t
+                  = typename std::remove_cv<
+                      typename std::remove_reference<T>::type
+                    >::type;
+
+                template <bool b, typename T = void>
+                using my_enable_if_t = typename std::enable_if<b, T>::type;
+
+                template <typename T, typename MonoidInstance = void>
+                struct Monoid;
+
+                template <typename T, typename ProductInstance = void>
+                struct Product;
+
+                template <typename T, typename SumInstance = void>
+                struct Sum;
+
+                template <typename T> struct Product<
+                  T,
+                  my_enable_if_t<std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                > {
+                  T value;
+                  constexpr Product(T value): value { value } { }
+                };
+
+                template <typename T> struct Sum<
+                  T,
+                  my_enable_if_t<std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                > {
+                  T value;
+                  constexpr Sum(T value): value { value } { }
+                };
+
+                template <typename T>
+                constexpr Product<T> make_product(T t) { return { t }; }
+
+                template <typename T>
+                constexpr Sum<T> make_sum(T t) { return { t }; }
+
+                template <typename T> struct Monoid<
+                  T,
+                  my_enable_if_t<std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                > {
+                  static T const mempty;
+                  static constexpr auto mappend(T a, T b) { return a + b; }
+                };
+
+                template <typename T> T const Monoid<
+                  T,
+                  my_enable_if_t<std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                >::mempty {};
+                
+                template <typename T> struct Monoid<T,
+                  my_enable_if_t<std::is_convertible<my_remove_cvref_t<T>,
+                    std::string>::value>> {
+                  static T const mempty;
+                  template <typename U, typename V>
+                  static constexpr my_enable_if_t<
+                    std::is_convertible<my_remove_cvref_t<U>, std::string>::value
+                    && std::is_convertible<my_remove_cvref_t<V>, std::string>
+                      ::value, std::string> mappend(U&& a, V&& b)
+                  {
+                    std::ostringstream s;
+                    s << std::forward<U>(a) << std::forward<V>(b);
+                    return s.str();
+                  }
+                };
+
+                template <typename T> T const Monoid<
+                  T,
+                  my_enable_if_t<
+                    std::is_convertible<
+                      my_remove_cvref_t<T>,
+                      std::string
+                    >::value
+                  >
+                >::mempty { "" };
+
+                template <typename T> struct Monoid<Product<T>> {
+                  static Product<T> const mempty;
+                  static constexpr Product<T> mappend(
+                    Product<T> a,
+                    Product<T> b
+                  ) { return { a.value * b.value }; }
+                };
+
+                template <typename T> struct Monoid<Sum<T>> {
+                  template <
+                    typename Collection,
+                    typename U = typename Collection::value_type
+                  > static constexpr Sum<T> mconcat(Collection&& c) {
+                    return std::accumulate(
+                      c.cbegin(), c.cend(), Sum<T>{0},
+                      [](auto acc, auto e) {
+                        return Sum<T>(acc.value + e.value);
+                      }
+                    );
+                  }
+                };
+
+                template <typename T>
+                Product<T> const Monoid<Product<T>>::mempty { 1 };
+
+                template <typename T>
+                constexpr decltype(Monoid<T>::mempty)
+                mempty() { return Monoid<T>::mempty; }
+
+                template <typename T>
+                constexpr decltype(
+                  Monoid<T>::template mconcat<std::vector<T>>(std::vector<T>{})
+                ) mempty() {
+                  return Monoid<T>::template mconcat<std::vector<T>>({});
+                }
+
+                template <typename T, typename U>
+                constexpr auto mappend(T&& a, U&& b) ->
+                  my_enable_if_t<
+                    std::is_same<
+                      my_remove_cvref_t<T>, my_remove_cvref_t<U>
+                    >::value,
+                    decltype(Monoid<my_remove_cvref_t<T>>::mappend(
+                      std::forward<T>(a), std::forward<U>(b))
+                    )
+                > {
+                  return Monoid<my_remove_cvref_t<T>>::mappend(
+                    std::forward<T>(a), std::forward<U>(b)
+                  );
+                }
+
+                template <typename T, typename U> constexpr auto
+                mappend(T&& a, U&& b) -> my_enable_if_t<
+                  std::is_same<my_remove_cvref_t<T>, my_remove_cvref_t<U>>::value,
+                  decltype(Monoid<my_remove_cvref_t<T>>::template
+                    mconcat<std::vector<my_remove_cvref_t<T>>>(
+                    std::vector<my_remove_cvref_t<T>>{
+                      std::forward<T>(a), std::forward<U>(b)
+                    }))>
+                {
+                  return Monoid<my_remove_cvref_t<T>>::mconcat(
+                    std::vector<my_remove_cvref_t<T>>{
+                      std::forward<T>(a), std::forward<U>(b)
+                    });
+                }
+
+                template <
+                  typename Collection,
+                  typename Element =
+                    typename my_remove_cvref_t<Collection>::value_type
+                > constexpr decltype(Monoid<Element>::mempty)
+                mconcat(Collection&& c)
+                {
+                  return std::accumulate(
+                    c.cbegin(), c.cend(), mempty<Element>(),
+                    [](auto&& acc, auto&& e) {
+                      return mappend(std::forward<decltype(acc)>(acc),
+                        std::forward<decltype(e)>(e)); }
+                  );
+                }
+
+                template <
+                   typename Collection,
+                   typename Element
+                     = typename my_remove_cvref_t<Collection>::value_type
+                > constexpr decltype(Monoid<Element>::template
+                mconcat(std::declval<Collection>())) mconcat(Collection&& c)
+                {
+                  return Monoid<Element>::template mconcat<Collection>(c);
+                }
+
+                template <
+                  typename Monoid, typename Collection, typename F,
+                  typename Element
+                    = typename my_remove_cvref_t<Collection>::value_type
+                > constexpr my_enable_if_t<
+                    std::is_convertible<
+                      F, std::function<Monoid(my_remove_cvref_t<Element>)>
+                    >::value, Monoid> foldMap(Collection&& c, F&& f)
+                {
+                  return std::accumulate(c.cbegin(), c.cend(), mempty<Monoid>(),
+                    [&](auto&& acc, auto&& e) {
+                      return mappend(std::forward<decltype(acc)>(acc),
+                        std::forward<F>(f)(std::forward<decltype(e)>(e))); }
+                  );
+                }
+
+                #endif
+              </script></code></pre>
+              <figcaption><a href="https://godbolt.org/z/f48M9M615">https://godbolt.org/z/f48M9M615</a></figcaption>
+            </figure>
+          </section>
+          <section>
+            <figure class="code-example">
+              <pre><code data-trim data-line-numbers="99-111|106-108|106" class="language-cpp"><script type="text/template">
+                #ifndef MONOID_HPP_INCLUDED
+                #define MONOID_HPP_INCLUDED
+
+                #include <functional>
+                #include <numeric>
+                #include <sstream>
+                #include <string>
+                #include <type_traits>
+                #include <utility>
+                #include <vector>
+
+                template <typename T>
+                using my_remove_cvref_t
+                  = typename std::remove_cv<
+                      typename std::remove_reference<T>::type
+                    >::type;
+
+                template <bool b, typename T = void>
+                using my_enable_if_t = typename std::enable_if<b, T>::type;
+
+                template <typename T, typename MonoidInstance = void>
+                struct Monoid;
+
+                template <typename T, typename ProductInstance = void>
+                struct Product;
+
+                template <typename T, typename SumInstance = void>
+                struct Sum;
+
+                template <typename T> struct Product<
+                  T,
+                  my_enable_if_t<std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                > {
+                  T value;
+                  constexpr Product(T value): value { value } { }
+                };
+
+                template <typename T> struct Sum<
+                  T,
+                  my_enable_if_t<std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                > {
+                  T value;
+                  constexpr Sum(T value): value { value } { }
+                };
+
+                template <typename T>
+                constexpr Product<T> make_product(T t) { return { t }; }
+
+                template <typename T>
+                constexpr Sum<T> make_sum(T t) { return { t }; }
+
+                template <typename T> struct Monoid<
+                  T,
+                  my_enable_if_t<std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                > {
+                  static T const mempty;
+                  static constexpr T mappend(T a, T b) { return a + b; }
+                };
+
+                template <typename T> T const Monoid<
+                  T,
+                  my_enable_if_t<std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                >::mempty {};
+                
+                template <typename T> struct Monoid<T,
+                  my_enable_if_t<std::is_convertible<my_remove_cvref_t<T>,
+                    std::string>::value>> {
+                  static T const mempty;
+                  template <typename U, typename V>
+                  static constexpr my_enable_if_t<
+                    std::is_convertible<my_remove_cvref_t<U>, std::string>::value
+                    && std::is_convertible<my_remove_cvref_t<V>, std::string>
+                      ::value, std::string> mappend(U&& a, V&& b)
+                  {
+                    std::ostringstream s;
+                    s << std::forward<U>(a) << std::forward<V>(b);
+                    return s.str();
+                  }
+                };
+
+                template <typename T> T const Monoid<
+                  T,
+                  my_enable_if_t<
+                    std::is_convertible<
+                      my_remove_cvref_t<T>,
+                      std::string
+                    >::value
+                  >
+                >::mempty { "" };
+
+                template <typename T> struct Monoid<Product<T>> {
+                  static Product<T> const mempty;
+                  static constexpr Product<T> mappend(
+                    Product<T> a,
+                    Product<T> b
+                  ) { return { a.value * b.value }; }
+                };
+
+                template <typename T> struct Monoid<Sum<T>> {
+                  template <
+                    typename Collection,
+                    typename U = typename Collection::value_type
+                  > static constexpr Sum<T> mconcat(Collection&& c) {
+                    return std::accumulate(
+                      c.cbegin(), c.cend(), Sum<T>{0},
+                      [](Sum<T> acc, Sum<T> e) {
+                        return Sum<T>(acc.value + e.value);
+                      }
+                    );
+                  }
+                };
+
+                template <typename T>
+                Product<T> const Monoid<Product<T>>::mempty { 1 };
+
+                template <typename T>
+                constexpr decltype(Monoid<T>::mempty)
+                mempty() { return Monoid<T>::mempty; }
+
+                template <typename T>
+                constexpr decltype(
+                  Monoid<T>::template mconcat<std::vector<T>>(std::vector<T>{})
+                ) mempty() {
+                  return Monoid<T>::template mconcat<std::vector<T>>({});
+                }
+
+                template <typename T, typename U>
+                constexpr auto mappend(T&& a, U&& b) ->
+                  my_enable_if_t<
+                    std::is_same<
+                      my_remove_cvref_t<T>, my_remove_cvref_t<U>
+                    >::value,
+                    decltype(Monoid<my_remove_cvref_t<T>>::mappend(
+                      std::forward<T>(a), std::forward<U>(b))
+                    )
+                > {
+                  return Monoid<my_remove_cvref_t<T>>::mappend(
+                    std::forward<T>(a), std::forward<U>(b)
+                  );
+                }
+
+                template <typename T, typename U> constexpr auto
+                mappend(T&& a, U&& b) -> my_enable_if_t<
+                  std::is_same<my_remove_cvref_t<T>, my_remove_cvref_t<U>>::value,
+                  decltype(Monoid<my_remove_cvref_t<T>>::template
+                    mconcat<std::vector<my_remove_cvref_t<T>>>(
+                    std::vector<my_remove_cvref_t<T>>{
+                      std::forward<T>(a), std::forward<U>(b)
+                    }))>
+                {
+                  return Monoid<my_remove_cvref_t<T>>::mconcat(
+                    std::vector<my_remove_cvref_t<T>>{
+                      std::forward<T>(a), std::forward<U>(b)
+                    });
+                }
+
+                template <
+                  typename Collection,
+                  typename Element =
+                    typename my_remove_cvref_t<Collection>::value_type
+                > constexpr decltype(Monoid<Element>::mempty)
+                mconcat(Collection&& c)
+                {
+                  return std::accumulate(
+                    c.cbegin(), c.cend(), mempty<Element>(),
+                    [](Element acc, Element e) { return mappend(acc, e); }
+                  );
+                }
+
+                template <
+                   typename Collection,
+                   typename Element
+                     = typename my_remove_cvref_t<Collection>::value_type
+                > constexpr decltype(Monoid<Element>::template
+                mconcat(std::declval<Collection>())) mconcat(Collection&& c)
+                {
+                  return Monoid<Element>::template mconcat<Collection>(c);
+                }
+
+                template <
+                  typename Monoid, typename Collection, typename F,
+                  typename Element
+                    = typename my_remove_cvref_t<Collection>::value_type
+                > constexpr my_enable_if_t<
+                    std::is_convertible<
+                      F, std::function<Monoid(my_remove_cvref_t<Element>)>
+                    >::value, Monoid
+                > foldMap(Collection&& c, F&& f)
+                {
+                  return std::accumulate(c.cbegin(), c.cend(), mempty<Monoid>(),
+                    [&](Monoid acc, Element e) {
+                      return mappend(acc, std::forward<F>(f)(e)); }
+                  );
+                }
+
+                #endif
+              </script></code></pre>
+              <!-- Compiler bug in GCC/Clang?: https://godbolt.org/z/c1vrE1fEa -->
+              <!-- https://godbolt.org/z/Ya41PePbe -->
+              <!-- Old code: https://godbolt.org/z/G6fe4so5x -->
+              <!-- Newer old code: https://godbolt.org/z/T1hTbWG4h -->
+              <figcaption><a href="https://godbolt.org/z/voo9Wo9Eb">https://godbolt.org/z/voo9Wo9Eb</a></figcaption>
+            </figure>
+          </section>
+          <section>
+            <figure class="code-example">
+              <pre><code data-trim data-line-numbers="106" class="language-cpp"><script type="text/template">
+                #ifndef MONOID_HPP_INCLUDED
+                #define MONOID_HPP_INCLUDED
+
+                #include <functional>
+                #include <numeric>
+                #include <sstream>
+                #include <string>
+                #include <type_traits>
+                #include <utility>
+                #include <vector>
+
+                template <typename T>
+                using my_remove_cvref_t
+                  = typename std::remove_cv<
+                      typename std::remove_reference<T>::type
+                    >::type;
+
+                template <bool b, typename T = void>
+                using my_enable_if_t = typename std::enable_if<b, T>::type;
+
+                template <typename T, typename MonoidInstance = void>
+                struct Monoid;
+
+                template <typename T, typename ProductInstance = void>
+                struct Product;
+
+                template <typename T, typename SumInstance = void>
+                struct Sum;
+
+                template <typename T> struct Product<
+                  T,
+                  my_enable_if_t<std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                > {
+                  T value;
+                  constexpr Product(T value): value { value } { }
+                };
+
+                template <typename T> struct Sum<
+                  T,
+                  my_enable_if_t<std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                > {
+                  T value;
+                  constexpr Sum(T value): value { value } { }
+                };
+
+                template <typename T>
+                constexpr Product<T> make_product(T t) { return { t }; }
+
+                template <typename T>
+                constexpr Sum<T> make_sum(T t) { return { t }; }
+
+                template <typename T> struct Monoid<
+                  T,
+                  my_enable_if_t<std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                > {
+                  static T const mempty;
+                  static constexpr auto mappend(T a, T b) { return a + b; }
+                };
+
+                template <typename T> T const Monoid<
+                  T,
+                  my_enable_if_t<std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                >::mempty {};
+                
+                template <typename T> struct Monoid<T,
+                  my_enable_if_t<std::is_convertible<my_remove_cvref_t<T>,
+                    std::string>::value>> {
+                  static T const mempty;
+                  template <typename U, typename V>
+                  static constexpr my_enable_if_t<
+                    std::is_convertible<my_remove_cvref_t<U>, std::string>::value
+                    && std::is_convertible<my_remove_cvref_t<V>, std::string>
+                      ::value, std::string> mappend(U&& a, V&& b)
+                  {
+                    std::ostringstream s;
+                    s << std::forward<U>(a) << std::forward<V>(b);
+                    return s.str();
+                  }
+                };
+
+                template <typename T> T const Monoid<
+                  T,
+                  my_enable_if_t<
+                    std::is_convertible<
+                      my_remove_cvref_t<T>,
+                      std::string
+                    >::value
+                  >
+                >::mempty { "" };
+
+                template <typename T> struct Monoid<Product<T>> {
+                  static Product<T> const mempty;
+                  static constexpr Product<T> mappend(
+                    Product<T> a,
+                    Product<T> b
+                  ) { return { a.value * b.value }; }
+                };
+
+                template <typename T> struct Monoid<Sum<T>> {
+                  template <
+                    typename Collection,
+                    typename U = typename Collection::value_type
+                  > static constexpr Sum<T> mconcat(Collection&& c) {
+                    return std::accumulate(
+                      c.cbegin(), c.cend(), Sum<T>{0},
+                      [](auto acc, auto e) {
+                        return Sum<T>(acc.value + e.value);
+                      }
+                    );
+                  }
+                };
+
+                template <typename T>
+                Product<T> const Monoid<Product<T>>::mempty { 1 };
+
+                template <typename T>
+                constexpr decltype(Monoid<T>::mempty)
+                mempty() { return Monoid<T>::mempty; }
+
+                template <typename T>
+                constexpr decltype(
+                  Monoid<T>::template mconcat<std::vector<T>>(std::vector<T>{})
+                ) mempty() {
+                  return Monoid<T>::template mconcat<std::vector<T>>({});
+                }
+
+                template <typename T, typename U>
+                constexpr auto mappend(T&& a, U&& b) ->
+                  my_enable_if_t<
+                    std::is_same<
+                      my_remove_cvref_t<T>, my_remove_cvref_t<U>
+                    >::value,
+                    decltype(Monoid<my_remove_cvref_t<T>>::mappend(
+                      std::forward<T>(a), std::forward<U>(b))
+                    )
+                > {
+                  return Monoid<my_remove_cvref_t<T>>::mappend(
+                    std::forward<T>(a), std::forward<U>(b)
+                  );
+                }
+
+                template <typename T, typename U> constexpr auto
+                mappend(T&& a, U&& b) -> my_enable_if_t<
+                  std::is_same<my_remove_cvref_t<T>, my_remove_cvref_t<U>>::value,
+                  decltype(Monoid<my_remove_cvref_t<T>>::template
+                    mconcat<std::vector<my_remove_cvref_t<T>>>(
+                    std::vector<my_remove_cvref_t<T>>{
+                      std::forward<T>(a), std::forward<U>(b)
+                    }))>
+                {
+                  return Monoid<my_remove_cvref_t<T>>::mconcat(
+                    std::vector<my_remove_cvref_t<T>>{
+                      std::forward<T>(a), std::forward<U>(b)
+                    });
+                }
+
+                template <
+                  typename Collection,
+                  typename Element =
+                    typename my_remove_cvref_t<Collection>::value_type
+                > constexpr decltype(Monoid<Element>::mempty)
+                mconcat(Collection&& c)
+                {
+                  return std::accumulate(
+                    c.cbegin(), c.cend(), mempty<Element>(),
+                    [](auto&& acc, auto&& e) {
+                      return mappend(std::forward<decltype(acc)>(acc),
+                        std::forward<decltype(e)>(e)); }
+                  );
+                }
+
+                template <
+                   typename Collection,
+                   typename Element
+                     = typename my_remove_cvref_t<Collection>::value_type
+                > constexpr decltype(Monoid<Element>::template
+                mconcat(std::declval<Collection>())) mconcat(Collection&& c)
+                {
+                  return Monoid<Element>::template mconcat<Collection>(c);
+                }
+
+                template <
+                  typename Monoid, typename Collection, typename F,
+                  typename Element
+                    = typename my_remove_cvref_t<Collection>::value_type
+                > constexpr my_enable_if_t<
+                    std::is_convertible<
+                      F, std::function<Monoid(my_remove_cvref_t<Element>)>
+                    >::value, Monoid> foldMap(Collection&& c, F&& f)
+                {
+                  return std::accumulate(c.cbegin(), c.cend(), mempty<Monoid>(),
+                    [&](auto&& acc, auto&& e) {
+                      return mappend(std::forward<decltype(acc)>(acc),
+                        std::forward<F>(f)(std::forward<decltype(e)>(e))); }
+                  );
+                }
+
+                #endif
+              </script></code></pre>
+              <figcaption><a href="https://godbolt.org/z/f48M9M615">https://godbolt.org/z/f48M9M615</a></figcaption>
+            </figure>
+          </section>
+          <section>
+            <figure class="code-example">
+              <pre><code data-trim data-line-numbers="157-168|164-167|166" class="language-cpp"><script type="text/template">
+                #ifndef MONOID_HPP_INCLUDED
+                #define MONOID_HPP_INCLUDED
+
+                #include <functional>
+                #include <numeric>
+                #include <sstream>
+                #include <string>
+                #include <type_traits>
+                #include <utility>
+                #include <vector>
+
+                template <typename T>
+                using my_remove_cvref_t
+                  = typename std::remove_cv<
+                      typename std::remove_reference<T>::type
+                    >::type;
+
+                template <bool b, typename T = void>
+                using my_enable_if_t = typename std::enable_if<b, T>::type;
+
+                template <typename T, typename MonoidInstance = void>
+                struct Monoid;
+
+                template <typename T, typename ProductInstance = void>
+                struct Product;
+
+                template <typename T, typename SumInstance = void>
+                struct Sum;
+
+                template <typename T> struct Product<
+                  T,
+                  my_enable_if_t<std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                > {
+                  T value;
+                  constexpr Product(T value): value { value } { }
+                };
+
+                template <typename T> struct Sum<
+                  T,
+                  my_enable_if_t<std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                > {
+                  T value;
+                  constexpr Sum(T value): value { value } { }
+                };
+
+                template <typename T>
+                constexpr Product<T> make_product(T t) { return { t }; }
+
+                template <typename T>
+                constexpr Sum<T> make_sum(T t) { return { t }; }
+
+                template <typename T> struct Monoid<
+                  T,
+                  my_enable_if_t<std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                > {
+                  static T const mempty;
+                  static constexpr T mappend(T a, T b) { return a + b; }
+                };
+
+                template <typename T> T const Monoid<
+                  T,
+                  my_enable_if_t<std::is_arithmetic<my_remove_cvref_t<T>>::value>
+                >::mempty {};
+                
+                template <typename T> struct Monoid<T,
+                  my_enable_if_t<std::is_convertible<my_remove_cvref_t<T>,
+                    std::string>::value>> {
+                  static T const mempty;
+                  template <typename U, typename V>
+                  static constexpr my_enable_if_t<
+                    std::is_convertible<my_remove_cvref_t<U>, std::string>::value
+                    && std::is_convertible<my_remove_cvref_t<V>, std::string>
+                      ::value, std::string> mappend(U&& a, V&& b)
+                  {
+                    std::ostringstream s;
+                    s << std::forward<U>(a) << std::forward<V>(b);
+                    return s.str();
+                  }
+                };
+
+                template <typename T> T const Monoid<
+                  T,
+                  my_enable_if_t<
+                    std::is_convertible<
+                      my_remove_cvref_t<T>,
+                      std::string
+                    >::value
+                  >
+                >::mempty { "" };
+
+                template <typename T> struct Monoid<Product<T>> {
+                  static Product<T> const mempty;
+                  static constexpr Product<T> mappend(
+                    Product<T> a,
+                    Product<T> b
+                  ) { return { a.value * b.value }; }
+                };
+
+                template <typename T> struct Monoid<Sum<T>> {
+                  template <
+                    typename Collection,
+                    typename U = typename Collection::value_type
+                  > static constexpr Sum<T> mconcat(Collection&& c) {
+                    return std::accumulate(
+                      c.cbegin(), c.cend(), Sum<T>{0},
+                      [](Sum<T> acc, Sum<T> e) {
+                        return Sum<T>(acc.value + e.value);
+                      }
+                    );
+                  }
+                };
+
+                template <typename T>
+                Product<T> const Monoid<Product<T>>::mempty { 1 };
+
+                template <typename T>
+                constexpr decltype(Monoid<T>::mempty)
+                mempty() { return Monoid<T>::mempty; }
+
+                template <typename T>
+                constexpr decltype(
+                  Monoid<T>::template mconcat<std::vector<T>>(std::vector<T>{})
+                ) mempty() {
+                  return Monoid<T>::template mconcat<std::vector<T>>({});
+                }
+
+                template <typename T, typename U>
+                constexpr auto mappend(T&& a, U&& b) ->
+                  my_enable_if_t<
+                    std::is_same<
+                      my_remove_cvref_t<T>, my_remove_cvref_t<U>
+                    >::value,
+                    decltype(Monoid<my_remove_cvref_t<T>>::mappend(
+                      std::forward<T>(a), std::forward<U>(b))
+                    )
+                > {
+                  return Monoid<my_remove_cvref_t<T>>::mappend(
+                    std::forward<T>(a), std::forward<U>(b)
+                  );
+                }
+
+                template <typename T, typename U> constexpr auto
+                mappend(T&& a, U&& b) -> my_enable_if_t<
+                  std::is_same<my_remove_cvref_t<T>, my_remove_cvref_t<U>>::value,
+                  decltype(Monoid<my_remove_cvref_t<T>>::template
+                    mconcat<std::vector<my_remove_cvref_t<T>>>(
+                    std::vector<my_remove_cvref_t<T>>{
+                      std::forward<T>(a), std::forward<U>(b)
+                    }))>
+                {
+                  return Monoid<my_remove_cvref_t<T>>::mconcat(
+                    std::vector<my_remove_cvref_t<T>>{
+                      std::forward<T>(a), std::forward<U>(b)
+                    });
+                }
+
+                template <
+                  typename Collection,
+                  typename Element =
+                    typename my_remove_cvref_t<Collection>::value_type
+                > constexpr decltype(Monoid<Element>::mempty)
+                mconcat(Collection&& c)
+                {
+                  return std::accumulate(
+                    c.cbegin(), c.cend(), mempty<Element>(),
+                    [](Element acc, Element e) { return mappend(acc, e); }
+                  );
+                }
+
+                template <
+                   typename Collection,
+                   typename Element
+                     = typename my_remove_cvref_t<Collection>::value_type
+                > constexpr decltype(Monoid<Element>::template
+                mconcat(std::declval<Collection>())) mconcat(Collection&& c)
+                {
+                  return Monoid<Element>::template mconcat<Collection>(c);
+                }
+
+                template <
+                  typename Monoid, typename Collection, typename F,
+                  typename Element
+                    = typename my_remove_cvref_t<Collection>::value_type
+                > constexpr my_enable_if_t<
+                    std::is_convertible<
+                      F, std::function<Monoid(my_remove_cvref_t<Element>)>
+                    >::value, Monoid
+                > foldMap(Collection&& c, F&& f)
+                {
+                  return std::accumulate(c.cbegin(), c.cend(), mempty<Monoid>(),
+                    [&](Monoid acc, Element e) {
+                      return mappend(acc, std::forward<F>(f)(e)); }
+                  );
+                }
+
+                #endif
+              </script></code></pre>
+              <!-- Compiler bug in GCC/Clang?: https://godbolt.org/z/c1vrE1fEa -->
+              <!-- https://godbolt.org/z/Ya41PePbe -->
+              <!-- Old code: https://godbolt.org/z/G6fe4so5x -->
+              <!-- Newer old code: https://godbolt.org/z/T1hTbWG4h -->
+              <figcaption><a href="https://godbolt.org/z/voo9Wo9Eb">https://godbolt.org/z/voo9Wo9Eb</a></figcaption>
+            </figure>
+          </section>
+          <section>
+            <figure class="code-example">
+              <pre><code data-trim data-line-numbers="166|167|168" class="language-cpp"><script type="text/template">
                 #ifndef MONOID_HPP_INCLUDED
                 #define MONOID_HPP_INCLUDED
 

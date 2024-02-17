@@ -2088,7 +2088,7 @@
               <!-- https://godbolt.org/z/Ya41PePbe -->
               <!-- Old code: https://godbolt.org/z/G6fe4so5x -->
               <!-- Newer old code: https://godbolt.org/z/T1hTbWG4h -->
-              <figcaption><a href="https://godbolt.org/z/voo9Wo9Eb">https://godbolt.org/z/voo9Wo9Eb</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/E5vsxr9o8">https://godbolt.org/z/E5vsxr9o8</a></figcaption>
             </figure>
           </section>
           <section>
@@ -2130,7 +2130,7 @@
                   return EXIT_SUCCESS;
                 }
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/voo9Wo9Eb">https://godbolt.org/z/voo9Wo9Eb</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/E5vsxr9o8">https://godbolt.org/z/E5vsxr9o8</a></figcaption>
             </figure>
           </section>
           <section data-auto-animate>
@@ -2597,7 +2597,7 @@
 
                 #endif
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/f48M9M615">https://godbolt.org/z/f48M9M615</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/68janhx4x">https://godbolt.org/z/68janhx4x</a></figcaption>
             </figure>
           </section>
           <section>
@@ -3009,7 +3009,7 @@
 
                 #endif
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/f48M9M615">https://godbolt.org/z/f48M9M615</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/68janhx4x">https://godbolt.org/z/68janhx4x</a></figcaption>
             </figure>
           </section>
           <section>
@@ -3421,7 +3421,7 @@
 
                 #endif
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/f48M9M615">https://godbolt.org/z/f48M9M615</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/68janhx4x">https://godbolt.org/z/68janhx4x</a></figcaption>
             </figure>
           </section>
         </section>
@@ -3865,10 +3865,11 @@
           -->
           <section>
             <figure class="code-example">
-              <pre><code data-trim data-line-numbers="20-30|32-34|36-44|46-54|56-57|75-76|94-100|102-103|108-109|155-169|157-158|171-185|171|204-215" class="language-cpp"><script type="text/template">
-                #include <cstdlib>
+              <pre><code data-trim data-line-numbers="12-19|21-31|45-46|209-215|220-234|221" class="language-cpp"><script type="text/template">
+                #ifndef MONOID_HPP_INCLUDED
+                #define MONOID_HPP_INCLUDED
+
                 #include <functional>
-                #include <iostream>
                 #include <numeric>
                 #include <sstream>
                 #include <string>
@@ -3887,14 +3888,14 @@
 
                 template <typename T>
                 concept arithmetic = requires(T&& a, T&& b) {
-                  { std::forward<T>(a) + std::forward<T>(b) } ->
-                    std::common_reference_with<T>;
-                  { std::forward<T>(a) - std::forward<T>(b) } ->
-                    std::common_reference_with<T>;
-                  { std::forward<T>(a) * std::forward<T>(b) } ->
-                    std::common_reference_with<T>;
-                  { std::forward<T>(a) / std::forward<T>(b) } ->
-                    std::common_reference_with<T>;
+                  { std::forward<T>(a) + std::forward<T>(b) }
+                    -> std::common_reference_with<T>;
+                  { std::forward<T>(a) - std::forward<T>(b) }
+                    -> std::common_reference_with<T>;
+                  { std::forward<T>(a) * std::forward<T>(b) }
+                    -> std::common_reference_with<T>;
+                  { std::forward<T>(a) / std::forward<T>(b) }
+                    -> std::common_reference_with<T>;
                 };
 
                 template <typename T>
@@ -3902,34 +3903,25 @@
                   = std::is_convertible_v<std::remove_cvref_t<T>, std::string>;
 
                 template <typename T, typename U>
-                concept product_on
-                  = arithmetic<U>
-                  && std::is_same_v<Product<U>, std::remove_cvref_t<T>>;
+                concept product_on = arithmetic<U> &&
+                  std::is_same_v<Product<U>, std::remove_cvref_t<T>>;
 
                 template <typename T, typename U>
-                concept sum_on
-                  = arithmetic<U>
+                concept sum_on = arithmetic<U>
                   && std::is_same_v<Sum<U>, std::remove_cvref_t<T>>;
-
-                template <typename T>
-                concept monoid = requires(T&& a, T&& b) {
-                  { Monoid<T>::mempty } -> std::common_reference_with<T>;
-                  { Monoid<T>::mappend(std::forward<T>(a), std::forward<T>(b)) } ->
-                    std::common_reference_with<T>;
-                };
-                
-                template <typename T>
-                concept monoidal = monoid<std::remove_cvref_t<T>>;
 
                 template <arithmetic T>
                 struct Product<T> {
                   T value;
-                  template <std::common_reference_with<T> U>
+                  template <typename U>
+                    requires arithmetic<U> && std::common_reference_with<T, U>
                   constexpr Product(U&& value): value{ std::forward<U>(value) } {}
                   constexpr Product(Product const& other): value{ other.value } {}
                   constexpr Product(Product& other): value{ other.value } {}
-                  constexpr Product(Product&& other): value{ std::move(other.value) } {}
-                  constexpr friend void swap(Product& a, Product& b) {
+                  constexpr Product(Product&& other):
+                    value{ std::move(other.value) } {}
+                  constexpr friend void swap(Product& a, Product& b)
+                  {
                     using std::swap;
                     swap(a.value, b.value);
                   }
@@ -3943,12 +3935,14 @@
                 template <arithmetic T>
                 struct Sum<T> {
                   T value;
-                  template <std::common_reference_with<T> U>
+                  template <typename U>
+                    requires arithmetic<U> && std::common_reference_with<T, U>
                   constexpr Sum(U&& value): value{ std::forward<U>(value) } {}
                   constexpr Sum(Sum const& other): value{ other.value } {}
                   constexpr Sum(Sum& other): value{ other.value } {}
                   constexpr Sum(Sum&& other): value{ std::move(other.value) } {}
-                  constexpr friend void swap(Sum& a, Sum& b) {
+                  constexpr friend void swap(Sum& a, Sum& b)
+                  {
                     using std::swap;
                     swap(a.value, b.value);
                   }
@@ -3960,12 +3954,12 @@
                 };
 
                 template <arithmetic T>
-                constexpr Product<std::remove_cvref_t<T>> make_product(T&& t)
-                { return { std::forward<T>(t) }; }
+                constexpr Product<std::remove_cvref_t<T>>
+                make_product(T&& t) { return { std::forward<T>(t) }; }
 
                 template <arithmetic T>
-                constexpr Sum<std::remove_cvref_t<T>> make_sum(T&& t)
-                { return { std::forward<T>(t) }; }
+                constexpr Sum<std::remove_cvref_t<T>>
+                make_sum(T&& t) { return { std::forward<T>(t) }; }
 
                 template <arithmetic T>
                 struct Monoid<T> {
@@ -3977,7 +3971,7 @@
                 struct Monoid<T> {
                   static constexpr T mempty {};
                   template <string_like U, string_like V>
-                  static constexpr std::string mappend(U&& a, V&& b)
+                  static std::string mappend(U&& a, V&& b)
                   {
                     std::ostringstream s;
                     s << std::forward<U>(a) << std::forward<V>(b);
@@ -3990,105 +3984,129 @@
                   static constexpr Product<T> mempty { 1 };
                   template <product_on<T> U, product_on<T> V>
                   static constexpr Product<T> mappend(
-                    U&& a,
-                    V&& b
+                      U&& a, V&& b
                   ) {
-                    return { std::forward<U>(a).value * std::forward<V>(b).value };
+                    return { std::forward<U>(a).value *
+                      std::forward<V>(b).value };
                   }
                 };
 
                 template <arithmetic T>
                 struct Monoid<Sum<T>> {
-                  static constexpr Sum<T> mempty { 0 };
-                  template <sum_on<T> U, sum_on<T> V>
-                  static constexpr Sum<T> mappend(
-                    U&& a,
-                    V&& b) {
-                    return { std::forward<U>(a).value + std::forward<V>(b).value };
+                  template <
+                    typename Collection,
+                    sum_on<T> U = typename Collection::value_type
+                  > static constexpr Sum<T> mconcat(Collection&& c)
+                  {
+                    return std::accumulate(
+                        c.cbegin(), c.cend(), Sum<T> { 0 },
+                        []<sum_on<T> V, std::common_reference_with<T> W>
+                        (V&& acc, W&& e) { return Sum<T>{
+                          std::forward<V>(acc).value + std::forward<W>(e).value };
+                        }
+                    );
                   }
                 };
 
-                template <monoid T>
-                constexpr auto mempty() { return Monoid<T>::mempty; }
+                template <typename T>
+                constexpr decltype(Monoid<T>::mempty) mempty()
+                {
+                  return Monoid<T>::mempty;
+                }
 
-                template <monoidal T, std::common_reference_with<T> U>
+                template <typename T>
+                constexpr decltype(
+                  Monoid<T>::template mconcat<std::vector<T>>({})
+                ) mempty()
+                {
+                  return Monoid<T>::template mconcat<std::vector<T>>({});
+                }
+
+                template <typename T, typename U>
                 constexpr auto mappend(T&& a, U&& b)
+                  -> std::enable_if_t<
+                       std::common_reference_with<T, U>,
+                       decltype(Monoid<std::remove_cvref_t<T>>::mappend(
+                         std::forward<T>(a),
+                         std::forward<U>(b)
+                       ))>
                 {
                   return Monoid<std::remove_cvref_t<T>>::mappend(
-                    std::forward<T>(a),
-                    std::forward<U>(b)
+                    std::forward<T>(a), std::forward<U>(b)
                   );
+                }
+
+                template <typename T, typename U>
+                constexpr auto mappend(T&& a, U&& b)
+                  -> std::enable_if_t<
+                       std::common_reference_with<T, U>,
+                       decltype(Monoid<std::remove_cvref_t<T>>::template
+                         mconcat<std::vector<std::remove_cvref_t<T>>>(
+                           std::vector<std::remove_cvref_t<T>> {
+                             std::forward<T>(a), std::forward<U>(b)
+                           }))>
+                {
+                  return Monoid<std::remove_cvref_t<T>>::mconcat(
+                      std::vector<std::remove_cvref_t<T>>
+                        { std::forward<T>(a), std::forward<U>(b) });
                 }
 
                 template <
-                  typename Collection,
-                  monoidal Element =
-                    typename std::remove_cvref_t<Collection>::value_type
-                > constexpr auto foldM(Collection&& c)
+                  typename Collection, typename Element
+                    = typename std::remove_cvref_t<Collection>::value_type>
+                constexpr decltype(Monoid<Element>::mempty)
+                mconcat(Collection&& c)
                 {
                   return std::accumulate(
                     c.cbegin(), c.cend(), mempty<Element>(),
-                    []<typename T, typename U>(T&& acc, U&& e) {
-                      return mappend(
-                        std::forward<T>(acc),
-                        std::forward<U>(e)
-                      ); }
+                    []<typename T, typename U>
+                    (T&& acc, U&& e)
+                    { return mappend(std::forward<T>(acc), std::forward<U>(e)); }
                   );
                 }
 
-                template <monoidal Monoid, typename Collection,
-                  typename Element 
-                    = typename std::remove_cvref_t<Collection>::value_type,
+                template <typename Collection, typename Element
+                  = typename std::remove_cvref_t<Collection>::value_type>
+                constexpr decltype(Monoid<Element>::template
+                  mconcat(std::declval<Collection>())
+                ) mconcat(Collection&& c)
+                {
+                  return Monoid<Element>::template mconcat<Collection>(c);
+                }
+
+                template <typename T>
+                concept monoid = requires(T&& a, T&& b) {
+                  { mconcat(
+                      std::vector<T>{ std::forward<T>(a),  std::forward<T>(b) }
+                    )
+                  } -> std::common_reference_with<T>;
+                };
+
+                template <typename T>
+                concept monoidal = monoid<std::remove_cvref_t<T>>;
+
+                template <
+                  monoidal Monoid, typename Collection, typename Element
+                  = typename std::remove_cvref_t<Collection>::value_type,
                   std::convertible_to<
                     std::function<Monoid(std::remove_cvref_t<Element>)>
                   > F
-                > constexpr auto foldMap(Collection&& c, F&& f)
+                > constexpr Monoid foldMap(Collection&& c, F&& f)
                 {
                   return std::accumulate(c.cbegin(), c.cend(), mempty<Monoid>(),
                     [&]<typename T, typename U>(T&& acc, U&& e) {
-                      return mappend(
-                        std::forward<T>(acc),
-                        std::invoke(std::forward<F>(f), std::forward<U>(e))
-                      ); });
+                      return mappend(std::forward<T>(acc),
+                        std::forward<F>(f)(std::forward<U>(e))
+                      );
+                    });
                 }
 
-                int main()
-                {
-                  auto const i { make_product(3) };
-                  // auto const j{ make_sum("adf") };
-                  // char const (&)[4] is not arithmetic
-                  auto const k { mempty<Product<int>>() };
-                  auto const l { mappend(i, k) };
-                  auto const m { make_sum(3.0) };
-                  auto const n { make_sum<float>(3.0) };
-                  // auto const o{ mappend(m, n) };
-                  // can't mappend float and double Products
-                  // auto const p{ mappend(l, m) };
-                  // can't mappend Sum and Product
-                  auto const q { mempty<std::string>() };
-                  auto const r { mempty<int>() };
-                  std::vector<int> const v1 { 1, 2, 3, 4 };
-                  std::vector<std::string> const v2 { "Hello ", "there, ", "world!" };
-                  std::cout << foldMap<Product<int>>(
-                    v1,
-                    []<typename T>(T&& t) {
-                      return make_product(std::forward<T>(t));
-                    }
-                  ).value << '\n';
-                  std::cout << foldMap<Sum<int>>(
-                    v1,
-                    []<typename T>(T&& t) {
-                      return make_sum(std::forward<T>(t));
-                    }
-                  ).value << '\n';
-                  std::cout << foldM(v2) << '\n';
-                  return EXIT_SUCCESS;
-                }
+                #endif
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/4rjvWfvvr">https://godbolt.org/z/4rjvWfvvr</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/oxcav3Mdq">https://godbolt.org/z/oxcav3Mdq</a></figcaption>
               <!-- v1: https://godbolt.org/z/o6eqbnYT3 -->
               <!-- v2: https://godbolt.org/z/nobxE8hr1 -->
-              <!-- Draft: https://godbolt.org/z/1jPjMYThE -->
+              <!-- v3: https://godbolt.org/z/4rjvWfvvr -->
             </figure>
           </section>
           <!-- https://godbolt.org/z/cG61MWjWc -->

@@ -19,10 +19,6 @@
         <section data-background-image="images/The Evolution of Functional Programming in CPP Title Card.png" data-background-size="contain"></section>
         <section data-auto-animate>
           <h2 class="slide-header">About Me</h2>
-          <p>Functional and systems programmer focused on Haskell and C/C++</p>
-        </section>
-        <section data-auto-animate>
-          <h2 class="slide-header">About Me</h2>
           <p>Functional and systems programmer focused on Haskell, C and C++</p>
         </section>
         <section class="socials">
@@ -370,11 +366,11 @@
                 ) {
                   if (first_element_index >= last_element_index
                       || first_element_index < 0) return;
-                    int const pivot_index = lomuto_partition(
-                      v,
-                      first_element_index,
-                      last_element_index
-                    );
+                  int const pivot_index = lomuto_partition(
+                    v,
+                    first_element_index,
+                    last_element_index
+                  );
                   lomuto_quicksort_impl(v, first_element_index, pivot_index - 1);
                   lomuto_quicksort_impl(v, pivot_index + 1, last_element_index);
                 }
@@ -464,11 +460,11 @@
                 ) {
                   if (first_element_index >= last_element_index
                       || first_element_index < 0) return;
-                    int const pivot_index = variant_partition(
-                      v,
-                      first_element_index,
-                      last_element_index
-                    );
+                  int const pivot_index = variant_partition(
+                    v,
+                    first_element_index,
+                    last_element_index
+                  );
                   variant_quicksort_impl(v, first_element_index, pivot_index - 1);
                   variant_quicksort_impl(v, pivot_index + 1, last_element_index);
                 }
@@ -998,7 +994,7 @@
           </section>
           <section>
             <figure class="code-example">
-              <pre><code data-trim data-line-numbers="18|14-19|13"><script type="text/template">
+              <pre><code data-trim data-line-numbers="18|14-19"><script type="text/template">
                 #include <algorithm>
                 #include <cstdlib>
                 #include <functional>
@@ -1147,7 +1143,7 @@
           <section>An example of specialisation</section>
           <section>
             <figure class="code-example">
-              <pre><code data-trim data-line-numbers="40-42|46-56|58-66|68-79|82-85"><script type="text/template">
+              <pre><code data-trim data-line-numbers="40-42|46-56|58-66|68-74|76-79|82-85"><script type="text/template">
                 #ifndef STACK_HPP_INCLUDED
                 #define STACK_HPP_INCLUDED
 
@@ -1279,7 +1275,7 @@
           <section>Let&apos;s see it in code.</section>
           <section>
             <figure class="code-example">
-              <pre><code data-trim data-line-numbers="5-9|11-17|19-23|25-28|32-34" class="language-haskell">
+              <pre><code data-trim data-line-numbers="5-9|11-17|19-23|25-28" class="language-haskell">
                 module Main where
 
                 import Data.Foldable (foldl&apos;)
@@ -1298,25 +1294,19 @@
                 listProd xs = foldl' mult 1 xs
                 -- alternatively use foldl' (*) 1 xs
 
-                mean :: [Float] -> Float
-                mean xs = listSum xs / (fromIntegral (length xs))
-
-                geomMean :: [Float] -> Float
-                geomMean xs = listProd xs ** (1.0 / fromIntegral (length xs))
-
-                useGeomMean :: Bool -> [Float] -> Float
-                useGeomMean (True) = geomMean
-                useGeomMean (False) = mean
+                useListSum :: Bool -> [Float] -> Float
+                useListSum (True) = listSum
+                useListSum (False) = listProd
                 -- alternatively use an if expression
 
                 main :: IO ()
                 main = do
                   let list = [1.0, 2.0, 3.0]
-                  putStrLn (show (useGeomMean True list))
-                  putStrLn (show (useGeomMean False list))
+                  putStrLn (show (useListSum True list))
+                  putStrLn (show (useListSum False list))
               </code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/dKhhxGKG9">https://godbolt.org/z/dKhhxGKG9</a>
+                <a href="https://godbolt.org/z/hYv5Ebo5z">https://godbolt.org/z/hYv5Ebo5z</a>
               </figcaption>
             </figure>
           </section>
@@ -1600,7 +1590,7 @@
           </section>
           <section>
             <figure class="code-example">
-              <pre><code data-trim data-line-numbers="7-16|25|26-30|31|32|33|38-44|45|50|46-51" class="language-cpp"><script type="text/template">
+              <pre><code data-trim data-line-numbers="7-16|25|26-30|31|32|33|38-44|45|46-51|50" class="language-cpp"><script type="text/template">
                 #include <algorithm>
                 #include <cstdlib>
                 #include <functional>
@@ -1830,7 +1820,6 @@
                   <li>Builds on C++98 SFINAE</li>
                 </ul>
               </li>
-              <li>Enables <em>ad-hoc</em> polymorphism</li>
             </ul>
           </section>
           <section>Some fun with monoids</section>
@@ -1847,46 +1836,47 @@
           </section>
           <section>
             <figure class="code-example">
-              <pre><code data-trim data-line-numbers="5-14|6-8|10-12|14|16-17|19-26|28-32" class="language-haskell"><script type="text/template">
+              <pre><code data-trim data-line-numbers="6-15|7-9|11-13|15|17-18|20-27|29-33" class="language-haskell"><script type="text/template">
                 module Main where
 
                 import Data.Foldable (foldl')
+                import Prelude hiding (Monoid, mappend, mconcat, mempty)
 
-                class MyMonoid a where
-                  my_mempty :: a
-                  my_mappend :: a -> a -> a
-                  my_mconcat :: [a] -> a
+                class Monoid a where
+                  mempty :: a
+                  mappend :: a -> a -> a
+                  mconcat :: [a] -> a
   
-                  my_mempty = my_mconcat []
-                  my_mappend a b = my_mconcat [a, b]
-                  my_mconcat = foldl' my_mappend my_mempty
+                  mempty = mconcat []
+                  mappend a b = mconcat [a, b]
+                  mconcat = foldl' mappend mempty
 
-                  {-# MINIMAL (my_mempty), (my_mappend) | (my_mconcat) #-}
+                  {-# MINIMAL (mempty), (mappend) | (mconcat) #-}
 
-                data MyProduct a = MyProduct { getProduct :: a }
-                data MySum a = MySum { getSum :: a }
+                data Product a = Product { getProduct :: a }
+                data Sum a = Sum { getSum :: a }
 
-                instance Num a => MyMonoid (MyProduct a) where
-                  my_mempty = MyProduct 1
-                  my_mappend (MyProduct a) (MyProduct b)
-                    = MyProduct (a * b)
+                instance Num a => Monoid (Product a) where
+                  mempty = Product 1
+                  mappend (Product a) (Product b)
+                    = Product (a * b)
 
-                instance Num a => MyMonoid (MySum a) where
-                  my_mconcat
-                    = foldl' (\(MySum a) (MySum b) -> MySum (a + b)) (MySum 0)
+                instance Num a => Monoid (Sum a) where
+                  mconcat
+                    = foldl' (\(Sum a) (Sum b) -> Sum (a + b)) (Sum 0)
 
                 main :: IO ()
                 main = do
                   let nums = [1..4]
-                  print $ getProduct . my_mconcat . map MyProduct $ nums -- 24
-                  print $ getSum . my_mconcat . map MySum $ nums -- 10
+                  print $ getProduct . mconcat . map Product $ nums -- 24
+                  print $ getSum . mconcat . map Sum $ nums -- 10
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/ajadGTMTE">https://godbolt.org/z/ajadGTMTE</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/7f3Y89fEn">https://godbolt.org/z/7f3Y89fEn</a></figcaption>
             </figure>
           </section>
           <section>
             <figure class="code-example">
-              <pre><code data-trim data-line-numbers="21-28|30-44|91-97|92|93-96|99-111|103|116-118|120-125|127-140|142-155|157-168|170-178|180-195|192" class="language-cpp"><script type="text/template">
+              <pre><code data-trim data-line-numbers="21-28|30-44|91-97|92|93-96|99-111|103|116-118|120-125|180-195|192" class="language-cpp"><script type="text/template">
                 #ifndef MONOID_HPP_INCLUDED
                 #define MONOID_HPP_INCLUDED
 
@@ -3424,6 +3414,34 @@
               <figcaption><a href="https://godbolt.org/z/68janhx4x">https://godbolt.org/z/68janhx4x</a></figcaption>
             </figure>
           </section>
+          <section data-auto-animate>
+            <h3>C++14 Recap</h3>
+          </section>
+          <section data-auto-animate>
+            <h3 class="slide-header">C++14 Recap</h3>
+            <ul>
+              <li>Basic type inference and polymorphism on types</li>
+            </ul>
+          </section>
+          <section data-auto-animate>
+            <h3 class="slide-header">C++14 Recap</h3>
+            <ul>
+              <li>Basic type inference and polymorphism on types</li>
+              <li>Polymorphism based on value category
+              </li>
+            </ul>
+          </section>
+          <section data-auto-animate>
+            <h3 class="slide-header">C++14 Recap</h3>
+            <ul>
+              <li>Basic type inference and polymorphism on types</li>
+              <li>Polymorphism based on value category
+                <ul>
+                  <li>Possible with ƛ, but requires working with linear types</li>
+                </ul>
+              </li>
+            </ul>
+          </section>
         </section>
         <section>
           <section>
@@ -3576,7 +3594,7 @@
           </section>
           <section>
             <ul>
-              <li>A generalization of enum / union that provides type-safe alternative to unions</li>
+              <li>A type-safe generalization of enum / union</li>
               <li>A tool for defining <em>sum types</em> from FP languages</li>
               <li>Offers an alternative to rigid inheritance hierarchies</li>
             </ul>
@@ -3659,7 +3677,7 @@
           </section>
           <section>
             <figure class="code-example">
-              <pre><code data-trim data-line-numbers="58-64|66-80|67-79|68-72|73-78" class="language-cpp"><script type="text/template">
+              <pre><code data-trim data-line-numbers="58-64|66-80|67-79|68-72|73-78|79" class="language-cpp"><script type="text/template">
                 #include "lib.hpp"
 
                 #include <algorithm>
@@ -3757,7 +3775,7 @@
           </section>
           <section>
             <figure class="code-example">
-              <pre><code data-trim data-line-numbers="8-9|14-16|17-19" class="language-cpp"><script type="text/template">
+              <pre><code data-trim data-line-numbers="8-9|14-16" class="language-cpp"><script type="text/template">
                 #include "lib.hpp"
 
                 #include <cstdlib>
@@ -3787,6 +3805,16 @@
               <figcaption><a href="https://godbolt.org/z/ovqxxjY9K">https://godbolt.org/z/ovqxxjY9K</a></figcaption>
             </figure>
           </section>
+          <section>
+            <ul>
+              <li>Benefits
+                <ul>
+                  <li>Can make new supertypes by adding types to other <span class="code">std::variant</span> aliases</li>
+                  <li>Can add new subtypes and have compiler errors guide refactoring</li>
+                </ul>
+              </li>
+            </ul>
+          </section>
           <section data-auto-animate>
             <h3 class="slide-header">C++17 Recap</h3>
           </section>
@@ -3808,7 +3836,7 @@
             <ul>
               <li>Structured bindings</li>
               <li><span class="code">std::optional</span></li>
-              <li><span class="code">std::variant</span></li>
+              <li><span class="code">std::variant</span> and <span class="code">std::visit</span></li>
             </ul>
           </section>
         </section>
@@ -4283,7 +4311,7 @@
           </section>
           <section>
             <figure class="code-example">
-              <pre><code data-trim data-line-numbers="24-25|27-37|30-35|36|39-41|44-48|44" class="language-cpp"><script type="text/template">
+              <pre><code data-trim data-line-numbers="24-25|27-37|30-35|36|39-41|44-48|44|45|47" class="language-cpp"><script type="text/template">
                 #include <cmath>
                 #include <concepts>
                 #include <cstdlib>
@@ -4544,6 +4572,30 @@
               </script></code></pre>
               <figcaption><a href="https://godbolt.org/z/qEGf9o7o7">https://godbolt.org/z/qEGf9o7o7</a></figcaption>
             </figure>
+          </section>
+          <section data-auto-animate>
+            <h3>C++23 Recap</h3>
+          </section>
+          <section data-auto-animate>
+            <h3 class="slide-header">C++23 Recap</h3>
+            <ul>
+              <li><span class="code">std::expected</span></li>
+            </ul>
+          </section>
+          <section data-auto-animate>
+            <h3 class="slide-header">C++23 Recap</h3>
+            <ul>
+              <li><span class="code">std::expected</span></li>
+              <li><span class="code">std::optional</span> monadic operations</li>
+            </ul>
+          </section>
+          <section data-auto-animate>
+            <h3 class="slide-header">C++23 Recap</h3>
+            <ul>
+              <li><span class="code">std::expected</span></li>
+              <li><span class="code">std::optional</span> monadic operations</li>
+              <li>Ranges updates</li>
+            </ul>
           </section>
         </section>
         <section>

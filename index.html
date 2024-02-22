@@ -958,12 +958,12 @@
                 computation
               </li>
               <li>But its signature is a bit too general</li>
-              <li>Can we avoid unnecessary code repetition?</li>
+              <li>Can we avoid reinventing the wheel?</li>
             </ul>
           </section>
           <section>
             <figure class="code-example">
-              <pre><code data-trim data-line-numbers="14|12-15"><script type="text/template">
+              <pre><code data-trim data-line-numbers="12-15|14"><script type="text/template">
                 #include <algorithm>
                 #include <cstdlib>
                 #include <iostream>
@@ -994,7 +994,7 @@
           </section>
           <section>
             <figure class="code-example">
-              <pre><code data-trim data-line-numbers="18|14-19"><script type="text/template">
+              <pre><code data-trim data-line-numbers="14-19|18"><script type="text/template">
                 #include <algorithm>
                 #include <cstdlib>
                 #include <functional>
@@ -1069,7 +1069,7 @@
           <section>A (somewhat) realistic example</section>
           <section>
             <figure class="code-example">
-              <pre><code data-trim data-line-numbers="21-22|24-27|29-31|34-37" class="language-cpp"><script type="text/template">
+              <pre><code data-trim data-line-numbers="20-21|22|24-27|29-31|34-37" class="language-cpp"><script type="text/template">
                 #ifndef STACK_HPP_INCLUDED
                 #define STACK_HPP_INCLUDED
 
@@ -1509,7 +1509,7 @@
           <section>Capturing variables with closures</section>
           <section>
             <figure class="code-example">
-              <pre><code data-trim data-line-numbers="9-11|12-15|20|20-23"><script type="text/template">
+              <pre><code data-trim data-line-numbers="9-11|12-15|16-23|20|21-22"><script type="text/template">
                 #ifndef LIB_HPP_INCLUDED
                 #define LIB_HPP_INCLUDED
 
@@ -2592,7 +2592,7 @@
           </section>
           <section>
             <figure class="code-example">
-              <pre><code data-trim data-line-numbers="99-111|106-108|106" class="language-cpp"><script type="text/template">
+              <pre><code data-trim data-line-numbers="99-111|104-110|106-108|106" class="language-cpp"><script type="text/template">
                 #ifndef MONOID_HPP_INCLUDED
                 #define MONOID_HPP_INCLUDED
 
@@ -3420,13 +3420,13 @@
           <section data-auto-animate>
             <h3 class="slide-header">C++14 Recap</h3>
             <ul>
-              <li>Basic type inference and polymorphism on types</li>
+              <li>Basic type inference</li>
             </ul>
           </section>
           <section data-auto-animate>
             <h3 class="slide-header">C++14 Recap</h3>
             <ul>
-              <li>Basic type inference and polymorphism on types</li>
+              <li>Basic type inference</li>
               <li>Polymorphism based on value category
               </li>
             </ul>
@@ -3434,7 +3434,7 @@
           <section data-auto-animate>
             <h3 class="slide-header">C++14 Recap</h3>
             <ul>
-              <li>Basic type inference and polymorphism on types</li>
+              <li>Basic type inference</li>
               <li>Polymorphism based on value category
                 <ul>
                   <li>Possible with ƛ, but requires working with linear types</li>
@@ -3821,22 +3821,14 @@
           <section data-auto-animate>
             <h3 class="slide-header">C++17 Recap</h3>
             <ul>
-              <li>Structured bindings</li>
+              <li>Basic destructuring</li>
             </ul>
           </section>
           <section data-auto-animate>
             <h3 class="slide-header">C++17 Recap</h3>
             <ul>
-              <li>Structured bindings</li>
-              <li><span class="code">std::optional</span></li>
-            </ul>
-          </section>
-          <section data-auto-animate>
-            <h3 class="slide-header">C++17 Recap</h3>
-            <ul>
-              <li>Structured bindings</li>
-              <li><span class="code">std::optional</span></li>
-              <li><span class="code">std::variant</span> and <span class="code">std::visit</span></li>
+              <li>Basic destructuring</li>
+              <li>Algebraic data types</li>
             </ul>
           </section>
         </section>
@@ -4159,7 +4151,7 @@
           </section>
           <section>
             <figure class="code-example">
-              <pre><code data-trim data-line-numbers="8-20|24-31|32-40|41-43" class="language-cpp"><script type="text/template">
+              <pre><code data-trim data-line-numbers="8-20|24-30|31-39|40-42" class="language-cpp"><script type="text/template">
                 #include <cstdlib>
                 #include <functional>
                 #include <iostream>
@@ -4190,7 +4182,6 @@
                       Plan::standard },
                     { 60, "Ski", "Murr", { "romance", "drama" }, Plan::plus }
                   };
-                  std::size_t total_subscribers { subscribers.size() };
                   auto target_subscribers {
                     subscribers
                     | std::views::filter([](auto const& s) { return s.age < 36; })
@@ -4206,8 +4197,9 @@
                   return EXIT_SUCCESS;
                 }
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/P69xM8Pva">https://godbolt.org/z/P69xM8Pva</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/vb8MK8x9n">https://godbolt.org/z/vb8MK8x9n</a></figcaption>
               <!-- Old link: https://godbolt.org/z/vnYYxv8Ed -->
+              <!-- New old link: https://godbolt.org/z/P69xM8Pva -->
             </figure>
           </section>
           <section>
@@ -4669,6 +4661,7 @@
             <li><a href="https://www.stroustrup.com/dne.html"><em>The Design and Evolution of C++</em></a></li>
             <li><a href="https://en.wikipedia.org/wiki/Modern_C%2B%2B_Design"><em>Modern C++ Design</em></a></li>
             <li><a href="https://searchworks.stanford.edu/view/14165994"><em>C++ Template Metaprogramming: Concepts, Tools, and Techniques from Boost and Beyond</em></a></li>
+            <li><a href="https://www.manning.com/books/functional-programming-in-c-plus-plus"><em>Functional Programming in C++</em></a></li>
           </ol>
         </section>
         <section data-visibility="hidden">

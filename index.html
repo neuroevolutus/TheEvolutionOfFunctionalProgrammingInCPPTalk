@@ -3733,19 +3733,19 @@
                 overloaded(Ts...) -> overloaded<Ts...>;
 
                 std::string show(Enemy e) { return std::visit(
-                    overloaded {
-                      [=](Slime s) {
-                        std::ostringstream o;
-                        o << "Slime with hunger " << Slime::get_hunger(s);
-                        return o.str();
-                      },
-                      [=](Goblin g) {
-                        std::ostringstream o;
-                        o << "Goblin at level " << Goblin::get_level(g)
-                          << " with hunger " << Goblin::get_hunger(g);
-                        return o.str();
-                      }
-                    }, e);
+                  overloaded {
+                    [=](Slime s) {
+                      std::ostringstream o;
+                      o << "Slime with hunger " << Slime::get_hunger(s);
+                      return o.str();
+                    },
+                    [=](Goblin g) {
+                      std::ostringstream o;
+                      o << "Goblin at level " << Goblin::get_level(g)
+                        << " with hunger " << Goblin::get_hunger(g);
+                      return o.str();
+                    }
+                  }, e);
                 }
 
                 Enemy feed(Enemy e, std::size_t food)

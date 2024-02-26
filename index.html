@@ -1526,13 +1526,14 @@
                   std::cout << "What file extension would you like to ignore? ";
                   std::cin >> ignored_file_extension;
                   std::copy_if(
-                      filenames.cbegin(),
-                      filenames.cend(),
-                      std::back_inserter(desired_files),
-                      [&ignored_file_extension](std::string const& filename) {
-                        return filename.rfind(ignored_file_extension)
-                          == std::string::npos;
-                      });
+                    filenames.cbegin(),
+                    filenames.cend(),
+                    std::back_inserter(desired_files),
+                    [&ignored_file_extension](std::string const& filename) {
+                      return filename.rfind(ignored_file_extension)
+                        == std::string::npos;
+                    }
+                  );
                   return desired_files;
                 }
 

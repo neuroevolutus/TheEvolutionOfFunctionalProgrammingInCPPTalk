@@ -2062,9 +2062,9 @@
                   typename Element
                     = typename my_remove_cvref_t<Collection>::value_type
                 > constexpr my_enable_if_t<
-                    std::is_convertible<
-                      F, std::function<Monoid(my_remove_cvref_t<Element>)>
-                    >::value, Monoid
+                  std::is_convertible<
+                    F, std::function<Monoid(my_remove_cvref_t<Element>)>
+                  >::value, Monoid
                 > foldMap(Collection&& c, F&& f)
                 {
                   return std::accumulate(c.cbegin(), c.cend(), mempty<Monoid>(),

@@ -16,7 +16,7 @@
   <body>
     <div class="reveal">
       <div class="slides">
-        <section data-background-image="images/The Evolution of Functional Programming in CPP Title Card.png" data-background-size="contain"></section>
+        <section>The Evolution of Functional Programming in C++</section>
         <section data-auto-animate>
           <h2 class="slide-header">About Me</h2>
           <p>Functional and systems programmer focused on Haskell, C and C++</p>
@@ -204,7 +204,7 @@
         <section>
           <h2 class="slide-header">Agenda</h2>
           <ul>
-            <li>C++ Origins and Ethos</li>
+            <li>C++ origins and ethos</li>
             <li>
               The evolution of FP in C++ from C++98 through C++23
               <ul>
@@ -213,6 +213,7 @@
               </ul>
             </li>
             <li>FP in C++26 and beyond</li>
+            <li>Some musings about performance</li>
           </ul>
         </section>
         <section>
@@ -435,7 +436,7 @@
                 }
               </script></code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/Wr5KnGzeY">https://godbolt.org/z/Wr5KnGzeY</a>
+                <a href="https://godbolt.org/z/zGqae4znb">https://godbolt.org/z/zGqae4znb</a>
               </figcaption>
             </figure>
           </section>
@@ -452,7 +453,7 @@
           <section>
             <h3 class="slide-header">Same algorithm skeleton</h3>
             <figure class="code-example">
-              <pre><code data-trim data-line-numbers="8-12|13|14" class="language-cpp"><script type="text/template">
+              <pre><code data-trim data-line-numbers="1-15|8-12|13|14" class="language-cpp"><script type="text/template">
                 void variant_quicksort_impl(
                   std::vector<int>& v,
                   int const first_element_index,
@@ -477,7 +478,7 @@
           </section>
           <section>
             <figure class="code-example">
-              <pre><code data-trim data-line-numbers="63-64|36-46|21-34|8-19" class="language-cpp"><script type="text/template">
+              <pre><code data-trim data-line-numbers="63-64|36-46|38|21-34|25|8-19" class="language-cpp"><script type="text/template">
                 #include <algorithm>
                 #include <cstdlib>
                 #include <iostream>
@@ -502,7 +503,7 @@
                   std::vector<int>& v,
                   int const first_element_index,
                   int const last_element_index,
-                  int (*partition)(std::vector<int>&, int, int)
+                  int (*const partition)(std::vector<int>&, int, int)
                 ) {
                   if (first_element_index >= last_element_index
                       || first_element_index < 0) return;
@@ -515,7 +516,7 @@
 
                 void quicksort(
                   std::vector<int>& v,
-                  int (*partition)(std::vector<int>&, int, int)
+                  int (*const partition)(std::vector<int>&, int, int)
                 ) {
                   quicksort_impl(
                     v,
@@ -554,7 +555,7 @@
                 }
               </script></code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/dv1n3q79T">https://godbolt.org/z/dv1n3q79T</a>
+                <a href="https://godbolt.org/z/W7caE7bT1">https://godbolt.org/z/W7caE7bT1</a>
               </figcaption>
             </figure>
           </section>
@@ -587,7 +588,23 @@
               <li class="de-emphasised">Templates</li>
             </ul>
           </section>
-          <section>
+          <section data-auto-animate>
+            <h3 class="slide-header">Function references</h3>
+          </section>
+          <section data-auto-animate>
+            <h3 class="slide-header">Function references</h3>
+            <ul>
+              <li>Similar to function pointers</li>
+            </ul>
+          </section>
+          <section data-auto-animate>
+            <h3 class="slide-header">Function references</h3>
+            <ul>
+              <li>Similar to function pointers</li>
+              <li>But cannot be reseated</li>
+            </ul>
+          </section>
+          <section data-auto-animate>
             <h3 class="slide-header">Function references</h3>
             <ul>
               <li>Similar to function pointers</li>
@@ -596,7 +613,7 @@
             </ul>
           </section>
           <section>
-            <p>Let&apos;s revisit how we sort</p>
+            <p>Revisiting how we sort</p>
           </section>
           <section>
             <figure class="code-example">
@@ -676,7 +693,7 @@
                 }
               </script></code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/53853noP6">https://godbolt.org/z/53853noP6</a>
+                <a href="https://godbolt.org/z/b5Gc7Yc4c">https://godbolt.org/z/b5Gc7Yc4c</a>
               </figcaption>
             </figure>
           </section>
@@ -696,23 +713,23 @@
           <section>
             <h3 class="slide-header">The <span class="code">&lt;functional&gt;</span> header</h3>
             <ul>
-              <li>Defines a set of function objects that compose well with algorithm templates
+              <li>Defines a set of function objects that compose well with <em>algorithm templates</em>
                 <ul>
-                  <li>A function object is any object for which <span class="code">operator()</span> is defined</li>
+                  <li>A function object: any object for which <span class="code">operator()</span> is defined</li>
                 </ul>
               </li>
               <li>Introduces <em>closures</em> and <em>partial application</em> to the world of C++</li>
             </ul>
           </section>
           <section>
-            <p>Let&apos;s first do another refactor</p>
+            <p>Doing another refactor</p>
           </section>
           <section>
-            <p>Key principle: Allow user to pick the type of customization similar to before</p>
+            <p>Key principle: allow user to pick the type of customization as before</p>
           </section>
           <section>
             <figure class="code-example">
-              <pre><code data-trim data-line-numbers="24-30|8|13|17-21"><script type="text/template">
+              <pre><code data-trim data-line-numbers="24-30|24|27|29|8-22|8|13|17-21"><script type="text/template">
                 #ifndef QUICKSORT_HPP_INCLUDED
                 #define QUICKSORT_HPP_INCLUDED
 
@@ -747,7 +764,7 @@
                 #endif
               </script></code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/fMoe3r1Yv">https://godbolt.org/z/fMoe3r1Yv</a>
+                <a href="https://godbolt.org/z/6e4PbYzda">https://godbolt.org/z/6e4PbYzda</a>
               </figcaption>
             </figure>
           </section>
@@ -807,7 +824,7 @@
                 }
               </script></code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/fMoe3r1Yv">https://godbolt.org/z/fMoe3r1Yv</a>
+                <a href="https://godbolt.org/z/6e4PbYzda">https://godbolt.org/z/6e4PbYzda</a>
               </figcaption>
             </figure>
           </section>
@@ -871,7 +888,7 @@
                 }
               </script></code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/PP4szz8sn">https://godbolt.org/z/PP4szz8sn</a>
+                <a href="https://godbolt.org/z/nq1654bMG">https://godbolt.org/z/nq1654bMG</a>
               </figcaption>
             </figure>
           </section>
@@ -924,7 +941,7 @@
                 }
               </script></code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/5h95sTv8x">https://godbolt.org/z/5h95sTv8x</a>
+                <a href="https://godbolt.org/z/7zznGc9vY">https://godbolt.org/z/7zznGc9vY</a>
               </figcaption>
             </figure>
           </section>
@@ -983,7 +1000,7 @@
                 }
               </script></code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/Ts4b84Ezf">https://godbolt.org/z/Ts4b84Ezf</a>
+                <a href="https://godbolt.org/z/dMo53GvEq">https://godbolt.org/z/dMo53GvEq</a>
               </figcaption>
             </figure>
           </section>
@@ -1022,7 +1039,7 @@
                 }
               </script></code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/vba5dsGM5">https://godbolt.org/z/vba5dsGM5</a>
+                <a href="https://godbolt.org/z/Y53GTn4sv">https://godbolt.org/z/Y53GTn4sv</a>
               </figcaption>
             </figure>
           </section>
@@ -1046,7 +1063,7 @@
             <h3 class="slide-header">Pointers to members</h3>
             <ul>
               <li>Can be turned into function objects that take an object and return a member</li>
-              <li><span class="code">&lt;functional&gt;</span> also provides function objects and function templates like <span class="code">mem_fun_t</span> and <span class="code">mem_fun</span> for this purpose</li>
+              <li><span class="code">&lt;functional&gt;</span> also provides function objects and function templates like <span class="code">mem_fun_t</span> and <span class="code">mem_fun</span> for this purpose.</li>
             </ul>
           </section>
           <section>
@@ -1066,7 +1083,7 @@
               <li>Enable one to <em>specialise</em> the recipe for specific classes</li>
             </ul>
           </section>
-          <section>A (somewhat) realistic example</section>
+          <section>A (somewhat more) realistic example</section>
           <section>
             <figure class="code-example">
               <pre><code data-trim data-line-numbers="20-21|22|24-27|29-31|34-37" class="language-cpp"><script type="text/template">
@@ -1112,14 +1129,14 @@
                 #endif
               </script></code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/6nszxW8az">https://godbolt.org/z/6nszxW8az</a>
+                <a href="https://godbolt.org/z/PYGz77fnf">https://godbolt.org/z/PYGz77fnf</a>
               </figcaption>
             </figure>
           </section>
           <section>
             <figure class="code-example">
               <pre><code data-trim data-line-numbers class="language-cpp"><script type="text/template">
-                #include "Stack.hpp"
+                #include "stack.hpp"
 
                 #include <cstdlib>
                 #include <iostream>
@@ -1136,7 +1153,7 @@
                 }
               </script></code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/6nszxW8az">https://godbolt.org/z/6nszxW8az</a>
+                <a href="https://godbolt.org/z/PYGz77fnf">https://godbolt.org/z/PYGz77fnf</a>
               </figcaption>
             </figure>
           </section>
@@ -1234,7 +1251,7 @@
                 #endif
               </script></code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/f46q345P6">https://godbolt.org/z/f46q345P6</a>
+                <a href="https://godbolt.org/z/Wdc31YoeM">https://godbolt.org/z/Wdc31YoeM</a>
               </figcaption>
             </figure>
           </section>
@@ -1260,7 +1277,7 @@
                 }
               </script></code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/f46q345P6">https://godbolt.org/z/f46q345P6</a>
+                <a href="https://godbolt.org/z/Wdc31YoeM">https://godbolt.org/z/Wdc31YoeM</a>
               </figcaption>
             </figure>
           </section>
@@ -1301,9 +1318,9 @@
 
                 main :: IO ()
                 main = do
-                  let list = [1.0, 2.0, 3.0]
-                  putStrLn (show (useListSum True list))
-                  putStrLn (show (useListSum False list))
+                  let list = [1.0, 2.0, 3.0, 4.0]
+                  putStrLn (show (useListSum True list))  -- 10
+                  putStrLn (show (useListSum False list)) -- 24
               </code></pre>
               <figcaption>
                 <a href="https://godbolt.org/z/hYv5Ebo5z">https://godbolt.org/z/hYv5Ebo5z</a>
@@ -1432,7 +1449,7 @@
             <ul>
               <li>Functions as first-class citizens</li>
               <li>Generic programming with templates</li>
-              <li>ƛ more succint
+              <li>Haskell &rarr; more succint
                 <ul>
                   <li>But with more painful specialisation</li>
                 </ul>
@@ -1464,7 +1481,7 @@
             <h3 class="slide-header">Lambdas</h3>
             <ul>
               <li>Can be easily passed around and bound to names</li>
-              <li>Can capture variables from surrounding scope to form true lexical closures</li>
+              <li>Can capture variables from enclosing scope to form true lexical closures</li>
             </ul>
           </section>
           <section data-auto-animate>
@@ -1502,7 +1519,7 @@
                 }
               </script></code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/PWz633ezv">https://godbolt.org/z/PWz633ezv</a>
+                <a href="https://godbolt.org/z/Ge8cfP9vj">https://godbolt.org/z/Ge8cfP9vj</a>
               </figcaption>
             </figure>
           </section>
@@ -1540,7 +1557,7 @@
                 #endif
               </script></code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/vK4eGe87Y">https://godbolt.org/z/vK4eGe87Y</a>
+                <a href="https://godbolt.org/z/r6jzYd4c7">https://godbolt.org/z/r6jzYd4c7</a>
               </figcaption>
             </figure>
           </section>
@@ -1567,7 +1584,7 @@
                 }
               </script></code></pre>
               <figcaption>
-                <a href="https://godbolt.org/z/vK4eGe87Y">https://godbolt.org/z/vK4eGe87Y</a>
+                <a href="https://godbolt.org/z/r6jzYd4c7">https://godbolt.org/z/r6jzYd4c7</a>
               </figcaption>
             </figure>
           </section>
@@ -1586,7 +1603,7 @@
             <ul>
               <li>Lambdas &rarr; unique types</li>
               <li><span class="code">std::function</span>: erases concrete type to provide general function signature</li>
-              <li>Useful for when a desired function can only be known at <em>runtime</em></li>
+              <li>Useful for when a desired callable can only be known at <em>runtime</em></li>
             </ul>
           </section>
           <section>
@@ -1649,7 +1666,7 @@
                   return EXIT_SUCCESS;
                 }
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/js64rTcdj">https://godbolt.org/z/js64rTcdj</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/dK8Yr8snn">https://godbolt.org/z/dK8Yr8snn</a></figcaption>
             </figure>
           </section>
           <section>
@@ -1665,7 +1682,7 @@
           <section>
             <h3 class="slide-header"><span class="code">std::bind</span> and partial application</h3>
             <ul>
-              <li><span class="code">std::bind</span> allows you to create ad-hoc specialised functions from more general ones
+              <li><span class="code">std::bind</span> allows you to create ad-hoc specialised functions from more general ones.
               <li>Great for when you know some arguments ahead of time
                 <ul>
                   <li>e.g. the <span class="code">this</span> argument of a member function</li>
@@ -1690,7 +1707,7 @@
                 #ifndef PERCEPTRON_HPP_INCLUDED
                 #define PERCEPTRON_HPP_INCLUDED
 
-                #include "Coordinate.hpp"
+                #include "coordinate.hpp"
 
                 #include <algorithm>
                 #include <cstddef>
@@ -1712,14 +1729,14 @@
 
                 #endif
               </script></code></pre>
-	      <figcaption><a href="https://godbolt.org/z/644xjh3xq">https://godbolt.org/z/644xjh3xq</a></figcaption>
+	      <figcaption><a href="https://godbolt.org/z/K6verrfPd">https://godbolt.org/z/K6verrfPd</a></figcaption>
 	    </figure>
 	  </section>
 	  <section>
 	    <figure class="code-example">
 	      <pre><code data-trim data-line-numbers="19|20|21-23|25-30|29" class="language-cpp"><script type="text/template">
-                #include "Coordinate.hpp"
-                #include "Perceptron.hpp"
+                #include "coordinate.hpp"
+                #include "perceptron.hpp"
 
                 #include <algorithm>
                 #include <cstdlib>
@@ -1754,7 +1771,7 @@
                   return EXIT_SUCCESS;
                 }
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/644xjh3xq">https://godbolt.org/z/644xjh3xq</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/K6verrfPd">https://godbolt.org/z/K6verrfPd</a></figcaption>
             </figure>
           </section>
           <section data-auto-animate>
@@ -1770,7 +1787,7 @@
           <section>
             <h3 class="slide-header"><span class="code">auto</span> type deduction</h3>
             <ul>
-              <li>Allow you to bind values to names without having to specify types
+              <li>Allows you to bind values to names without having to specify types
                 <ul>
                   <li>Can make code more readable and maintainable</li>
                 </ul>
@@ -1815,9 +1832,9 @@
           <section>
             <h3 class="slide-header">C++11 Template Meta-programming</h3>
             <ul>
-              <li>Provided better support for primitive &quot;concepts&quot;
+              <li>Better support for primitive &quot;concepts&quot;
                 <ul>
-                  <li>Supported by C++11 variadic generics, alias templates and the <span class="code">&lt;type_traits&gt;</span> header</li>
+                  <li>Supported by C++11 variadic generics, alias templates and <span class="code">&lt;type_traits&gt;</span> header</li>
                   <li>Builds on C++98 SFINAE</li>
                 </ul>
               </li>
@@ -1869,10 +1886,10 @@
                 main :: IO ()
                 main = do
                   let nums = [1..4]
+                  print $ getSum . mconcat . map Sum $ nums         -- 10
                   print $ getProduct . mconcat . map Product $ nums -- 24
-                  print $ getSum . mconcat . map Sum $ nums -- 10
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/7f3Y89fEn">https://godbolt.org/z/7f3Y89fEn</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/zv96eqr6G">https://godbolt.org/z/zv96eqr6G</a></figcaption>
             </figure>
           </section>
           <section>
@@ -2079,7 +2096,7 @@
               <!-- https://godbolt.org/z/Ya41PePbe -->
               <!-- Old code: https://godbolt.org/z/G6fe4so5x -->
               <!-- Newer old code: https://godbolt.org/z/T1hTbWG4h -->
-              <figcaption><a href="https://godbolt.org/z/E5vsxr9o8">https://godbolt.org/z/E5vsxr9o8</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/89Kff7rGd">https://godbolt.org/z/89Kff7rGd</a></figcaption>
             </figure>
           </section>
           <section>
@@ -2112,16 +2129,16 @@
                     "Hello ", "there, ", "world!"
                   };
                   std::cout
-                    << foldMap<Product<int>>(v1, make_product<int>).value
+                    << foldMap<Sum<int>>(v1, make_sum<int>).value
                     << '\n';
                   std::cout
-                    << foldMap<Sum<int>>(v1, make_sum<int>).value
+                    << foldMap<Product<int>>(v1, make_product<int>).value
                     << '\n';
                   std::cout << mconcat(v2) << '\n';
                   return EXIT_SUCCESS;
                 }
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/E5vsxr9o8">https://godbolt.org/z/E5vsxr9o8</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/89Kff7rGd">https://godbolt.org/z/89Kff7rGd</a></figcaption>
             </figure>
           </section>
           <section data-auto-animate>
@@ -2379,7 +2396,7 @@
 
                 #endif
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/voo9Wo9Eb">https://godbolt.org/z/voo9Wo9Eb</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/89Kff7rGd">https://godbolt.org/z/89Kff7rGd</a></figcaption>
             </figure>
           </section>
           <section>
@@ -2584,7 +2601,7 @@
 
                 #endif
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/68janhx4x">https://godbolt.org/z/68janhx4x</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/v6G1cfffe">https://godbolt.org/z/v6G1cfffe</a></figcaption>
             </figure>
           </section>
           <section>
@@ -2787,7 +2804,7 @@
 
                 #endif
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/voo9Wo9Eb">https://godbolt.org/z/voo9Wo9Eb</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/89Kff7rGd">https://godbolt.org/z/89Kff7rGd</a></figcaption>
             </figure>
           </section>
           <section>
@@ -2992,7 +3009,7 @@
 
                 #endif
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/68janhx4x">https://godbolt.org/z/68janhx4x</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/v6G1cfffe">https://godbolt.org/z/v6G1cfffe</a></figcaption>
             </figure>
           </section>
           <section>
@@ -3195,7 +3212,7 @@
 
                 #endif
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/voo9Wo9Eb">https://godbolt.org/z/voo9Wo9Eb</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/89Kff7rGd">https://godbolt.org/z/89Kff7rGd</a></figcaption>
             </figure>
           </section>
           <section>
@@ -3400,7 +3417,7 @@
 
                 #endif
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/68janhx4x">https://godbolt.org/z/68janhx4x</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/v6G1cfffe">https://godbolt.org/z/v6G1cfffe</a></figcaption>
             </figure>
           </section>
           <section data-auto-animate>
@@ -3426,7 +3443,7 @@
               <li>Basic type inference</li>
               <li>Polymorphism based on value category
                 <ul>
-                  <li>Possible with ƛ, but requires working with linear types</li>
+                  <li>Possible to emulate with Haskell but requires working with linear types</li>
                 </ul>
               </li>
             </ul>
@@ -3459,7 +3476,7 @@
           </section>
           <section>
             <figure class="code-example">
-              <pre><code data-trim data-line-numbers="6-10|12-16|19-22|19|20-21" class="language-cpp"><script type="text/template">
+              <pre><code data-trim data-line-numbers="6-10|13-17|18-21|18|19-20" class="language-cpp"><script type="text/template">
                 #include <cstdlib>
                 #include <iostream>
                 #include <string>
@@ -3471,13 +3488,12 @@
                   std::size_t years_as_member;
                 };
 
-                // An imaginary database of subscribers
-                static const std::vector<Subscriber> subscribers{
-                  { 0, "Abel", 2 },
-                  { 1, "John", 5 }
-                };
-
                 int main() {
+                  // An imaginary database of subscribers
+                  std::vector<Subscriber> const subscribers{
+                    { 0, "Abel", 2 },
+                    { 1, "John", 5 }
+                  };
                   for (auto const [_, name, years_as_member]: subscribers) {
                     std::cout << name << " has been a member for " <<
                     years_as_member << " years.\n";
@@ -3485,7 +3501,7 @@
                   return EXIT_SUCCESS;
                 }
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/Y8MjY59Y1">https://godbolt.org/z/Y8MjY59Y1</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/r8K6h1KPT">https://godbolt.org/z/r8K6h1KPT</a></figcaption>
             </figure>
           </section>
           <section data-auto-animate>
@@ -3569,7 +3585,7 @@
                   else return {};
                 }
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/8KnjszeTK">https://godbolt.org/z/8KnjszeTK</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/fo8Mdc3GK">https://godbolt.org/z/fo8Mdc3GK</a></figcaption>
             </figure>
           </section>
           <section data-auto-animate>
@@ -3661,7 +3677,9 @@
                   return output;
                 }
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/ovqxxjY9K">https://godbolt.org/z/ovqxxjY9K</a></figcaption>
+              <!-- https://godbolt.org/z/6rzoEMK1T -->
+              <!-- https://godbolt.org/z/sE6Go8GcG -->
+              <figcaption><a href="https://godbolt.org/z/8941hcvnv">https://godbolt.org/z/8941hcvnv</a></figcaption>
             </figure>
           </section>
           <section>
@@ -3759,12 +3777,12 @@
                   );
                 }
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/ovqxxjY9K">https://godbolt.org/z/ovqxxjY9K</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/8941hcvnv">https://godbolt.org/z/8941hcvnv</a></figcaption>
             </figure>
           </section>
           <section>
             <figure class="code-example">
-              <pre><code data-trim data-line-numbers="8-9|14-16" class="language-cpp"><script type="text/template">
+              <pre><code data-trim data-line-numbers="8-11|12-14|15-17" class="language-cpp"><script type="text/template">
                 #include "lib.hpp"
 
                 #include <cstdlib>
@@ -3774,7 +3792,7 @@
                 int main() {
                   Enemy const s{ Slime::make_slime(5) };
                   // Skip optional handling for the sake
-                   // of the example
+                  // of the example
                   Enemy const g{ *Goblin::make_goblin(10) };
                   std::vector<Enemy> const enemies{
                     s, g
@@ -3791,7 +3809,7 @@
                   return EXIT_SUCCESS;
                 }
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/ovqxxjY9K">https://godbolt.org/z/ovqxxjY9K</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/8941hcvnv">https://godbolt.org/z/8941hcvnv</a></figcaption>
             </figure>
           </section>
           <section>
@@ -3875,9 +3893,8 @@
           -->
           <section>
             <figure class="code-example">
-              <pre><code data-trim data-line-numbers="12-19|21-31|45-46|209-215|220-234|221" class="language-cpp"><script type="text/template">
-                #ifndef MONOID_HPP_INCLUDED
-                #define MONOID_HPP_INCLUDED
+              <pre><code data-trim data-line-numbers="13-20|22-32|46-47|210-216|221-235|222" class="language-cpp"><script type="text/template">
+                module;
 
                 #include <functional>
                 #include <numeric>
@@ -3887,16 +3904,18 @@
                 #include <utility>
                 #include <vector>
 
-                template <typename T>
+                export module Monoid;
+
+                export template <typename T>
                 struct Monoid;
 
-                template <typename T>
+                export template <typename T>
                 struct Product;
 
-                template <typename T>
+                export template <typename T>
                 struct Sum;
 
-                template <typename T>
+                export template <typename T>
                 concept arithmetic = requires(T&& a, T&& b) {
                   { std::forward<T>(a) + std::forward<T>(b) }
                     -> std::common_reference_with<T>;
@@ -3908,19 +3927,19 @@
                     -> std::common_reference_with<T>;
                 };
 
-                template <typename T>
+                export template <typename T>
                 concept string_like
                   = std::is_convertible_v<std::remove_cvref_t<T>, std::string>;
 
-                template <typename T, typename U>
+                export template <typename T, typename U>
                 concept product_on = arithmetic<U> &&
                   std::is_same_v<Product<U>, std::remove_cvref_t<T>>;
 
-                template <typename T, typename U>
+                export template <typename T, typename U>
                 concept sum_on = arithmetic<U>
                   && std::is_same_v<Sum<U>, std::remove_cvref_t<T>>;
 
-                template <arithmetic T>
+                export template <arithmetic T>
                 struct Product<T> {
                   T value;
                   template <typename U>
@@ -3942,7 +3961,7 @@
                   }
                 };
 
-                template <arithmetic T>
+                export template <arithmetic T>
                 struct Sum<T> {
                   T value;
                   template <typename U>
@@ -3963,21 +3982,21 @@
                   }
                 };
 
-                template <arithmetic T>
+                export template <arithmetic T>
                 constexpr Product<std::remove_cvref_t<T>>
                 make_product(T&& t) { return { std::forward<T>(t) }; }
 
-                template <arithmetic T>
+                export template <arithmetic T>
                 constexpr Sum<std::remove_cvref_t<T>>
                 make_sum(T&& t) { return { std::forward<T>(t) }; }
 
-                template <arithmetic T>
+                export template <arithmetic T>
                 struct Monoid<T> {
                   static constexpr T mempty {};
                   static constexpr T mappend(T a, T b) { return a + b; }
                 };
 
-                template <string_like T>
+                export template <string_like T>
                 struct Monoid<T> {
                   static constexpr T mempty {};
                   template <string_like U, string_like V>
@@ -3989,7 +4008,7 @@
                   }
                 };
 
-                template <arithmetic T>
+                export template <arithmetic T>
                 struct Monoid<Product<T>> {
                   static constexpr Product<T> mempty { 1 };
                   template <product_on<T> U, product_on<T> V>
@@ -4001,7 +4020,7 @@
                   }
                 };
 
-                template <arithmetic T>
+                export template <arithmetic T>
                 struct Monoid<Sum<T>> {
                   template <
                     typename Collection,
@@ -4018,13 +4037,13 @@
                   }
                 };
 
-                template <typename T>
+                export template <typename T>
                 constexpr decltype(Monoid<T>::mempty) mempty()
                 {
                   return Monoid<T>::mempty;
                 }
 
-                template <typename T>
+                export template <typename T>
                 constexpr decltype(
                   Monoid<T>::template mconcat<std::vector<T>>({})
                 ) mempty()
@@ -4032,7 +4051,7 @@
                   return Monoid<T>::template mconcat<std::vector<T>>({});
                 }
 
-                template <typename T, typename U>
+                export template <typename T, typename U>
                 constexpr auto mappend(T&& a, U&& b)
                   -> std::enable_if_t<
                        std::common_reference_with<T, U>,
@@ -4046,7 +4065,7 @@
                   );
                 }
 
-                template <typename T, typename U>
+                export template <typename T, typename U>
                 constexpr auto mappend(T&& a, U&& b)
                   -> std::enable_if_t<
                        std::common_reference_with<T, U>,
@@ -4061,7 +4080,7 @@
                         { std::forward<T>(a), std::forward<U>(b) });
                 }
 
-                template <
+                export template <
                   typename Collection, typename Element
                     = typename std::remove_cvref_t<Collection>::value_type>
                 constexpr decltype(Monoid<Element>::mempty)
@@ -4075,7 +4094,7 @@
                   );
                 }
 
-                template <typename Collection, typename Element
+                export template <typename Collection, typename Element
                   = typename std::remove_cvref_t<Collection>::value_type>
                 constexpr decltype(Monoid<Element>::template
                   mconcat(std::declval<Collection>())
@@ -4084,7 +4103,7 @@
                   return Monoid<Element>::template mconcat<Collection>(c);
                 }
 
-                template <typename T>
+                export template <typename T>
                 concept monoid = requires(T&& a, T&& b) {
                   { mconcat(
                       std::vector<T>{ std::forward<T>(a),  std::forward<T>(b) }
@@ -4092,10 +4111,10 @@
                   } -> std::common_reference_with<T>;
                 };
 
-                template <typename T>
+                export template <typename T>
                 concept monoidal = monoid<std::remove_cvref_t<T>>;
 
-                template <
+                export template <
                   monoidal Monoid, typename Collection, typename Element
                   = typename std::remove_cvref_t<Collection>::value_type,
                   std::convertible_to<
@@ -4113,10 +4132,12 @@
 
                 #endif
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/oxcav3Mdq">https://godbolt.org/z/oxcav3Mdq</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/b4WM5bqK4">https://godbolt.org/z/b4WM5bqK4</a></figcaption>
               <!-- v1: https://godbolt.org/z/o6eqbnYT3 -->
               <!-- v2: https://godbolt.org/z/nobxE8hr1 -->
               <!-- v3: https://godbolt.org/z/4rjvWfvvr -->
+	      <!-- v4: https://godbolt.org/z/oxcav3Mdq -->
+
             </figure>
           </section>
           <!-- https://godbolt.org/z/cG61MWjWc -->
@@ -4165,7 +4186,7 @@
 
                 int main()
                 {
-                  std::vector<Subscriber> subscribers {
+                  std::vector<Subscriber> const subscribers {
                     { 25, "See", "Plus", { "romance", "comedy" }, Plan::ultra },
                     { 35, "Hask", "Ell", { "docs", "comedy" }, Plan::plus },
                     { 30, "Cloh", "Jeur", { "docs", "thiller", "feature" },
@@ -4187,7 +4208,7 @@
                   return EXIT_SUCCESS;
                 }
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/vb8MK8x9n">https://godbolt.org/z/vb8MK8x9n</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/PcbMcrd5d">https://godbolt.org/z/PcbMcrd5d</a></figcaption>
               <!-- Old link: https://godbolt.org/z/vnYYxv8Ed -->
               <!-- New old link: https://godbolt.org/z/P69xM8Pva -->
             </figure>
@@ -4345,7 +4366,7 @@
                   return EXIT_SUCCESS;
                 }
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/Es3sbovYK">https://godbolt.org/z/Es3sbovYK</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/1E3dG1fxE">https://godbolt.org/z/1E3dG1fxE</a></figcaption>
             </figure>
           </section>
           <section>
@@ -4382,14 +4403,14 @@
           </section>
           <section>
             <figure class="code-example">
-              <pre><code data-trim data-line-numbers="9-14|18-26|33-41|42-56|61-64|67-72|68-70|71|73-75" class="language-cpp"><script type="text/template">
-                #include "graph.hpp"
-
+              <pre><code data-trim data-line-numbers="9-14|18-26|33-41|42-56|60-64|65-72|68-70|71|73-75" class="language-cpp"><script type="text/template">
                 #include <compare>
                 #include <cstdlib>
                 #include <print>
                 #include <ranges>
                 #include <string>
+
+                import Graph;
 
                 struct User {
                   std::string first_name;
@@ -4455,13 +4476,13 @@
                     })
                     | std::views::join | std::views::filter(not_ada)
                   };
-                  for (auto user : seconds) {
+                  for (auto const& user : seconds) {
                     std::print("{}\n", (*user)->first_name);
                   }
                   return EXIT_SUCCESS;
                 }
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/bv71onv4z">https://godbolt.org/z/bv71onv4z</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/Pe8aaq74j">https://godbolt.org/z/Pe8aaq74j</a></figcaption>
             </figure>
           </section>
           <section>
@@ -4470,14 +4491,14 @@
           <section>
             <figure class="code-example">
               <pre><code data-trim data-line-numbers="17-31|24-30|24-25|26-27|28|74-79" class="language-cpp"><script type="text/template">
-                #include "graph.hpp"
-
                 #include <compare>
                 #include <cstdlib>
                 #include <generator>
                 #include <print>
                 #include <ranges>
                 #include <string>
+
+                import Graph;
 
                 struct User {
                   std::string first_name;
@@ -4552,7 +4573,7 @@
                   return EXIT_SUCCESS;
                 }
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/qEGf9o7o7">https://godbolt.org/z/qEGf9o7o7</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/v6xGYTj9b">https://godbolt.org/z/v6xGYTj9b</a></figcaption>
             </figure>
           </section>
           <section data-auto-animate>
@@ -4608,7 +4629,7 @@
             <ul>
               <li>Described by <a href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/p2806r2.html">P2806</a>
               <li>Eliminates the need for immediately invoked lambda expressions</li>
-              <li>Makes C++ into a more <em>expression-oriented</em> language</li>
+              <li>Would make C++ a more <em>expression-oriented</em> language</li>
             </ul>
           </section>
           <section>
@@ -4623,6 +4644,142 @@
           </section>
           <section>
             A bright future for FP in C++!
+          </section>
+        </section>
+        <section>
+          <section data-auto-animate>
+            <h2>The Elephant in the Room</h2>
+          </section>
+          <section data-auto-animate>
+            <h2>Performance</h2>
+          </section>
+          <section data-auto-animate>
+            <h3 class="slide-header">Will using FP make my code faster?</h3>
+          </section>
+          <section data-auto-animate>
+            <h3 class="slide-header">Will using FP make my code faster?</h3>
+            <ul>
+              <li>No clear yes/no answer 😅!</li>
+            </ul>
+          </section>
+          <section data-auto-animate>
+            <h3 class="slide-header">Will using FP make my code faster?</h3>
+            <ul>
+              <li>No clear yes/no answer 😅!</li>
+              <li>Use profiling!</li>
+            </ul>
+          </section>
+          <section>
+            <h3 class="slide-header">Enlightening resources</h3>
+            <ul>
+              <li>Dr. Stroustroup&apos;s remark on STL algorithms<sup><a href="#algorithms-remark">1</a></sup></li>
+              <li>Dr. Carl Cook&apos;s slide on exceptions<sup><a href="#exceptions-slide">2</a></sup></li>
+              <li>Shachar Shemesh&apos;s thoughts on virtual functions/<span class="code">std::variant</span><sup><a href="#virtual-functions">3</a></sup></li>
+            </ul>
+            <footer>
+              <ol>
+                <li id="algorithms-remark"><a href="https://youtu.be/I8UvQKvOSSw?t=2497">https://youtu.be/I8UvQKvOSSw?t=2497</a></li>
+                <li id="exceptions-slide"><a href="https://youtu.be/NH1Tta7purM?t=1149">https://youtu.be/NH1Tta7purM?t=1149</a></li>
+                <li id="virtual-functions"><a href="https://youtu.be/i5MAXAxp_Tw">https://youtu.be/i5MAXAxp_Tw</a></li>
+              </ol>
+            </footer>
+          </section>
+          <section>
+            So why did I come here?
+          </section>
+          <section data-auto-animate>
+            <ul>
+              <li>Source code &harr; human language</li>
+            </ul>
+          </section>
+          <section data-auto-animate>
+            <ul>
+              <li>Source code &harr; human language</li>
+              <li>Imperative code &nrarr; strong denotation</li>
+            </ul>
+          </section>
+          <section data-auto-animate>
+            <ul>
+              <li>Source code &harr; human language</li>
+              <li>Imperative code &nrarr; strong denotation</li>
+              <li>Denotative code &rarr; compositionality + optimisability</li>
+            </ul>
+          </section>
+          <section data-auto-animate>
+            <figure class="code-example">
+              <pre><code data-trim data-line-numbers="1-9|2-7" class="language-cpp"><script type="text/template">
+                for (auto const subscriber : subscribers) {
+                  if (subscriber.age > 35)
+                    continue;
+                  if (subscriber.age < 25)
+                    continue;
+                  if (subscriber.plan == Plan::standard)
+                    continue;
+                  std::cout << subscriber.first_name << '\n';
+                }
+              </script></code></pre>
+            </figure>
+          </section>
+          <section data-auto-animate>
+            <figure class="code-example">
+              <pre><code data-trim data-line-numbers="1-10|1-7" class="language-cpp"><script type="text/template">
+                auto const target_subscribers {
+                  subscribers
+                  | std::views::filter([](auto const& s) { return s.age < 36; })
+                  | std::views::filter([](auto const& s) { return s.age > 24; })
+                  | std::views::filter([](auto const& s) { return s.plan != Plan::standard; })
+                  | std::views::transform(&Subscriber::first_name)
+                };
+                for (auto const subscriber : target_subscribers) {
+                  std::cout << subscriber << '\n';
+                }
+              </script></code></pre>
+            </figure>
+          </section>
+          <section>
+            The future is functional!
+          </section>
+          <section>
+            ...or rather denotational 😁
+          </section>
+          <section data-visibility="hidden">
+            Variant Benchmark
+            SlimeInheritance::show 6-27 (21 lines)
+	    GoblinInheritance::show 28-48 (20 lines)
+	    show(EnemyVariant)lambda(GoblinVariant) 49-70 (21 lines)
+	    show(EnemyVariant)lambda(SlimeVariant) 71-91 (20 lines)
+            SlimeInheritance::feed 754-758 (4 lines)
+	    GoblinInheritance::feed 764-774 (10 lines)
+            feed(EnemyVariant) 779-803 (24 lines)
+            SlimeInheritance::clone 804-828 (24 lines)
+            GoblinInheritance::clone 829-857 (28 lines)
+            SlimeVariant::feed 888-896 (8 lines)
+            GoblinVariant::feed 918-936 (18 lines)
+            SlimeInheritance::show 945-1072 (127 lines)
+            GoblinInheritance::show 1073-1207 (34 lines)
+            show(EnemyVariant)lambda(GoblinVariant) 1208-1334 (126 lines)
+            show(EnemyVariant)lambda(SlimeVariant) 1335-1454 (119 lines)
+            show(EnemyVariant) 1455-1471 (26 lines)
+            feed_all_variant 1970-2033 (63 lines)
+
+            227 lines for inheritance
+	    321 lines for inheritance
+            https://godbolt.org/z/M9o7G5qWr
+
+            C++20 Ranges Benchmark
+            Ranges 234-452 (218 lines)
+            Imperative 453-598 (145 lines)
+            https://godbolt.org/z/3ovvGbn5G
+
+            C++23 std::expected Benchmark
+            benchmark_exception 2-38 (36 lines)
+            benchmark_expected 48-90 (42 lines)
+            benchmark_exception 91-128 (37 lines)
+            https://godbolt.org/z/8PM1fGWbr
+
+            C++23 std::generator Benchmark
+	    Too much .asm to tell!
+            https://godbolt.org/z/Eo4xPvjj5
           </section>
         </section>
         <section>
@@ -4652,6 +4809,10 @@
             <li><a href="https://en.wikipedia.org/wiki/Modern_C%2B%2B_Design"><em>Modern C++ Design</em></a></li>
             <li><a href="https://searchworks.stanford.edu/view/14165994"><em>C++ Template Metaprogramming: Concepts, Tools, and Techniques from Boost and Beyond</em></a></li>
             <li><a href="https://www.manning.com/books/functional-programming-in-c-plus-plus"><em>Functional Programming in C++</em></a></li>
+            <li><a href="https://youtu.be/I8UvQKvOSSw">Delivering Safe C++</a></li>
+            <li><a href="https://youtu.be/NH1Tta7purM">When a Microsecond Is an Eternity</a></li>
+            <li><a href="https://youtu.be/i5MAXAxp_Tw">Optimizing Away C++ Virtual Functions May Be Pointless</a></li>
+            <li><a href="https://youtu.be/rlyqoYoUumc">Denotational Design: From Meanings To Programs</a></li>
           </ol>
         </section>
         <section data-visibility="hidden">

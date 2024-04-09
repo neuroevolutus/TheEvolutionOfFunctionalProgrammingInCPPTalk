@@ -3494,14 +3494,14 @@
                     { 0, "Abel", 2 },
                     { 1, "John", 5 }
                   };
-                  for (auto const [_, name, years_as_member]: subscribers) {
+                  for (auto const& [_, name, years_as_member]: subscribers) {
                     std::cout << name << " has been a member for " <<
                     years_as_member << " years.\n";
                   }
                   return EXIT_SUCCESS;
                 }
               </script></code></pre>
-              <figcaption><a href="https://godbolt.org/z/r8K6h1KPT">https://godbolt.org/z/r8K6h1KPT</a></figcaption>
+              <figcaption><a href="https://godbolt.org/z/hPYcc4ojY">https://godbolt.org/z/hPYcc4ojY</a></figcaption>
             </figure>
           </section>
           <section data-auto-animate>

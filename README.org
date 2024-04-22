@@ -1,6 +1,6 @@
 * The Evolution of Functional Programming in C++
 
-These are the slides for my C++Online 2024 presentation "The Evolution of Functional Programming in C++."
+These are the slides for my ACCU 2024 presentation "The Evolution of Functional Programming in C++."
 
 ** Viewing the Slides
 
